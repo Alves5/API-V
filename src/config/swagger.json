@@ -1,0 +1,2610 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Vizion",
+    "description": "Description Example",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/Acesso": {
+      "get": {
+        "tags": [
+          "Acesso"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllAcesso",
+        "responses": {
+          "200": {
+            "description": "Retorna todos os registros de Acesso"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Acesso"
+        ],
+        "description": "Cria um novo Acesso",
+        "operationId": "createAcesso",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Acesso"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Acesso/{usuario}": {
+      "get": {
+        "tags": [
+          "Acesso"
+        ],
+        "description": "Retorna o registro especifico",
+        "operationId": "findByIdAcesso",
+        "parameters": [
+          {
+            "name": "usuario",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Acesso"
+        ],
+        "description": "Atualiza um Acesso existente",
+        "operationId": "updateByIdAcesso",
+        "parameters": [
+          {
+            "name": "usuario",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcessoSemUsuario"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Acesso"
+        ],
+        "description": "Remove um Acesso existente",
+        "operationId": "deleteByIdAcesso",
+        "parameters": [
+          {
+            "name": "usuario",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Arquivo": {
+      "get": {
+        "tags": [
+          "Arquivo"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllArquivo",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Arquivo"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Arquivo"
+        ],
+        "operationId": "setDimmer",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "value",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Parcela"
+                }
+              }
+            }
+          }
+        },
+        "x-swagger-router-controller": "ZWave"
+      }
+    },
+    "/Arquivo/{id}": {
+      "get": {
+        "tags": [
+          "Arquivo"
+        ],
+        "description": "Retorna o registro especifico",
+        "operationId": "findByIdAcesso",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Arquivo"
+        ],
+        "description": "Atualiza um Acesso existente",
+        "operationId": "updateByIdAcesso",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Acesso"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Arquivo"
+        ],
+        "description": "Remove um Acesso existente",
+        "operationId": "deleteByIdAcesso",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/ArquivoRelacionado": {
+      "get": {
+        "tags": [
+          "Arquivo Relacionado"
+        ],
+        "description": "Retorna todos os registros",
+        "operationId": "findAllArquivo",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Arquivo Relacionado"
+        ],
+        "description": "Cria um novo arquivo relacionado",
+        "operationId": "createArquivoRelacionado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArquivoRelacionado"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/ArquivoRelacionado/{id}": {
+      "get": {
+        "tags": [
+          "Arquivo Relacionado"
+        ],
+        "description": "Retorna o registro especifico",
+        "operationId": "findByIdArquivoRelacionado",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Arquivo Relacionado"
+        ],
+        "description": "Atualiza um Arquivo relacionado existente",
+        "operationId": "updateByIdArquivoRelacionado",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArquivoRelacionado"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Arquivo Relacionado"
+        ],
+        "description": "Remove um Arquivo relacionado existente",
+        "operationId": "deleteByIdArquivoRelacionado",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Chaves": {
+      "get": {
+        "tags": [
+          "Chaves"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllChaves",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Chaves"],
+        "description": "Cria uma nova Chave",
+        "operationId": "createChave",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Chaves"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Chaves/{id}": {
+      "get": {
+        "tags": [
+          "Chaves"
+        ],
+        "description": "retorna um registro especifico",
+        "operationId": "findByIdChaves",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Chaves"],
+        "description": "Atualiza um registro especifico",
+        "operationId": "updateByIdChaves",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Chaves"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Chaves"],
+        "description": "Remove um registro especifico",
+        "operationId": "deleteByIdChaves",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Contato": {
+      "get": {
+        "tags": [
+          "Contato"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllContato",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Contato"],
+        "description": "Cria um novo Contato",
+        "operationId": "createContato",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contato"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Contato/{numero}":{
+      "get": {
+        "tags": [
+          "Contato"
+        ],
+        "description": "retorna um registro especifico pelo número",
+        "operationId": "findByNumeroContato",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Contato"],
+        "description": "Atualiza um registro especifico",
+        "operationId": "updateByNumeroContato",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContatoSemNumero"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Contato"],
+        "description": "Remove um registro especifico",
+        "operationId": "deleteByNumeroContato",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/{objeto}/Contato/{numero}": {
+      "get": {
+        "tags": [
+          "Contato"
+        ],
+        "description": "Retorna uma lista relacionada baseada no objeto e no número especificado",
+        "operationId": "findByNumeroContratoContato",
+        "parameters": [
+          {
+            "name": "objeto",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Contrato": {
+      "get": {
+        "tags": [
+          "Contrato"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllContrato",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Contrato"],
+        "description": "Cria um novo Contrato",
+        "operationId": "createContrato",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contrato"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Contrato/{numero}":{
+      "get": {
+        "tags": [
+          "Contrato"
+        ],
+        "description": "retorna um registro especifico pelo número do contrato",
+        "operationId": "findByNumeroContrato",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Contrato"],
+        "description": "Atualiza um registro especifico",
+        "operationId": "updateByNumeroContrato",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContratoSemNumeroContrato"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Contrato"],
+        "description": "Remove um registro especifico",
+        "operationId": "deleteByNumeroContrato",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/ArquivoRelacionado/Contrato/{numero}": {
+      "get": {
+        "tags": [
+          "Contrato"
+        ],
+        "description": "Retorna uma lista relacionada de Arquivos no Contrato",
+        "operationId": "findByNumeroArquivoRelacionadoContrato",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Parcela": {
+      "get": {
+        "tags": [
+          "Parcela"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllParcela",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Parcela"],
+        "description": "Cria uma nova Parcela",
+        "operationId": "createParcela",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Parcela"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Parcela/{numero}":{
+      "get": {
+        "tags": [
+          "Parcela"
+        ],
+        "description": "retorna um registro especifico pelo número do ID",
+        "operationId": "findByIdParcela",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Parcela"],
+        "description": "Atualiza um registro especifico",
+        "operationId": "updateByIdParcela",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParcelaSemCriadoPor"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Parcela"],
+        "description": "Remove um registro especifico",
+        "operationId": "deleteByIdParcela",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Perfil": {
+      "get": {
+        "tags": [
+          "Perfil"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllPerfil",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Perfil"],
+        "description": "Cria um novo Perfil",
+        "operationId": "createPerfil",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Perfil"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Perfil/{nome}":{
+      "get": {
+        "tags": [
+          "Perfil"
+        ],
+        "description": "retorna um registro especifico pelo nome",
+        "operationId": "findByNomePerfil",
+        "parameters": [
+          {
+            "name": "nome",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Perfil"],
+        "description": "Atualiza um registro especifico",
+        "operationId": "updateByNomePerfil",
+        "parameters": [
+          {
+            "name": "nome",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PerfilUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Perfil"],
+        "description": "Remove um registro especifico",
+        "operationId": "deleteByNomePerfil",
+        "parameters": [
+          {
+            "name": "nome",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/PermissaoPerfil": {
+      "get": {
+        "tags": [
+          "Permissão do Perfil"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllPermissaoPerfil",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Permissão do Perfil"],
+        "description": "Cria uma nova Permissão de Perfil",
+        "operationId": "createPermissaoPerfil",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PermissaoPerfil"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/PermissaoPerfil/{codigo}":{
+      "get": {
+        "tags": [
+          "Permissão do Perfil"
+        ],
+        "description": "retorna um registro especifico pelo código",
+        "operationId": "findByCodigoPermissaoPerfil",
+        "parameters": [
+          {
+            "name": "codigo",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Permissão do Perfil"],
+        "description": "Atualiza um registro especifico pelo código",
+        "operationId": "updateByCodigoPermissaoPerfil",
+        "parameters": [
+          {
+            "name": "codigo",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PermissaoPerfilSemCodigo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Permissão do Perfil"],
+        "description": "Remove um registro especifico pelo código",
+        "operationId": "deleteByCodigoPermissaoPerfil",
+        "parameters": [
+          {
+            "name": "codigo",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Proposta": {
+      "get": {
+        "tags": [
+          "Proposta"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllProposta",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Proposta"],
+        "description": "Cria uma nova Proposta",
+        "operationId": "createProposta",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Proposta"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Proposta/{numero}":{
+      "get": {
+        "tags": [
+          "Proposta"
+        ],
+        "description": "retorna um registro especifico pelo número da proposta",
+        "operationId": "findByNumeroProposta",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Proposta"],
+        "description": "Atualiza um registro especifico",
+        "operationId": "updateByNumeroProposta",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PropostaSemNumeroProposta"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Proposta"],
+        "description": "Remove um registro especifico",
+        "operationId": "deleteByNumeroProposta",
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/{objeto}/Proposta/{numero}": {
+      "get": {
+        "tags": [
+          "Proposta"
+        ],
+        "description": "Retorna uma lista relacionada baseada no objeto e no numero especificado",
+        "operationId": "findByNumeroContratoContato",
+        "parameters": [
+          {
+            "name": "objeto",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Taxa": {
+      "get": {
+        "tags": [
+          "Taxa"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllTaxa",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Taxa"],
+        "description": "Cria uma nova Taxa",
+        "operationId": "createTaxa",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Taxa"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Taxa/{id}":{
+      "get": {
+        "tags": [
+          "Taxa"
+        ],
+        "description": "retorna um registro especifico pelo ID",
+        "operationId": "findByIdTaxa",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Taxa"],
+        "description": "Atualiza um registro especifico",
+        "operationId": "updateByIdTaxa",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxaUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Taxa"],
+        "description": "Remove um registro especifico",
+        "operationId": "deleteByIdTaxa",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Usuario": {
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllUsuario",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Usuário"],
+        "description": "Cria um novo Usuário",
+        "operationId": "createUsuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Usuario"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Usuario/{email}":{
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "description": "retorna um registro especifico baseado no email",
+        "operationId": "findByEmailUsuario",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Usuário"],
+        "description": "Remove um registro especifico baseado no email",
+        "operationId": "deleteByEmailUsuario",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Usuario/UpdateByEmail": {
+      "put": {
+        "tags": ["Usuário"],
+        "description": "Atualiza um registro especifico baseado no email",
+        "operationId": "updateByEmailUsuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsuarioUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Usuário"],
+        "description": "Verifica se existe um usuário com esse login",
+        "operationId": "loginUsuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/RecuperarConta": {
+      "post": {
+        "tags": ["Usuário"],
+        "description": "Recuperar a conta do usuário",
+        "operationId": "retrieveAccount",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecuperarConta"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/CriarNovaSenha": {
+      "post": {
+        "tags": ["Usuário"],
+        "description": "Criar nova senha para o usuário",
+        "operationId": "createPasswordUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarNovaSenha"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/AtivarConta": {
+      "post": {
+        "tags": ["Usuário"],
+        "description": "Ativar conta do usuário",
+        "operationId": "activateAccountUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarNovaSenha"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/AtualizarNome": {
+      "post": {
+        "tags": ["Usuário"],
+        "description": "Atualizar nome do usuário",
+        "operationId": "UpdateNameUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarNome"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Contato/Usuario/{email}": {
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "description": "Retorna uma lista relacionada baseada no email",
+        "operationId": "findByEmailContatoUsuario",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Acesso": {
+        "required": [
+          "editar",
+          "objeto",
+          "registro",
+          "usuario",
+          "ver"
+        ],
+        "type": "object",
+        "properties": {
+          "usuario": {
+            "type": "string"
+          },
+          "registro": {
+            "type": "string"
+          },
+          "objeto": {
+            "type": "string"
+          },
+          "ver": {
+            "type": "integer"
+          },
+          "editar": {
+            "type": "integer"
+          }
+        }
+      },
+      "AcessoSemUsuario": {
+        "required": [
+          "editar",
+          "objeto",
+          "registro",
+          "ver"
+        ],
+        "type": "object",
+        "properties": {
+          "registro": {
+            "type": "string"
+          },
+          "objeto": {
+            "type": "string"
+          },
+          "ver": {
+            "type": "integer"
+          },
+          "editar": {
+            "type": "integer"
+          }
+        }
+      },
+      "Arquivo": {
+        "required": [
+          "content",
+          "created_at",
+          "id",
+          "mime_type",
+          "name",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "bigint"
+          },
+          "name": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "timestamp"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "timestamp"
+          },
+          "mime_type": {
+            "type": "string"
+          }
+        }
+      },
+      "ArquivoRelacionado": {
+        "required": [
+          "arquivo",
+          "created_at",
+          "nome",
+          "objeto",
+          "numero_contato",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "objeto": {
+            "type": "string"
+          },
+          "numero_contato": {
+            "type": "string"
+          },
+          "arquivo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "timestamp"
+          },
+          "criado_por": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "timestamp"
+          },
+          "atualizado_por": {
+            "type": "string"
+          }
+        }
+      },
+      "Chaves": {
+        "required": [
+          "chave",
+          "producao",
+          "sandbox",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "chave": {
+            "type": "string"
+          },
+          "producao": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sandbox": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "timestamp"
+          }
+        }
+      },
+      "Contato": {
+        "required": [
+          "created_at",
+          "numero"
+        ],
+        "type": "object",
+        "properties": {
+          "nome_completo": {
+            "type": "string"
+          },
+          "numero": {
+            "type": "string"
+          },
+          "responsavel": {
+            "type": "string"
+          },
+          "criado_por": {
+            "type": "string"
+          },
+          "nacionalidade": {
+            "type": "string"
+          },
+          "data_nascimento": {
+            "type": "string",
+            "format": "date"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "identidade": {
+            "type": "string"
+          },
+          "cep": {
+            "type": "string"
+          },
+          "endereco": {
+            "type": "string"
+          },
+          "bairro": {
+            "type": "string"
+          },
+          "cidade": {
+            "type": "string"
+          },
+          "estado": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "ContatoSemNumero": {
+        "required": [
+          "created_at"
+        ],
+        "type": "object",
+        "properties": {
+          "nome_completo": {
+            "type": "string"
+          },
+          "responsavel": {
+            "type": "string"
+          },
+          "criado_por": {
+            "type": "string"
+          },
+          "nacionalidade": {
+            "type": "string"
+          },
+          "data_nascimento": {
+            "type": "string",
+            "format": "date"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "identidade": {
+            "type": "string"
+          },
+          "cep": {
+            "type": "string"
+          },
+          "endereco": {
+            "type": "string"
+          },
+          "bairro": {
+            "type": "string"
+          },
+          "cidade": {
+            "type": "string"
+          },
+          "estado": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "Contrato": {
+        "required": [
+          "numero_contrato"
+        ],
+        "type": "object",
+        "properties": {
+          "numero_contrato": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "numero_contato": {
+            "type": "string"
+          },
+          "criado_por": {
+            "type": "string"
+          },
+          "numero_proposta": {
+            "type": "string"
+          },
+          "contrato_pai": {
+            "type": "integer",
+            "format": "bigint"
+          }
+        }
+      },
+      "ContratoSemNumeroContrato": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "numero_contato": {
+            "type": "string"
+          },
+          "atualizado_por": {
+            "type": "string"
+          },
+          "numero_proposta": {
+            "type": "string"
+          },
+          "contrato_pai": {
+            "type": "integer",
+            "format": "bigint"
+          }
+        }
+      },
+      "Parcela": {
+        "required": [
+          "atualizado_por",
+          "criado_por",
+          "data_pagamento_parcela",
+          "moeda_parcela",
+          "numero_contato",
+          "numero_parcela",
+          "numero_proposta",
+          "status",
+          "total_parcela",
+          "valor_parcela"
+        ],
+        "type": "object",
+        "properties": {
+          "numero_parcela": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total_parcela": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "valor_parcela": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "moeda_parcela": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "data_pagamento_parcela": {
+            "type": "string",
+            "format": "date"
+          },
+          "numero_proposta": {
+            "type": "string"
+          },
+          "numero_contato": {
+            "type": "string"
+          },
+          "criado_por": {
+            "type": "string"
+          },
+          "atualizado_por": {
+            "type": "string"
+          }
+        }
+      },
+      "ParcelaSemCriadoPor": {
+        "required": [
+          "atualizado_por",
+          "data_pagamento_parcela",
+          "moeda_parcela",
+          "numero_contato",
+          "numero_proposta",
+          "status",
+          "total_parcela",
+          "valor_parcela"
+        ],
+        "type": "object",
+        "properties": {
+          "total_parcela": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "valor_parcela": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "moeda_parcela": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "data_pagamento_parcela": {
+            "type": "string",
+            "format": "date"
+          },
+          "numero_proposta": {
+            "type": "string"
+          },
+          "numero_contato": {
+            "type": "string"
+          },
+          "atualizado_por": {
+            "type": "string"
+          }
+        }
+      },
+      "Perfil": {
+        "required": [
+          "acessa_configuracoes",
+          "atualizado_por",
+          "criado_por",
+          "nome"
+        ],
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "acessa_configuracoes": {
+            "type": "integer",
+            "format": "tinyint"
+          },
+          "criado_por": {
+            "type": "string"
+          },
+          "atualizado_por": {
+            "type": "string"
+          }
+        }
+      },
+      "PerfilUpdate": {
+        "required": [
+          "acessa_configuracoes",
+          "atualizado_por"
+        ],
+        "type": "object",
+        "properties": {
+          "acessa_configuracoes": {
+            "type": "integer",
+            "format": "tinyint"
+          },
+          "atualizado_por": {
+            "type": "string"
+          }
+        }
+      },
+      "PermissaoPerfil": {
+        "required": [
+          "codigo",
+          "criar",
+          "editar",
+          "editar_todos",
+          "excluir",
+          "objeto",
+          "perfil",
+          "ver_todos"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string"
+          },
+          "perfil": {
+            "type": "string"
+          },
+          "objeto": {
+            "type": "string"
+          },
+          "criar": {
+            "type": "integer",
+            "format": "tinyint"
+          },
+          "editar": {
+            "type": "integer",
+            "format": "tinyint"
+          },
+          "excluir": {
+            "type": "integer",
+            "format": "tinyint"
+          },
+          "ver_todos": {
+            "type": "integer",
+            "format": "tinyint"
+          },
+          "editar_todos": {
+            "type": "integer",
+            "format": "tinyint"
+          }
+        }
+      },
+      "PermissaoPerfilSemCodigo": {
+        "required": [
+          "criar",
+          "editar",
+          "editar_todos",
+          "excluir",
+          "objeto",
+          "perfil",
+          "ver_todos"
+        ],
+        "type": "object",
+        "properties": {
+          "perfil": {
+            "type": "string"
+          },
+          "objeto": {
+            "type": "string"
+          },
+          "criar": {
+            "type": "integer",
+            "format": "tinyint"
+          },
+          "editar": {
+            "type": "integer",
+            "format": "tinyint"
+          },
+          "excluir": {
+            "type": "integer",
+            "format": "tinyint"
+          },
+          "ver_todos": {
+            "type": "integer",
+            "format": "tinyint"
+          },
+          "editar_todos": {
+            "type": "integer",
+            "format": "tinyint"
+          }
+        }
+      },
+      "Proposta": {
+        "required": [
+          "atualizado_por",
+          "criado_por",
+          "fase",
+          "numero_proposta"
+        ],
+        "type": "object",
+        "properties": {
+          "numero_proposta": {
+            "type": "string"
+          },
+          "numero_contato": {
+            "type": "string"
+          },
+          "fase": {
+            "type": "string"
+          },
+          "pais": {
+            "type": "string"
+          },
+          "cidade": {
+            "type": "string"
+          },
+          "instituicao": {
+            "type": "string"
+          },
+          "tipo_curso": {
+            "type": "string"
+          },
+          "valor_curso": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "turma_curso": {
+            "type": "string"
+          },
+          "duracao_curso": {
+            "type": "string"
+          },
+          "carga_horaria_curso": {
+            "type": "string"
+          },
+          "tipo_acomodacao": {
+            "type": "string"
+          },
+          "duracao_acomodacao": {
+            "type": "string"
+          },
+          "valor_acomodacao": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "descricao_taxa_acomodacao": {
+            "type": "string"
+          },
+          "taxa_acomodacao": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "descricao_agencia_acomodacao": {
+            "type": "string"
+          },
+          "agencia_acomodacao": {
+            "type": "string"
+          },
+          "cambio": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "total_pessoa": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "moeda_contratante": {
+            "type": "string"
+          },
+          "simbolo_moeda_contratante": {
+            "type": "string"
+          },
+          "moeda_destino": {
+            "type": "string"
+          },
+          "simbolo_moeda_destino": {
+            "type": "string"
+          },
+          "data_prevista_embarque": {
+            "type": "string",
+            "format": "date"
+          },
+          "data_maxima_embarque": {
+            "type": "string",
+            "format": "date"
+          },
+          "taxa_desistencia_aluno": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "tipo_pagamento": {
+            "type": "string"
+          },
+          "valor_entrada": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "data_entrada": {
+            "type": "string",
+            "format": "date"
+          },
+          "tipo_pagamento_entrada": {
+            "type": "string"
+          },
+          "quantidade_parcela": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tipo_pagamento_parcela": {
+            "type": "string"
+          },
+          "criado_por": {
+            "type": "string"
+          },
+          "atualizado_por": {
+            "type": "string"
+          }
+        }
+      },
+      "PropostaSemNumeroProposta": {
+        "required": [
+          "atualizado_por",
+          "criado_por",
+          "fase"
+        ],
+        "type": "object",
+        "properties": {
+          "numero_contato": {
+            "type": "string"
+          },
+          "fase": {
+            "type": "string"
+          },
+          "pais": {
+            "type": "string"
+          },
+          "cidade": {
+            "type": "string"
+          },
+          "instituicao": {
+            "type": "string"
+          },
+          "tipo_curso": {
+            "type": "string"
+          },
+          "valor_curso": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "turma_curso": {
+            "type": "string"
+          },
+          "duracao_curso": {
+            "type": "string"
+          },
+          "carga_horaria_curso": {
+            "type": "string"
+          },
+          "tipo_acomodacao": {
+            "type": "string"
+          },
+          "duracao_acomodacao": {
+            "type": "string"
+          },
+          "valor_acomodacao": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "descricao_taxa_acomodacao": {
+            "type": "string"
+          },
+          "taxa_acomodacao": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "descricao_agencia_acomodacao": {
+            "type": "string"
+          },
+          "agencia_acomodacao": {
+            "type": "string"
+          },
+          "cambio": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "total_pessoa": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "moeda_contratante": {
+            "type": "string"
+          },
+          "simbolo_moeda_contratante": {
+            "type": "string"
+          },
+          "moeda_destino": {
+            "type": "string"
+          },
+          "simbolo_moeda_destino": {
+            "type": "string"
+          },
+          "data_prevista_embarque": {
+            "type": "string",
+            "format": "date"
+          },
+          "data_maxima_embarque": {
+            "type": "string",
+            "format": "date"
+          },
+          "taxa_desistencia_aluno": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "tipo_pagamento": {
+            "type": "string"
+          },
+          "valor_entrada": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "data_entrada": {
+            "type": "string",
+            "format": "date"
+          },
+          "tipo_pagamento_entrada": {
+            "type": "string"
+          },
+          "quantidade_parcela": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tipo_pagamento_parcela": {
+            "type": "string"
+          },
+          "atualizado_por": {
+            "type": "string"
+          }
+        }
+      },
+      "Taxa": {
+        "required": [
+          "descricao",
+          "moeda",
+          "numero_contato",
+          "numero_proposta",
+          "valor",
+          "criado_por"
+        ],
+        "type": "object",
+        "properties": {
+          "numero_proposta": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "valor": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "moeda": {
+            "type": "string"
+          },
+          "criado_por": {
+            "type": "string"
+          },
+          "numero_contato": {
+            "type": "string"
+          }
+        }
+      },
+      "TaxaUpdate": {
+        "required": [
+          "descricao",
+          "moeda",
+          "numero_contato",
+          "numero_proposta",
+          "valor",
+          "atualizado_por"
+        ],
+        "type": "object",
+        "properties": {
+          "numero_proposta": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "valor": {
+            "type": "number",
+            "format": "decimal(10,2)"
+          },
+          "moeda": {
+            "type": "string"
+          },
+          "atualizado_por": {
+            "type": "string"
+          },
+          "numero_contato": {
+            "type": "string"
+          }
+        }
+      },
+      "Usuario": {
+        "required": [
+          "criado_por",
+          "email",
+          "nome",
+          "perfil"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "perfil": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "criado_por": {
+            "type": "string"
+          }
+        }
+      },
+      "UsuarioUpdate": {
+        "required": [
+          "atualizado_por",
+          "email",
+          "senha",
+          "nome",
+          "perfil"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "senha": {
+            "type": "string"
+          },
+          "perfil": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "atualizado_por": {
+            "type": "string"
+          }
+        }
+      },
+      "login": {
+        "required": [
+          "email",
+          "senha"
+        ],
+        "type": "object",
+        "properties": {
+          "email":{
+            "type": "string"
+          },
+          "senha": {
+            "type": "string"
+          }
+        }
+      },
+      "RecuperarConta": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email":{
+            "type": "string"
+          }
+        }
+      },
+      "CriarNovaSenha": {
+        "required": [
+          "pass1",
+          "pass2",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "pass1":{
+            "type": "string"
+          },
+          "pass2": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "AtualizarNome": {
+        "required": [
+          "email",
+          "nome"
+        ],
+        "type": "object",
+        "properties": {
+          "email":{
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
