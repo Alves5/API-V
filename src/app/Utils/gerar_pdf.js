@@ -1,9 +1,9 @@
-import fs from "fs";
 import pdf from "html-pdf";
 
-const gerarPDF = () => {
+class gerar_pdf {
+    gerarPDF(objeto){
 
-    const htmlContent = `
+        const htmlContent = `
     <html>
 <head>
     <meta charset="utf-8" />
@@ -41,6 +41,16 @@ const gerarPDF = () => {
             vertical-align: top;
             overflow: visible;
         }
+        .header {
+            text-align: center;
+            background-color: #ddd;
+            padding: 10px;
+          }
+        .footer {
+            text-align: center;
+            background-color: #ddd;
+            padding: 10px;
+        }
     </style>
 </head>
 
@@ -53,48 +63,48 @@ const gerarPDF = () => {
         <table cellspacing="1">
             <tr style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                 <td style="background-color: #F69646;" class="s1"> CONTRATANTE: </td>
-                <td bgcolor="#FCE4CD" colspan="3">{{$contato['Nome completo']}}</td>
+                <td bgcolor="#FCE4CD" colspan="3">${objeto[0]['Nome completo']}</td>
             </tr>
             <tr style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                 <td bgcolor="#F69646" class="s1"> EMAIL: </td>
-                <td bgcolor="#FCE4CD" colspan="3">{{$contato['Email']}}</td>
+                <td bgcolor="#FCE4CD" colspan="3">${objeto[0]['Email']}</td>
             </tr>
             <tr style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                 <td bgcolor="#F69646" class="s1"> NACIONALIDADE: </td>
-                <td bgcolor="#FCE4CD">{{$contato['Nacionalidade']}}</td>
+                <td bgcolor="#FCE4CD">${objeto[0]['Nacionalidade']}</td>
                 <td bgcolor="#F69646" class="s1"> ENDEREÇO: </td>
-                <td bgcolor="#FCE4CD" style="text-align: left;">{{$contato['Endereço']}}</td>
+                <td bgcolor="#FCE4CD" style="text-align: left;">${objeto[0]['Endereço']}</td>
             </tr>
             <tr style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                 <td bgcolor="#F69646" class="s1"> NASCIMENTO: </td>
-                <td bgcolor="#FCE4CD">{{date("d/m/Y", strtotime($contato['Data de nascimento']))}}</td>
+                <td bgcolor="#FCE4CD">${objeto[0]['Data de nascimento']}</td>
                 <td bgcolor="#F69646" class="s1"> BAIRRO: </td>
-                <td bgcolor="#FCE4CD">{{$contato['Bairro']}}</td>
+                <td bgcolor="#FCE4CD">${objeto[0]['Bairro']}</td>
             </tr>
             <tr style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                 <td bgcolor="#F69646" class="s1"> CPF: </td>
-                <td bgcolor="#FCE4CD">{{$contato['CPF']}}</td>
+                <td bgcolor="#FCE4CD">${objeto[0]['CPF']}</td>
                 <td bgcolor="#F69646" class="s1"> CIDADE: </td>
-                <td bgcolor="#FCE4CD">{{$contato['Cidade']}}</td>
+                <td bgcolor="#FCE4CD">${objeto[0]['Cidade']}</td>
             </tr>
             <tr style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                 <td bgcolor="#F69646" class="s1"> IDENTIDADE: </td>
-                <td bgcolor="#FCE4CD">{{$contato['Identidade']}}</td>
+                <td bgcolor="#FCE4CD">${objeto[0]['Identidade']}</td>
                 <td bgcolor="#F69646" class="s1"> ESTADO: </td>
-                <td bgcolor="#FCE4CD">{{$contato['Estado']}}</td>
+                <td bgcolor="#FCE4CD">${objeto[0]['Estado']}</td>
             </tr>
             <tr style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                 <td bgcolor="#F69646" class="s1"> CELULAR: </td>
-                <td bgcolor="#FCE4CD">{{$contato['Número']}}</td>
+                <td bgcolor="#FCE4CD">${objeto[0]['Número']}</td>
                 <td bgcolor="#F69646" class="s1"> CEP: </td>
-                <td bgcolor="#FCE4CD">{{$contato['CEP']}}</td>
+                <td bgcolor="#FCE4CD">${objeto[0]['CEP']}</td>
             </tr>
         </table>
         <p>O instrumento tem por finalidade prestar informações quanto às condições gerais do Programa de estudos em
             instituições de ensino no exterior, consubstanciadas na descrição, preço, formas de pagamento, prazo, regras
             das escolas, tipos de hospedagem, documentos essenciais de responsabilidade do CONTRATANTE, dentre outras,
             além da descrição dos serviços de intermediação prestados pela OK INTERCÂMBIO.</p>
-        <p>O CONTRATANTE está ciente de que este contrato possui em anexo, a PROPOSTA ORÇAMENTÁRIA n° {{$contrato['Número da proposta']}}, cujo
+        <p>O CONTRATANTE está ciente de que este contrato possui em anexo, a PROPOSTA ORÇAMENTÁRIA n° ${objeto[0]['Número da proposta']}, cujo
             conteúdo foi previamente aprovado, portanto, após aceite do CONTRATANTE, ambas as partes se obrigam ao
             cumprimento integral do disposto no referido anexo que passará a vigorar concomitantemente a este contrato.
         </p>
@@ -963,9 +973,9 @@ const gerarPDF = () => {
                     <table>
                         <tr>
                             <td width="35">9.1.</td>
-                            <td width="565">O valor total contratado do pacote fica estabelecido em {{$proposta['Total por pessoa']}} {{$proposta['Moeda do destino']}} na
-                                moeda do país de destino, por pessoa, sendo a taxa de câmbio do dia previsto em {{$proposta['Câmbio']}}
-                                totalizando em reais o valor integral de {{$proposta['Total por pessoa']*$proposta['Câmbio']}} {{$proposta['Moeda do contratante']}} ().</td>
+                            <td width="565">O valor total contratado do pacote fica estabelecido em ${objeto[0]['Total por pessoa']} ${objeto[0]['Moeda do destino']} na
+                                moeda do país de destino, por pessoa, sendo a taxa de câmbio do dia previsto em ${objeto[0]['Câmbio']}
+                                totalizando em reais o valor integral de ${objeto[0]['Total por pessoa']*objeto[0]['Câmbio']} ${objeto[0]['Moeda do contratante']} ().</td>
                         </tr>
                         <tr>
                             <td width="35">9.2.</td>
@@ -979,29 +989,27 @@ const gerarPDF = () => {
                                         <tr
                                             style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                                             <td bgcolor="#FCE4CD">Valor:</td>
-                                            <td colspan="2">{{$proposta['Valor da entrada']}}</td>
+                                            <td colspan="2">${objeto[0]['Valor da entrada']}</td>
                                         </tr>
                                         <tr
                                             style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                                             <td bgcolor="#FCE4CD">Data:</td>
-                                            <td colspan="2">{{date("d/m/Y", strtotime($proposta['Data da entrada']))}}</td>
+                                            <td colspan="2">${objeto[0]['Data da entrada']}</td>
                                         </tr>
                                         <tr
                                             style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                                             <td bgcolor="#FCE4CD">Método de Pagamento:</td>
-                                            <td colspan="2">{{$proposta['Tipo de pagamento da entrada']}}</td>
+                                            <td colspan="2">${objeto[0]['Tipo de pagamento da entrada']}</td>
                                         </tr>
                                     </table>
                                     <p>E {{count($parcelas)}} ({{numbertoWord(count($parcelas))}}) parcelas, via {{$proposta['Tipo de pagamento da parcela']}}, conforme a tabela abaixo:</p>
                                     <table cellspacing="1">
-                                    @foreach ($parcelas as $index => $parcela)
                                         <tr style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                                             <td bgcolor="#F69646">Parcela:</td>
-                                            <td bgcolor="#FCE4CD">{{$parcela['Número da parcela']}}</td>
+                                            <td bgcolor="#FCE4CD">${objeto[0]['Número da parcela']}</td>
                                             <td bgcolor="#F69646" colspan="2">Com vencimento para:</td>
-                                            <td bgcolor="#FCE4CD">{{date("d/m/Y", strtotime($parcela['Data do pagamento da parcela']))}}</td>
+                                            <td bgcolor="#FCE4CD">${objeto[0]['Data do pagamento da parcela']}</td>
                                         </tr>
-                                    @endforeach
                                     </table>
                                 @else
                                     
@@ -1013,17 +1021,17 @@ const gerarPDF = () => {
                                     <tr
                                         style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                                         <td bgcolor="#FCE4CD">Valor:</td>
-                                        <td colspan="2">{{$proposta['Valor da entrada']}}</td>
+                                        <td colspan="2">${objeto[0]['Valor da entrada']}</td>
                                     </tr>
                                     <tr
                                         style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                                         <td bgcolor="#FCE4CD">Data:</td>
-                                        <td colspan="2">{{date("d/m/Y", strtotime($proposta['Data da entrada']))}}</td>
+                                        <td colspan="2">${objeto[0]['Data da entrada']}</td>
                                     </tr>
                                     <tr
                                         style="border-bottom-style:solid;border-bottom-width:2pt;border-bottom-color:#FFFFFF">
                                         <td bgcolor="#FCE4CD">Método de Pagamento:</td>
-                                        <td colspan="2">{{$proposta['Tipo de pagamento da entrada']}}</td>
+                                        <td colspan="2">${objeto[0]['Tipo de pagamento da entrada']}</td>
                                     </tr>
                                 </table>
                                 @endif
@@ -1136,7 +1144,7 @@ const gerarPDF = () => {
         </table>
         <p>E por estarem justas e contratadas, firmam as partes o presente instrumento em duas vias de igual teor e
             forma, na presença de testemunhas supra identificadas.</p>
-        <h1 style="padding-left: 213pt;text-indent: 0pt;text-align: center;">Fortaleza, </h1>
+        <h1 style="padding-left: 213pt;text-indent: 0pt;text-align: center;">Fortaleza, (incluir data do dia)</h1>
         <table cellspacing="1">
           <tr>
               <td style="text-align: center;"></td>
@@ -1145,7 +1153,7 @@ const gerarPDF = () => {
       </table>
       <table cellspacing="1">
         <tr>
-            <td style="text-align: center;"><h1>_____________________________________<br/>CONTRATANTE <br/>Nome completo: {{$contato['Nome completo']}}<br/>CPF: {{$contato['CPF']}}</h1></td>
+            <td style="text-align: center;"><h1>_____________________________________<br/>CONTRATANTE <br/>Nome completo: ${objeto[0]['Nome completo']}<br/>CPF: ${objeto[0]['CPF']}</h1></td>
             <td style="text-align: center;"><h1>_____________________________________<br/>Empresa OK INTERCÂMBIO<br/> VIAGENS E TURISMO LTDA <br/>CNPJ: 23.263.680/0001-31</h1></td>
         </tr>
     </table>
@@ -1155,25 +1163,25 @@ const gerarPDF = () => {
 </html>
   `;
 
-    // Opções para a conversão HTML para PDF
-    const options = {
-        format: 'A4',
-        border: {
-            top: '10px',
-            right: '10px',
-            bottom: '10px',
-            left: '10px',
-        },
+        // Opções para a conversão HTML para PDF
+        const options = {
+            format: 'A4',
+            border: {
+                top: '1cm',
+                right: '1cm',
+                bottom: '1cm',
+                left: '1cm',
+            },
+        };
+
+        // Gere o PDF diretamente a partir do modelo HTML com os estilos CSS aplicados
+        pdf.create(htmlContent, options).toFile('contrato.pdf', (error) => {
+            if (error) {
+                console.error('Erro ao gerar PDF:', error);
+            } else {
+                console.log('PDF gerado com sucesso!');
+            }
+        });
     };
-
-    // Gere o PDF diretamente a partir do modelo HTML com os estilos CSS aplicados
-    pdf.create(htmlContent, options).toFile('output.pdf', (error) => {
-        if (error) {
-            console.error('Erro ao gerar PDF:', error);
-        } else {
-            console.log('PDF gerado com sucesso!');
-        }
-    });
-};
-
-gerarPDF();
+}
+export default new gerar_pdf();

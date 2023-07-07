@@ -1,8 +1,8 @@
 import Contrato from "../model/Contrato.js";
 import ContratoRepository from "../repositories/ContratoRepository.js";
 import moment from "moment/moment.js";
-import ContatoRepository from "../repositories/ContatoRepository.js";
 import FormattedDateTime from "../Utils/FormattedDateTime.js";
+import gerar_pdf from "../Utils/gerar_pdf.js";
 class ContratoController{
     async findAll(request, response){
         try{
@@ -95,7 +95,7 @@ class ContratoController{
         try {
             const exists = await ContratoRepository.findByNumeroContrato(numero);
             if (Object.keys(exists).length == 0){
-                response.json({message: 'ID not found'});
+                response.json({message: 'Contract not found'});
             }else{
                 await ContratoRepository.delete(numero);
                 response.json({message: 'Success'});
@@ -110,6 +110,22 @@ class ContratoController{
         try {
             const result = await ContratoRepository.findRelatedList(numero);
             Object.keys(result).length == 0 ? response.json({status: 404, message: 'No record found'}) : response.json(result);
+        }catch (e) {
+            response.json(e);
+        }
+    }
+
+    async createContract(request, response){
+        const numero = request.params.numero;
+        try {
+            const exists = await ContratoRepository.generateContract(numero);
+            if (Object.keys(exists).length == 0){
+                response.json({message: 'Contract not found'});
+            }else{
+                // await gerar_pdf.gerarPDF(exists);
+                // response.json({message: 'Contrato criado com sucesso!'});
+                response.json(exists);
+            }
         }catch (e) {
             response.json(e);
         }

@@ -12,6 +12,7 @@ import PropostaController from "./controllers/PropostaController.js";
 import TaxaController from "./controllers/TaxaController.js";
 import UsuarioController from "./controllers/UsuarioController.js";
 import ContatoController from "./controllers/ContatoController.js";
+import gerar_pdf from "./Utils/gerar_pdf.js";
 
 const router = Router();
 const upload = multer({dest: 'uploads/'});
@@ -110,5 +111,15 @@ router.post('/AtualizarNome', UsuarioController.updateNome); // Atualiza o nome 
 router.get('/Contato/Usuario/:email', UsuarioController.findRelatedList);
 // Ainda em teste
 router.get('/TesteEmail', UsuarioController.testeEmail);
+
+router.get('/TesteCreateContract/:numero', ContratoController.createContract);
+// router.get('/TesteContrato', (req, res) => {
+//     try {
+//         gerar_pdf.gerarPDF();
+//         res.json({message: 'Deu bom o contrato'})
+//     }catch (e) {
+//      res.json(e);
+//     }
+// });
 
 export default router;
