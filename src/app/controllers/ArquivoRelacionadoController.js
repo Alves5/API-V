@@ -1,7 +1,6 @@
 import ArquivoRelacionadoRepository from "../repositories/ArquivoRelacionadoRepository.js";
 import ArquivoRelacionado from "../model/ArquivoRelacionado.js";
 import moment from "moment";
-import AcessoRepository from "../repositories/AcessoRepository.js";
 import FormattedDateTime from "../Utils/FormattedDateTime.js";
 class ArquivoRelacionadoController {
     async findAll(request, response) {

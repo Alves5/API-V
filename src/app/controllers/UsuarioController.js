@@ -4,6 +4,7 @@ import GenerateToken from "../Utils/GenerateToken.js";
 import FormattedDateTime from "../Utils/FormattedDateTime.js";
 import CryptoUtil from "../Utils/CryptoUtil.js";
 import EmailService from "../Utils/EmailService.js";
+import ValidateHoursToken from "../Utils/ValidateHoursToken.js";
 
 class UsuarioController{
     async findAll(request, response){
@@ -152,8 +153,11 @@ class UsuarioController{
         const {pass1, pass2, token} = request.body;
         try {
             const exists = await UsuarioRepository.validateToken(token);
+            const result = ValidateHoursToken.validateHours(exists[0]['createdAt_token']);
             if (Object.keys(exists).length == 0){
-                response.json({status: 404, message: 'Token not found or invalid '});
+                response.json({status: 404, message: 'Token not found or invalid'});
+            }else if(result == false){
+                response.json({status: 401, message: 'Token has expired'});
             }else{
                 try {
                     if (pass1 !== pass2){
@@ -210,5 +214,6 @@ class UsuarioController{
              response.json(e);
          }
     }
+
 }
 export default new UsuarioController();
