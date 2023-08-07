@@ -1,9 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import AcessoController from "./controllers/AcessoController.js";
-import ArquivoController from "./controllers/ArquivoController.js";
 import ArquivoRelacionadoController from "./controllers/ArquivoRelacionadoController.js";
-import ChavesController from "./controllers/ChavesController.js";
 import ContratoController from "./controllers/ContratoController.js";
 import ParcelaController from "./controllers/ParcelaController.js";
 import PerfilController from "./controllers/PerfilController.js";
@@ -15,21 +12,7 @@ import ContatoController from "./controllers/ContatoController.js";
 import gerar_pdf from "./Utils/gerar_pdf.js";
 
 const router = Router();
-const upload = multer({dest: 'uploads/'});
-
-// Acesso
-router.get('/Acesso', AcessoController.findAll);
-router.post('/Acesso', AcessoController.store);
-router.get('/Acesso/:usuario', AcessoController.findByUsuario);
-router.put('/Acesso/:usuario', AcessoController.updateByUsuario);
-router.delete('/Acesso/:usuario', AcessoController.deleteByUsuario);
-
-// Arquivo
-router.get('/Arquivo', ArquivoController.findAll);
-router.post('/Arquivo', upload.single('file'), ArquivoController.store );
-router.get('/Arquivo/:id', ArquivoController.findById);
-router.put('/Arquivo/:id', upload.single('content'), ArquivoController.updateById);
-router.delete('/Arquivo/:id', ArquivoController.deleteById);
+const upload = multer({dest: 'uploads/'})
 
 // Arquivo relacionado
 router.get('/ArquivoRelacionado', ArquivoRelacionadoController.findAll);
@@ -37,13 +20,6 @@ router.post('/ArquivoRelacionado', ArquivoRelacionadoController.store);
 router.get('/ArquivoRelacionado/:id', ArquivoRelacionadoController.findById);
 router.put('/ArquivoRelacionado/:id', ArquivoRelacionadoController.updateById);
 router.delete('/ArquivoRelacionado/:id', ArquivoRelacionadoController.deleteById);
-
-// Chaves
-router.get('/Chaves', ChavesController.findAll);
-router.post('/Chaves', ChavesController.store);
-router.get('/Chaves/:id', ChavesController.findById);
-router.put('/Chaves/:id', ChavesController.updateById);
-router.delete('/Chaves/:id', ChavesController.deleteById);
 
 // Contato
 router.get('/Contato', ContatoController.findAll);
@@ -113,13 +89,5 @@ router.get('/Contato/Usuario/:email', UsuarioController.findRelatedList);
 router.get('/TesteEmail', UsuarioController.testeEmail);
 
 router.get('/TesteCreateContract/:numero', ContratoController.createContract);
-// router.get('/TesteContrato', (req, res) => {
-//     try {
-//         gerar_pdf.gerarPDF();
-//         res.json({message: 'Deu bom o contrato'})
-//     }catch (e) {
-//      res.json(e);
-//     }
-// });
 
 export default router;
