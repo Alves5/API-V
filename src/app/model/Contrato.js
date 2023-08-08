@@ -10,7 +10,7 @@ class Contrato {
     _contrato_pai;
 
     constructor(numero_contrato, status, created_at, updated_at, numero_contato, criado_por, atualizado_por, numero_proposta, contrato_pai) {
-        this.numero_contrato = numero_contrato;
+        this._numero_contrato = numero_contrato;
         this._status = status;
         this._created_at = created_at;
         this._updated_at = updated_at;

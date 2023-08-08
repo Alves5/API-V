@@ -10,6 +10,7 @@ import TaxaController from "./controllers/TaxaController.js";
 import UsuarioController from "./controllers/UsuarioController.js";
 import ContatoController from "./controllers/ContatoController.js";
 import gerar_pdf from "./Utils/gerar_pdf.js";
+import LeadController from "./controllers/LeadController.js";
 
 const router = Router();
 const upload = multer({dest: 'uploads/'})
@@ -85,9 +86,15 @@ router.post('/CriarNovaSenha', UsuarioController.activateAccount);
 router.post('/AtivarConta', UsuarioController.activateAccount); // Verifica se existe o token e ativa o usuário criando um senha para ele
 router.post('/AtualizarNome', UsuarioController.updateNome); // Atualiza o nome do usuário atráves do email
 router.get('/Contato/Usuario/:email', UsuarioController.findRelatedList);
+
+// Lead
+router.post('/Lead', LeadController.store);
+
+
+
+
 // Ainda em teste
 router.get('/TesteEmail', UsuarioController.testeEmail);
-
 router.get('/TesteCreateContract/:numero', ContratoController.createContract);
 
 export default router;
