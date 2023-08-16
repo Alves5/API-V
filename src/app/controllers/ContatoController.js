@@ -1,6 +1,8 @@
 import ContatoRepository from "../repositories/ContatoRepository.js";
 import Contato from "../model/Contato.js";
 import FormattedDateTime from "../Utils/FormattedDateTime.js";
+import FieldInformation from "../model/FieldInformation.js";
+import GeneratedValuesSQL from "../Utils/GeneratedValuesSQL.js";
 
 class ContatoController{
     async findAll(request, response){
@@ -47,6 +49,18 @@ class ContatoController{
                     response.json(e);
                 }
             }
+        }catch (e) {
+            response.json(e);
+        }
+    }
+
+    async storeNew(request, response){
+        const json = request.body;
+        try {
+            const ultimoId = await ContatoRepository.searchId();
+            const values = GeneratedValuesSQL.generatedValues(json, ultimoId);
+            await ContatoRepository.createNew(values);
+            response.json({message: 'Success'});
         }catch (e) {
             response.json(e);
         }

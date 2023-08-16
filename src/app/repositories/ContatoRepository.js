@@ -27,6 +27,16 @@ class ContatoRepository{
         ]);
     }
 
+    searchId(){
+        const sql = "SELECT MAX(id) FROM TB_FIELD_INFORMATION;";
+        return QueryObjectUtils.queryObjeto(sql);
+    }
+
+    createNew(values){
+        const sql = "INSERT INTO TB_FIELD_INFORMATION(`id`, `nameField`, `apiNameField`, `fieldID`) VALUES" + values + ";";
+        return QueryObjectUtils.queryObjeto(sql);
+    }
+
     findByNumero(numero){
         const sql = "SELECT * FROM Contato WHERE `Número`='" + numero + "';";
         return QueryObjectUtils.queryObjeto(sql);
