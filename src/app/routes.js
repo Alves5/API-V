@@ -24,7 +24,10 @@ router.delete('/ArquivoRelacionado/:id', ArquivoRelacionadoController.deleteById
 
 // Contato
 router.get('/Contato', ContatoController.findAll);
+
 router.post('/Contato', ContatoController.store);
+router.post('/ContatoNew', ContatoController.storeNew);
+
 router.get('/Contato/:numero', ContatoController.findByNumero);
 router.put('/Contato/:numero', ContatoController.updateByNumero);
 router.delete('/Contato/:numero', ContatoController.deleteByNumero);
