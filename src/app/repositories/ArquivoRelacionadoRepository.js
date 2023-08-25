@@ -1,4 +1,3 @@
-import connection from "../../config/database/connection.js";
 import QueryObjectUtils from "../Utils/QueryObjectUtils.js";
 
 class ArquivoRelacionadoRepository{

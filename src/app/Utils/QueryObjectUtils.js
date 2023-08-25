@@ -1,9 +1,9 @@
-import connection from "../../config/database/connection.js";
+import postgresConnection from "../../config/database/PostgresConnection.js";
 
 class QueryObjectUtils{
     queryObjeto(sql, params = "") {
         return new Promise((resolve, reject) => {
-            connection.query(sql, params, (error, result) => {
+            postgresConnection.query(sql, params, (error, result) => {
                 if (error) {
                     const erro = {
                         erro: "SQL - reject",
