@@ -2,43 +2,38 @@ import QueryObjectUtils from "../Utils/QueryObjectUtils.js";
 
 class ContatoRepository{
     findAll(){
-        const sql = "SELECT * FROM Contato ORDER BY `Número` ASC;";
+        const sql = "SELECT * FROM \"Contato\" ORDER BY id ASC;";
         return QueryObjectUtils.queryObjeto(sql);
     }
 
     create(contato){
-        const sql = "INSERT INTO Contato(`Nome completo`, `Número`, created_at, `Responsável`, `Criado por`, Nacionalidade, `Data de nascimento`, CPF, Identidade, CEP, `Endereço`, Bairro, Cidade, Estado, Email) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
+        const sql = 'INSERT INTO "Contato"("numero", "nomeCompleto", "responsavel", "nacionalidade", "dataNascimento", "cpf", "endereco", "bairro", "createdAt", "criadoPor", "identidade", "cep", "cidade", "estado", "email") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15);'
         return QueryObjectUtils.queryObjeto(sql, [
-            contato.nome_completo,
             contato.numero,
-            contato.created_at,
+            contato.nome_completo,
             contato.responsavel,
-            contato.criado_por,
             contato.nacionalidade,
             contato.data_nascimento,
             contato.cpf,
-            contato.identidade,
-            contato.cep,
             contato.endereco,
             contato.bairro,
+            contato.created_at,
+            contato.criado_por,
+            contato.identidade,
+            contato.cep,
             contato.cidade,
             contato.estado,
             contato.email
         ]);
     }
 
-    searchId(){
-        const sql = "SELECT MAX(id) FROM TB_FIELD_INFORMATION;";
-        return QueryObjectUtils.queryObjeto(sql);
-    }
-
-    createNew(values){
-        const sql = "INSERT INTO TB_FIELD_INFORMATION(`id`, `nameField`, `apiNameField`, `fieldID`) VALUES" + values + ";";
-        return QueryObjectUtils.queryObjeto(sql);
-    }
+    // findById(id){
+    //     const sql = 'SELECT * FROM "Contato" WHERE "id"= '$id';';
+    //     return QueryObjectUtils.queryObjeto(sql, [id]);
+    // }
 
     findByNumero(numero){
-        const sql = "SELECT * FROM Contato WHERE `Número`='" + numero + "';";
+        const sql = "SELECT * FROM \"Contato\" WHERE numero = '"+ numero +"';";
         return QueryObjectUtils.queryObjeto(sql);
     }
 

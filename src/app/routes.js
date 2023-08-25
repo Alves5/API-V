@@ -10,7 +10,6 @@ import TaxaController from "./controllers/TaxaController.js";
 import UsuarioController from "./controllers/UsuarioController.js";
 import ContatoController from "./controllers/ContatoController.js";
 import gerar_pdf from "./Utils/gerar_pdf.js";
-import LeadController from "./controllers/LeadController.js";
 
 const router = Router();
 const upload = multer({dest: 'uploads/'})
@@ -24,11 +23,8 @@ router.delete('/ArquivoRelacionado/:id', ArquivoRelacionadoController.deleteById
 
 // Contato
 router.get('/Contato', ContatoController.findAll);
-
 router.post('/Contato', ContatoController.store);
-router.post('/ContatoNew', ContatoController.storeNew);
-
-router.get('/Contato/:numero', ContatoController.findByNumero);
+router.get('/Contato/:id', ContatoController.findById);
 router.put('/Contato/:numero', ContatoController.updateByNumero);
 router.delete('/Contato/:numero', ContatoController.deleteByNumero);
 router.get('/:objeto/Contato/:numero', ContatoController.findRelatedList);
@@ -89,11 +85,6 @@ router.post('/CriarNovaSenha', UsuarioController.activateAccount);
 router.post('/AtivarConta', UsuarioController.activateAccount); // Verifica se existe o token e ativa o usuário criando um senha para ele
 router.post('/AtualizarNome', UsuarioController.updateNome); // Atualiza o nome do usuário atráves do email
 router.get('/Contato/Usuario/:email', UsuarioController.findRelatedList);
-
-// Lead
-router.post('/Lead', LeadController.store);
-
-
 
 
 // Ainda em teste

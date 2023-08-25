@@ -1,8 +1,6 @@
 import ContatoRepository from "../repositories/ContatoRepository.js";
 import Contato from "../model/Contato.js";
 import FormattedDateTime from "../Utils/FormattedDateTime.js";
-import FieldInformation from "../model/FieldInformation.js";
-import GeneratedValuesSQL from "../Utils/GeneratedValuesSQL.js";
 
 class ContatoController{
     async findAll(request, response){
@@ -18,8 +16,9 @@ class ContatoController{
         const numero = request.body.numero;
         try {
             const exists = await ContatoRepository.findByNumero(numero);
-            if (Object.keys(exists).length != 0){
-                response.json({status: 200, message: 'Contact already exists'});
+            console.log(exists);
+            if (exists.rowCount  !== 0){
+                response.json({status: false, message: 'Contact already exists'});
             }else{
                 try {
                     const formattedDateTime = FormattedDateTime.formatted();
@@ -44,7 +43,7 @@ class ContatoController{
                         request.body.email
                     );
                     await ContatoRepository.create(contato);
-                    response.json({message: 'Success'});
+                    response.json({status: true, message: 'Success'});
                 }catch (e) {
                     response.json(e);
                 }
@@ -54,22 +53,10 @@ class ContatoController{
         }
     }
 
-    async storeNew(request, response){
-        const json = request.body;
+    async findById(request, response){
+        const id = request.params.id;
         try {
-            const ultimoId = await ContatoRepository.searchId();
-            const values = GeneratedValuesSQL.generatedValues(json, ultimoId);
-            await ContatoRepository.createNew(values);
-            response.json({message: 'Success'});
-        }catch (e) {
-            response.json(e);
-        }
-    }
-
-    async findByNumero(request, response){
-        const numero = request.params.numero;
-        try {
-            const result = await ContatoRepository.findByNumero(numero);
+            const result = await ContatoRepository.findById(id);
             Object.keys(result).length == 0 ? response.json({message: 'Number not found'}) : response.json(result);
         }catch (e) {
             response.json(e);
