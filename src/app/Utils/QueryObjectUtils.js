@@ -1,9 +1,9 @@
-import connection from "../../config/database/connection.js";
+import connectionSql from "../../config/database/connection.js";
 
 class QueryObjectUtils{
     queryObjeto(sql, params = "") {
         return new Promise((resolve, reject) => {
-            connection.query(sql, params, (error, result) => {
+            connectionSql.query(sql, params, (error, result) => {
                 if (error) {
                     const erro = {
                         erro: "SQL - reject",

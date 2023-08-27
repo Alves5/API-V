@@ -1,5 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
+
+import ContatoControllerMongo from "./controllers/ContatoControllerMongo.js";
 import AcessoController from "./controllers/AcessoController.js";
 import ArquivoController from "./controllers/ArquivoController.js";
 import ArquivoRelacionadoController from "./controllers/ArquivoRelacionadoController.js";
@@ -15,6 +17,8 @@ import ContatoController from "./controllers/ContatoController.js";
 
 const router = Router();
 const upload = multer({dest: 'uploads/'});
+
+router.post('/contatos', ContatoControllerMongo.store);
 
 // Acesso
 router.get('/Acesso', AcessoController.findAll);

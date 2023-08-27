@@ -1,5 +1,6 @@
 import express from "express";
 import routes from "./routes.js";
+import bodyParser from "body-parser";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from '../config/swagger.json' assert { type: 'json' };
@@ -13,6 +14,7 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
     res.setHeader("Access-Control-Allow-Headers", "Content-type")
     app.use(cors());
+    app.use(bodyParser.json());
     next();
 });
 
