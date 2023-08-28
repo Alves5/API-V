@@ -1,17 +1,16 @@
 version: '3'
 services:
   mysql:
-    image: mysql:8
-    container_name: mysql-container
+    image: postgres
+    container_name: postgres-container
     environment:
-      MYSQL_ROOT_PASSWORD: 12345
-      MYSQL_DATABASE: ok
-      MYSQL_USER: vizion
-      MYSQL_PASSWORD: 12345
+      POSTGRES_USER: vizion
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: postgresDB
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
 
   mongodb:
     image: mongo
@@ -24,5 +23,5 @@ services:
       - mongo-data:/data/db
 
 volumes:
-  mysql-data:
+  postgres-data:
   mongo-data:

@@ -1,9 +1,9 @@
 import postgres from "pg";
 
 const postgresConnection = new postgres.Pool({
-    user: 'postgres',
+    user: 'vizion',
     host: 'localhost',
-    database: 'Vizion',
+    database: 'postgresDB',
     password: '12345',
     port: 5432
 });
