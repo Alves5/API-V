@@ -1,5 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
+
+import ContatoControllerMongo from "./controllers/ContatoControllerMongo.js";
 import ArquivoRelacionadoController from "./controllers/ArquivoRelacionadoController.js";
 import ContratoController from "./controllers/ContratoController.js";
 import ParcelaController from "./controllers/ParcelaController.js";
@@ -13,6 +15,8 @@ import gerar_pdf from "./Utils/gerar_pdf.js";
 
 const router = Router();
 const upload = multer({dest: 'uploads/'})
+
+router.post('/contatos', ContatoControllerMongo.store);
 
 // Arquivo relacionado
 router.get('/ArquivoRelacionado', ArquivoRelacionadoController.findAll);

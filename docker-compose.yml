@@ -1,0 +1,28 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: ok
+      MYSQL_USER: vizion
+      MYSQL_PASSWORD: 12345
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  mongodb:
+    image: mongo
+    container_name: mongodb-container
+    environment:
+      MONGO_INITDB_DATABASE: db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mysql-data:
+  mongo-data:
