@@ -22,14 +22,14 @@ router.post('/contatos', ContatoControllerMongo.store);
 router.get('/ArquivoRelacionado', ArquivoRelacionadoController.findAll);
 router.post('/ArquivoRelacionado', ArquivoRelacionadoController.store);
 router.get('/ArquivoRelacionado/:id', ArquivoRelacionadoController.findById);
-router.put('/ArquivoRelacionado/:id', ArquivoRelacionadoController.updateById);
+router.patch('/ArquivoRelacionado/:id', ArquivoRelacionadoController.updateById);
 router.delete('/ArquivoRelacionado/:id', ArquivoRelacionadoController.deleteById);
 
 // Contato
 router.get('/Contato', ContatoController.findAll);
 router.post('/Contato', ContatoController.store);
-router.get('/Contato/:id', ContatoController.findById);
-router.put('/Contato/:numero', ContatoController.updateByNumero);
+router.get('/Contato/:numero', ContatoController.findByNumero);
+router.patch('/Contato/:numero', ContatoController.updateByNumero);
 router.delete('/Contato/:numero', ContatoController.deleteByNumero);
 router.get('/:objeto/Contato/:numero', ContatoController.findRelatedList);
 
@@ -37,7 +37,7 @@ router.get('/:objeto/Contato/:numero', ContatoController.findRelatedList);
 router.get('/Contrato', ContratoController.findAll);
 router.post('/Contrato', ContratoController.store);
 router.get('/Contrato/:numero', ContratoController.findByNumeroContrato);
-router.put('/Contrato/:numero', ContratoController.updateById);
+router.patch('/Contrato/:numero', ContratoController.updateByNumero);
 router.delete('/Contrato/:numero', ContratoController.deleteById);
 router.get('/ArquivoRelacionado/Contrato/:numero', ContratoController.findRelatedList);
 

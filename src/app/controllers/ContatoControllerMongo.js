@@ -1,14 +1,11 @@
-import connectionNosql from "../../config/database/connectionMongoDb.js";
-import mongoose from "mongoose";
-import contatoSchema from "../../app/model/modelMongoDb/Contato.js";
-
+import ContatoMongoRepository from "../repositories/ContatoMongoRepository.js";
 
 class ContatoControllerMongo {
 
     async store(req, res) {
-        const contato = new mongoose.model('Contato')(req.body);
+        const contato = req.body;
         try {
-            await contato.save();
+            await ContatoMongoRepository.create(contato);
             res.json({ message: 'Success' });
         }
         catch (e) {

@@ -2,7 +2,7 @@ import QueryObjectUtils from "../Utils/QueryObjectUtils.js";
 
 class ContatoRepository{
     findAll(){
-        const sql = "SELECT * FROM \"Contato\" ORDER BY id ASC;";
+        const sql = "SELECT * FROM \"Contato\" ORDER BY \"numero\" ASC;";
         return QueryObjectUtils.queryObjeto(sql);
     }
 
@@ -27,18 +27,13 @@ class ContatoRepository{
         ]);
     }
 
-    // findById(id){
-    //     const sql = 'SELECT * FROM "Contato" WHERE "id"= '$id';';
-    //     return QueryObjectUtils.queryObjeto(sql, [id]);
-    // }
-
     findByNumero(numero){
         const sql = "SELECT * FROM \"Contato\" WHERE numero = '"+ numero +"';";
         return QueryObjectUtils.queryObjeto(sql);
     }
 
     update(contato, numero){
-        const sql = "UPDATE Contato SET `Nome completo`=?, updated_at=?, `Responsável`=?, `Atualizado por`=?, Nacionalidade=?, `Data de nascimento`=?, CPF=?, Identidade=?, CEP=?, `Endereço`=?, Bairro=?, Cidade=?, Estado=?, Email=? WHERE `Número`='" + numero + "';";
+        const sql = "UPDATE \"Contato\" SET \"nomeCompleto\"=$1, \"updatedAt\"=$2, \"responsavel\"=$3, \"atualizadoPor\"=$4, \"nacionalidade\"=$5, \"dataNascimento\"=$6, \"cpf\"=$7, \"identidade\"=$8, \"cep\"=$9, \"endereco\"=$10, \"bairro\"=$11, \"cidade\"=$12, \"estado\"=$13, \"email\"=$14 WHERE numero= '" + numero + "';";
         return QueryObjectUtils.queryObjeto(sql, [
             contato.nome_completo,
             contato.updated_at,
@@ -57,13 +52,13 @@ class ContatoRepository{
         ]);
     }
     delete(numero){
-        const sql = "DELETE FROM Contato WHERE `Número`='" + numero + "';";
+        const sql = "DELETE FROM \"Contato\" WHERE \"numero\"= '" + numero + "';";
         return QueryObjectUtils.queryObjeto(sql);
     }
 
-    findRelatedList(obj, number){
-        const sql = "SELECT * FROM `" + obj + "` WHERE `Número do contato` = '" + number + "';";
-        return QueryObjectUtils.queryObjeto(sql);
-    }
+    // findRelatedList(obj, number){
+    //     const sql = "SELECT * FROM `" + obj + "` WHERE `Número do contato` = '" + number + "';";
+    //     return QueryObjectUtils.queryObjeto(sql);
+    // }
 }
 export default new ContatoRepository();
