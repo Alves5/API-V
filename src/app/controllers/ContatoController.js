@@ -16,8 +16,8 @@ class ContatoController{
         const numero = request.body.numero;
         try {
             const exists = await ContatoRepository.findByNumero(numero);
-            if (Object.keys(exists).length != 0){
-                response.json({status: 200, message: 'Contact already exists'});
+            if (exists.rowCount  !== 0){
+                response.json({status: false, message: 'Contact already exists'});
             }else{
                 try {
                     const formattedDateTime = FormattedDateTime.formatted();
@@ -42,7 +42,7 @@ class ContatoController{
                         request.body.email
                     );
                     await ContatoRepository.create(contato);
-                    response.json({message: 'Success'});
+                    response.json({status: true, message: 'Success'});
                 }catch (e) {
                     response.json(e);
                 }
@@ -56,7 +56,7 @@ class ContatoController{
         const numero = request.params.numero;
         try {
             const result = await ContatoRepository.findByNumero(numero);
-            Object.keys(result).length == 0 ? response.json({message: 'Number not found'}) : response.json(result);
+            result.rowCount  !== 0 ? response.json(result) : response.json({status: false, message: 'Number not found'});
         }catch (e) {
             response.json(e);
         }
@@ -66,7 +66,7 @@ class ContatoController{
         const numero = request.params.numero;
         try {
             const exists = await ContatoRepository.findByNumero(numero);
-            if (Object.keys(exists).length == 0){
+            if (exists.rowCount  === 0){
                 response.json({message: 'Number not found'});
             }else{
                 try {
@@ -92,7 +92,7 @@ class ContatoController{
                         request.body.email
                     );
                     await ContatoRepository.update(contato, numero);
-                    response.json({message: 'Success'});
+                    response.json({status: true, message: 'Success'});
                 }catch (e) {
                     response.json(e);
                 }
@@ -106,11 +106,11 @@ class ContatoController{
         const numero = request.params.numero;
         try {
             const exists = await ContatoRepository.findByNumero(numero);
-            if (Object.keys(exists).length == 0){
-                response.json({message: 'Number not found'});
+            if (exists.rowCount  === 0){
+                response.json({status: false, message: 'Number not found'});
             }else{
                 await ContatoRepository.delete(numero);
-                response.json({message: 'Success'});
+                response.json({status: true, message: 'Success'});
             }
         }catch (e) {
             response.json(e);

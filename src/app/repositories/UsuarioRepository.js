@@ -67,8 +67,8 @@ class UsuarioRepository{
     }
 
     createNewPassword(senha, token){
-        const sql = `UPDATE Usuario SET senha=?, remember_token=? WHERE remember_token = '${token}';`;
-        return QueryObjectUtils.queryObjeto(sql,[senha, null]);
+        const sql = `UPDATE Usuario SET senha=?, remember_token=?, createdAt_token=? WHERE remember_token = '${token}';`;
+        return QueryObjectUtils.queryObjeto(sql,[senha, null, null]);
     }
 
     updateNome(nome, updated_at, email){
@@ -80,6 +80,5 @@ class UsuarioRepository{
         const sql = "SELECT * FROM Contato WHERE `Responsável`='" + email + "';";
         return QueryObjectUtils.queryObjeto(sql);
     }
-
 }
 export default new UsuarioRepository();

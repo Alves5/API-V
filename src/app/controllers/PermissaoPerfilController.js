@@ -1,6 +1,5 @@
 import PermissaoPerfilRepository from "../repositories/PermissaoPerfilRepository.js";
 import PermissaoPerfil from "../model/PermissaoPerfil.js";
-import ChavesRepository from "../repositories/ChavesRepository.js";
 
 class PermissaoPerfilController{
     async findAll(request, response){
