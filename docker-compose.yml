@@ -1,17 +1,5 @@
 version: '3'
 services:
-  mysql:
-    image: postgres
-    container_name: postgres-container
-    environment:
-      POSTGRES_USER: vizion
-      POSTGRES_PASSWORD: 12345
-      POSTGRES_DB: postgresDB
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-
   mongodb:
     image: mongo
     container_name: mongodb-container
@@ -23,5 +11,4 @@ services:
       - mongo-data:/data/db
 
 volumes:
-  postgres-data:
   mongo-data:
