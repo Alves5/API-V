@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import contatoSchema from "../../app/model/modelMongoDb/Contato.js";
+import contatoSchema from "../../app/model/Contato.js";
 
 
 //configrações nosql
