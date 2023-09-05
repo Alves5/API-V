@@ -3,6 +3,7 @@ import {Schema} from "mongoose";
 
 const bibliotecaSchema = new mongoose.Schema({
     id: Number,
+    codigo: String,
     nome: String,
     tipo: String,
     modeloTexto: String,

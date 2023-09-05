@@ -12,9 +12,19 @@ class ContatoControllerMongo {
 
     async store(req, res) {
         const contato = req.body;
+        const numero = req.body.numero;
         try {
-            await ContatoMongoRepository.create(contato);
-            res.json({status: true, message: 'Success'});
+            const exists = await ContatoMongoRepository.findByNumero(numero);
+            if (exists !== null){
+                res.json({status: false, message: 'Document already created'});
+            }else{
+                try {
+                    await ContatoMongoRepository.create(contato);
+                    res.json({status: true, message: 'Success'});
+                }catch (e) {
+                    res.json(e);
+                }
+            }
         }catch (e) {
             res.json(e);
         }

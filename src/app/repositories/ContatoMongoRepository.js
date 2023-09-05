@@ -1,10 +1,12 @@
 import connectionNosql from "../../config/database/connectionMongoDb.js";
 import mongoose from "mongoose";
+import ContatoSchema from "../model/Contato.js";
 
 class ContatoMongoRepository {
+
     findAll(){
-        const user = new mongoose.model('Contato');
-        return user.find();
+        const contato= new mongoose.model('Contato');
+        return contato.find();
     }
 
     create(cont){
