@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import contatoSchema from "../../app/model/Contato.js";
 import bibliotecaSchema from "../../app/model/Biblioteca.js";
+import leadSchema from "../../app/model/Lead.js";
+import campanhaSchema from "../../app/model/Campanha.js";
 
 
 //configrações nosql
@@ -19,6 +21,8 @@ connectionMongoDb.then(function(db) {
 //criando a collection
 mongoose.model('Contato', contatoSchema);
 mongoose.model('Biblioteca', bibliotecaSchema);
+mongoose.model('Lead', leadSchema);
+mongoose.model('Campanha', campanhaSchema);
 
 
 export default connectionMongoDb;

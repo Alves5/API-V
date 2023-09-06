@@ -3,6 +3,7 @@ import {Schema} from "mongoose";
 
 const leadSchema = new mongoose.Schema({
     id: Number,
+    codigo: String,
     nomeCompleto: String,
     companhia: String,
     telefone: String,
