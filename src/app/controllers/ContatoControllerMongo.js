@@ -62,16 +62,11 @@ class ContatoControllerMongo {
     async deleteByNumero(req, res){
         const numero = req.params.numero;
         try {
-            const exists = await ContatoMongoRepository.findByNumero(numero);
-            if (exists === null){
-                res.json({status: false, message: 'Document not found'});
+            const result = await ContatoMongoRepository.delete(numero);
+            if (result.deletedCount === 1){
+                res.json({status: true, message: 'Success. Deleted document'})
             }else{
-                try {
-                    await ContatoMongoRepository.delete(numero);
-                    res.json({status: true, message: 'Success. Deleted document'})
-                }catch (e) {
-                    res.json(e);
-                }
+                res.json({status: false, message: 'Document not found or not deleted'});
             }
         }catch (e) {
             res.json(e);

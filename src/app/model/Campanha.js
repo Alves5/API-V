@@ -1,18 +1,19 @@
 import mongoose from "mongoose";
 import {Schema} from "mongoose";
-import {Double} from "mongodb";
+import {Decimal128} from "mongodb";
 
 const campanhaSchema = new mongoose.Schema({
     id: Number,
+    codigo: String,
     nomeCampanha: String,
     ativo: String,
     status: String,
     dataInicial: Date,
     dataFinal: Date,
-    receitaEsperada: Double,
-    custoOrcado: Double,
-    custoReal: Double,
-    respostaEsperada: Double,
+    receitaEsperada: Decimal128,
+    custoOrcado: Decimal128,
+    custoReal: Decimal128,
+    respostaEsperada: Decimal128,
     numeroEnviado: String,
     campanhaPrincipal: String,
     descricao: String,
