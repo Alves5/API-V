@@ -3,6 +3,7 @@ import {Schema} from "mongoose";
 
 const orcamentoSchema = new mongoose.Schema({
     id: Number,
+    numeroOrcamento: String,
     nomeCompleto: String,
     genero: String,
     nacionalidade: String,

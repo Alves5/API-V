@@ -7,7 +7,6 @@ const contratoSchema = new mongoose.Schema({
     status: String,
     numeroContato: String,
     numeroProposta: String,
-    documento: Object,
     seguroViajem: String,
     visto: String,
     acomodacao: String,

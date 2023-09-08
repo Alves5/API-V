@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import {Schema} from "mongoose";
-import {Double} from "mongodb";
+import {Decimal128, Double} from "mongodb";
 
 const contaSchema = new mongoose.Schema({
     id: Number,
@@ -10,7 +10,7 @@ const contaSchema = new mongoose.Schema({
     site: String,
     tipo: String,
     industria: String,
-    receitaAnual: Double,
+    receitaAnual: Decimal128,
     avaliacao: String,
     telefone: String,
     descricao: String,

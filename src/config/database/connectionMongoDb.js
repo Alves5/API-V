@@ -1,8 +1,13 @@
-import mongoose from 'mongoose';
+import mongoose, {mongo} from 'mongoose';
 import contatoSchema from "../../app/model/Contato.js";
 import bibliotecaSchema from "../../app/model/Biblioteca.js";
 import leadSchema from "../../app/model/Lead.js";
 import campanhaSchema from "../../app/model/Campanha.js";
+import contaSchema from "../../app/model/Conta.js";
+import contratoSchema from "../../app/model/Contrato.js";
+import oportunidadeSchema from "../../app/model/Oportunidade.js";
+import orcamentoSchema from "../../app/model/Orcamento.js";
+import usuarioSchema from "../../app/model/Usuario.js";
 
 
 //configrações nosql
@@ -23,6 +28,11 @@ mongoose.model('Contato', contatoSchema);
 mongoose.model('Biblioteca', bibliotecaSchema);
 mongoose.model('Lead', leadSchema);
 mongoose.model('Campanha', campanhaSchema);
+mongoose.model('Conta', contaSchema);
+mongoose.model('Contrato', contratoSchema);
+mongoose.model('Oportunidade', oportunidadeSchema);
+mongoose.model('Orcamento', orcamentoSchema);
+mongoose.model('Usuario', usuarioSchema);
 
 
 export default connectionMongoDb;
