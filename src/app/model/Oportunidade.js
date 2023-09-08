@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
 import {Schema} from "mongoose";
-import {Double} from "mongodb";
+import {Decimal128, Double} from "mongodb";
 
 const oportunidadeSchema = new mongoose.Schema({
     id: Number,
+    numeroOportunidade: String,
     privado: Boolean,
     nomeOportunidade: String,
     nomeConta: String,
     tipo: String,
     leadSource: String,
-    quantia: Double,
+    quantia: Decimal128,
     dataEncerramento: Date,
     proximaEtapa: String,
     estagio: String,

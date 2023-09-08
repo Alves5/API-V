@@ -4,7 +4,11 @@ import {Schema} from "mongoose";
 const documentoSchema = new mongoose.Schema({
     id: Number,
     nome: String,
-    documento: Object,
+    documento: {
+        nome: String,
+        data: Buffer,
+        contentType: String
+    },
     descricao: String,
     relacionadoA: String,
     criadoPor: String,
