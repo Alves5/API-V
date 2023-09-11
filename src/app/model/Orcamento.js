@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import {Schema} from "mongoose";
 
 const orcamentoSchema = new mongoose.Schema({
     id: Number,
