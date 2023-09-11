@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import {Schema} from "mongoose";
 import {Decimal128} from "mongodb";
 
 const campanhaSchema = new mongoose.Schema({

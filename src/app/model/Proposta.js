@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import {Schema} from "mongoose";
 import {Double} from "mongodb";
 
 const propostaSchema = new mongoose.Schema({

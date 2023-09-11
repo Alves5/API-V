@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import {Schema} from "mongoose";
 import {Decimal128, Double} from "mongodb";
 
 const oportunidadeSchema = new mongoose.Schema({

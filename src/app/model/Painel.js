@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import {Schema} from "mongoose";
 
 const painelSchema = new mongoose.Schema({
     id: Number,
