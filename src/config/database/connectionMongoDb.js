@@ -25,7 +25,7 @@ connectionMongoDb.then(function(db) {
 
 //criando a collection
 mongoose.model('Contato', contatoSchema);
-
+mongoose.model('Biblioteca', bibliotecaSchema);
 mongoose.model('Lead', leadSchema);
 mongoose.model('Campanha', campanhaSchema);
 mongoose.model('Conta', contaSchema);

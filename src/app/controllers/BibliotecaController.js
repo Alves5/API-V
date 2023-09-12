@@ -4,6 +4,7 @@ class BibliotecaController {
     async findAll(req, res){
         try {
             const result = await BibliotecaRepository.findAll();
+            console.log(result,"wwdwq");
             res.json(result);
         }catch (e) {
             res.json(e);

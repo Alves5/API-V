@@ -1,0 +1,13 @@
+import { Router } from "express";
+const router = Router();
+
+import LeadController from "../controllers/LeadController.js";
+
+// Lead
+router.post('/lead', LeadController.store);
+router.get('/lead/:codigo', LeadController.findByCodigo);
+router.get('/lead', LeadController.findAll);
+router.patch('/lead/:codigo', LeadController.updateByCodigo);
+router.delete('/lead/:codigo', LeadController.deleteByCodigo);
+
+export default router;
