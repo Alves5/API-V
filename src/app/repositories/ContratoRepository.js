@@ -1,29 +1,25 @@
-import mongoose from "mongoose";
+import ContratoModel from "../model/Contrato.js";
 
 class ContratoRepository {
     findAll(){
-        const contrato= new mongoose.model('Contrato');
-        return contrato.find();
+        return ContratoModel.find();
     }
 
     create(cont){
-        const contrato = new mongoose.model('Contrato')(cont);
+        const contrato = new ContratoModel(cont);
         contrato.save();
     }
 
     findByNumero(numero){
-        const contrato = new mongoose.model('Contrato');
-        return contrato.findOne({numeroContrato: numero});
+        return ContratoModel.findOne({numeroContrato: numero});
     }
 
     update(numero, cont){
-        const contrato = new mongoose.model('Contrato');
-        return contrato.updateOne({numeroContrato: numero}, {$set: cont}, {new: true});
+        return ContratoModel.updateOne({numeroContrato: numero}, {$set: cont}, {new: true});
     }
 
     delete(numero){
-        const contrato = new mongoose.model('Contrato');
-        return contrato.deleteOne({numeroContrato: numero}, {new: true});
+        return ContratoModel.deleteOne({numeroContrato: numero}, {new: true});
     }
 }
 export default new ContratoRepository();

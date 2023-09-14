@@ -1,25 +1,21 @@
-import mongoose from "mongoose";
+import CampanhaModel from "../model/Campanha.js";
 
 class CampanhaRepository {
     findAll(){
-        const campanha = new mongoose.model('Campanha');
-        return campanha.find();
+        return CampanhaModel.find();
     }
     create(camp){
-        const campanha = new mongoose.model('Campanha')(camp);
+        const campanha = new CampanhaModel(camp);
         campanha.save();
     }
     findByCodigo(codigo){
-        const campanha = new mongoose.model('Campanha');
-        return campanha.findOne({codigo: codigo});
+        return CampanhaModel.findOne({codigo: codigo});
     }
     update(codigo, camp){
-        const campanha = new mongoose.model('Campanha');
-        return campanha.updateOne({codigo: codigo}, {$set: camp}, {new: true});
+        return CampanhaModel.updateOne({codigo: codigo}, {$set: camp}, {new: true});
     }
     delete(codigo){
-        const campanha = new mongoose.model('Campanha');
-        return campanha.deleteOne({codigo: codigo}, {new: true});
+        return CampanhaModel.deleteOne({});
     }
 }
 export default new CampanhaRepository();

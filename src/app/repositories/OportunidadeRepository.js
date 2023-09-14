@@ -1,29 +1,25 @@
-import mongoose from "mongoose";
+import OportunidadeModel from "../model/Oportunidade.js"
 
 class OportunidadeRepository {
     findAll(){
-        const oportunidade= new mongoose.model('Oportunidade');
-        return oportunidade.find();
+        return OportunidadeModel.find();
     }
 
     create(opp){
-        const oportunidade = new mongoose.model('Oportunidade')(opp);
+        const oportunidade = new OportunidadeModel(opp);
         oportunidade.save();
     }
 
     findByNumero(numero){
-        const oportunidade = new mongoose.model('Oportunidade');
-        return oportunidade.findOne({numeroOportunidade: numero});
+        return OportunidadeModel.findOne({numeroOportunidade: numero});
     }
 
     update(numero, opp){
-        const oportunidade = new mongoose.model('Oportunidade');
-        return oportunidade.updateOne({numeroOportunidade: numero}, {$set: opp}, {new: true});
+        return OportunidadeModel.updateOne({numeroOportunidade: numero}, {$set: opp}, {new: true});
     }
 
     delete(numero){
-        const oportunidade = new mongoose.model('Oportunidade');
-        return oportunidade.deleteOne({numeroOportunidade: numero}, {new: true});
+        return OportunidadeModel.deleteOne({numeroOportunidade: numero}, {new: true});
     }
 }
 export default new OportunidadeRepository();

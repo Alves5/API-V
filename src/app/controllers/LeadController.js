@@ -1,6 +1,6 @@
-import {request} from "express";
 import LeadRepository from "../repositories/LeadRepository.js";
-import leadRepository from "../repositories/LeadRepository.js";
+import Contato from "../model/Contato.js";
+import ContatoRepository from "../repositories/ContatoRepository.js";
 
 class LeadController {
     async findAll(req, res){
@@ -65,6 +65,34 @@ class LeadController {
             }else{
                 res.json({status: false, message: 'Document not found or not deleted'});
             }
+        }catch (e) {
+            res.json(e);
+        }
+    }
+
+    async convertLeadToContact(req, res){
+        const {nomeCompleto, companhia, telefone, email, criadoPor} = req.body;
+        try {
+            const contato = new Contato({
+                numero: telefone,
+                nomeCompleto: nomeCompleto,
+                companhia: companhia,
+                responsavel: null,
+                nacionalidade: null,
+                dataNascimento: null,
+                cpf: null,
+                identidade: null,
+                cep: null,
+                endereco: null,
+                bairro: null,
+                cidade: null,
+                estado: null,
+                email: email,
+                criadoPor: criadoPor,
+                atualizadoPor: null
+            });
+            await ContatoRepository.create(contato);
+            res.json({status: true, message: 'Lead convertida para Contato'});
         }catch (e) {
             res.json(e);
         }

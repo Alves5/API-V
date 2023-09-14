@@ -1,29 +1,25 @@
-import mongoose from "mongoose";
+import LeadModel from "../model/Lead.js";
 
 class LeadRepository {
     findAll(){
-        const lead = new mongoose.model('Lead');
-        return lead.find();
+        return LeadModel.find();
     }
 
     create(lea){
-        const lead = new mongoose.model('Lead')(lea);
+        const lead = new LeadModel(lea);
         lead.save();
     }
 
     findByCodigo(codigo){
-        const lead = new mongoose.model('Lead');
-        return lead.findOne({codigo: codigo});
+        return LeadModel.findOne({codigo: codigo});
     }
 
     update(codigo, lea){
-        const lead = new mongoose.model('Lead');
-        return lead.updateOne({codigo: codigo}, {$set: lea}, {new: true});
+        return LeadModel.updateOne({codigo: codigo}, {$set: lea}, {new: true});
     }
 
     delete(codigo){
-        const lead = new mongoose.model('Lead');
-        return lead.deleteOne({codigo: codigo}, {new: true});
+        return LeadModel.deleteOne({codigo: codigo}, {new: true});
     }
 
 }

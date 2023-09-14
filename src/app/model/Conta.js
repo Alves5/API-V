@@ -23,4 +23,5 @@ const contaSchema = new mongoose.Schema({
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, { collection: 'Conta' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
 
-export default contaSchema;
+const contaModel = mongoose.model('Conta', contaSchema);
+export default contaModel;

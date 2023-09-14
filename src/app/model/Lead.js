@@ -13,4 +13,5 @@ const leadSchema = new mongoose.Schema({
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, { collection: 'Lead' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
 
-export default leadSchema;
+const leadModel = mongoose.model('Lead', leadSchema);
+export default leadModel;

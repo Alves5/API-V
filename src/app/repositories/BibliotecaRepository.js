@@ -1,30 +1,26 @@
-import mongoose from "mongoose";
+import BibliotecaModel from "../model/Biblioteca.js";
 
 class BibliotecaRepository {
 
     findAll(){
-        const biblioteca = new mongoose.model('Biblioteca');
-        return biblioteca.find();
+        return BibliotecaModel.find();
     }
 
     create(biblio){
-        const biblioteca = new mongoose.model('Biblioteca')(biblio);
+        const biblioteca = new BibliotecaModel(biblio);
         biblioteca.save();
     }
 
     findByCodigo(codigo){
-        const biblioteca = new mongoose.model('Biblioteca');
-        return biblioteca.findOne({codigo: codigo});
+        return BibliotecaModel.findOne({codigo: codigo});
     }
 
     update(codigo, biblio){
-        const biblioteca = new mongoose.model('Biblioteca');
-        return biblioteca.updateOne({codigo: codigo}, {$set: biblio}, {new: true});
+        return BibliotecaModel.updateOne({codigo: codigo}, {$set: biblio}, {new: true});
     }
 
     delete(codigo){
-        const biblioteca = new mongoose.model('Biblioteca');
-        return biblioteca.deleteOne({codigo: codigo}, {new: true});
+        return BibliotecaModel.deleteOne({codigo: codigo}, {new: true});
     }
 }
 export default new BibliotecaRepository();

@@ -1,12 +1,12 @@
 import { Router } from "express";
 const router = Router();
 
-import ContatoControllerMongo from "../controllers/ContatoControllerMongo.js";
+import ContatoController from "../controllers/ContatoController.js";
 // Contato
-router.get('/contato', ContatoControllerMongo.findAll);
-router.post('/contato', ContatoControllerMongo.store);
-router.get('/contato/:numero', ContatoControllerMongo.findByNumero);
-router.patch('/contato/:numero', ContatoControllerMongo.updateByNumero);
-router.delete('/contato/:numero', ContatoControllerMongo.deleteByNumero);
+router.get('/contato', ContatoController.findAll);
+router.post('/contato', ContatoController.store);
+router.get('/contato/:numero', ContatoController.findByNumero);
+router.patch('/contato/:numero', ContatoController.updateByNumero);
+router.delete('/contato/:numero', ContatoController.deleteByNumero);
 
 export default router

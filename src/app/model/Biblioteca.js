@@ -13,4 +13,5 @@ const bibliotecaSchema = new mongoose.Schema({
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, { collection: 'Biblioteca' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
 
-export default bibliotecaSchema;
+const bibliotecaModel = mongoose.model('Biblioteca', bibliotecaSchema);
+export default bibliotecaModel;

@@ -21,4 +21,5 @@ const oportunidadeSchema = new mongoose.Schema({
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, { collection: 'Oportunidade' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
 
-export default oportunidadeSchema;
+const oportunidadeModel = mongoose.model('Oportunidade', oportunidadeSchema);
+export default oportunidadeModel;

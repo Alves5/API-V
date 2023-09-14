@@ -9,5 +9,5 @@ router.get('/lead/:codigo', LeadController.findByCodigo);
 router.get('/lead', LeadController.findAll);
 router.patch('/lead/:codigo', LeadController.updateByCodigo);
 router.delete('/lead/:codigo', LeadController.deleteByCodigo);
-
+router.post('/lead/convertLeadToContact', LeadController.convertLeadToContact);
 export default router;
