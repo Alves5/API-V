@@ -25,4 +25,5 @@ const orcamentoSchema = new mongoose.Schema({
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, { collection: 'Orcamento' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
 
-export default orcamentoSchema;
+const orcamentoModel = mongoose.model('Orcamento', orcamentoSchema);
+export default orcamentoModel;

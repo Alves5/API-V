@@ -13,4 +13,5 @@ const usuarioSchema = new mongoose.Schema({
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, { collection: 'Usuario' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
 
-export default usuarioSchema;
+const usuarioModel = mongoose.model('Usuario', usuarioSchema);
+export default usuarioModel;

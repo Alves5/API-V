@@ -1,29 +1,25 @@
-import mongoose from "mongoose";
+import UsuarioModel from "../model/Usuario.js";
 
 class UsuarioRepository {
     findAll(){
-        const usuario= new mongoose.model('Usuario');
-        return usuario.find();
+        return UsuarioModel.find();
     }
 
     create(user){
-        const usuario = new mongoose.model('Usuario')(user);
+        const usuario = new UsuarioModel(user);
         usuario.save();
     }
 
     findByUsername(username){
-        const usuario = new mongoose.model('Usuario');
-        return usuario.findOne({username: username});
+        return UsuarioModel.findOne({username: username});
     }
 
     update(username, user){
-        const usuario = new mongoose.model('Usuario');
-        return usuario.updateOne({username: username}, {$set: user}, {new: true});
+        return UsuarioModel.updateOne({username: username}, {$set: user}, {new: true});
     }
 
     delete(username){
-        const usuario = new mongoose.model('Usuario');
-        return usuario.deleteOne({username: username}, {new: true});
+        return UsuarioModel.deleteOne({username: username}, {new: true});
     }
 }
 export default new UsuarioRepository();

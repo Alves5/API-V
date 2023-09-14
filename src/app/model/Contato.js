@@ -4,6 +4,7 @@ const contatoSchema = new mongoose.Schema({
     id: Number,
     numero: String,
     nomeCompleto: String,
+    companhia: String,
     responsavel: String,
     nacionalidade: String,
     dataNascimento: Date,
@@ -20,4 +21,5 @@ const contatoSchema = new mongoose.Schema({
     camposAdicionais: mongoose.Schema.Types.Mixed,
 }, { collection: 'Contato' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
 
-export default contatoSchema;
+const contatoModel = mongoose.model('Contato', contatoSchema);
+export default contatoModel;

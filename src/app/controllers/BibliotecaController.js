@@ -1,10 +1,9 @@
 import BibliotecaRepository from "../repositories/BibliotecaRepository.js";
-import ContatoMongoRepository from "../repositories/ContatoMongoRepository.js";
+import ContatoMongoRepository from "../repositories/ContatoRepository.js";
 class BibliotecaController {
     async findAll(req, res){
         try {
             const result = await BibliotecaRepository.findAll();
-            console.log(result,"wwdwq");
             res.json(result);
         }catch (e) {
             res.json(e);
@@ -49,16 +48,11 @@ class BibliotecaController {
         const codigo = req.params.codigo;
         const biblioteca = req.body;
         try {
-            const exists = await BibliotecaRepository.findByCodigo(codigo);
-            if (exists === null){
-                res.json({status: false, message: 'Document not found'});
-            }else{
-                try {
-                    await BibliotecaRepository.update(codigo, biblioteca);
-                    res.json({status: true, message: 'Success. Updated document'})
-                }catch (e) {
-                    res.json(e);
-                }
+            const result = await BibliotecaRepository.update(codigo, biblioteca);
+            if(result.modifiedCount === 1){
+                res.json({status: true, message: 'Success. Updated document'});
+            }else {
+                res.json({status: false, message: 'Document not found or not updated'});
             }
         }catch (e) {
             res.json(e);

@@ -1,29 +1,25 @@
-import mongoose from "mongoose";
+import OrcamentoModel from "../model/Orcamento.js";
 
 class OrcamentoRepository {
     findAll(){
-        const orcamento= new mongoose.model('Orcamento');
-        return orcamento.find();
+        return OrcamentoModel.find();
     }
 
     create(orc){
-        const orcamento = new mongoose.model('Orcamento')(orc);
+        const orcamento = new OrcamentoModel(orc);
         orcamento.save();
     }
 
     findByNumero(numero){
-        const orcamento = new mongoose.model('Orcamento');
-        return orcamento.findOne({numeroOrcamento: numero});
+        return OrcamentoModel.findOne({numeroOrcamento: numero});
     }
 
     update(numero, orc){
-        const orcamento = new mongoose.model('Orcamento');
-        return orcamento.updateOne({numeroOrcamento: numero}, {$set: orc}, {new: true});
+        return OrcamentoModel.updateOne({numeroOrcamento: numero}, {$set: orc}, {new: true});
     }
 
     delete(numero){
-        const orcamento = new mongoose.model('Orcamento');
-        return orcamento.deleteOne({numeroOrcamento: numero}, {new: true});
+        return OrcamentoModel.deleteOne({numeroOrcamento: numero}, {new: true});
     }
 }
 export default new OrcamentoRepository();

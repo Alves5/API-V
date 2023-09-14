@@ -1,5 +1,5 @@
 import CampanhaRepository from "../repositories/CampanhaRepository.js";
-import ContatoMongoRepository from "../repositories/ContatoMongoRepository.js";
+import ContatoMongoRepository from "../repositories/ContatoRepository.js";
 
 class CampanhaController {
     async findAll(req, res){
@@ -13,10 +13,20 @@ class CampanhaController {
 
     async store(req, res){
         const campanha = req.body;
+        const codigo = req.body.codigo;
         try {
-            await CampanhaRepository.create(campanha);
-            res.json({status: true, message: 'Success'});
-        }catch (e) {
+            const exists = await CampanhaRepository.findByCodigo(codigo);
+            if (exists !== null){
+                res.json({status: false, message: "Document already created"});
+            }else{
+                try {
+                    await CampanhaRepository.create(campanha);
+                    res.json({status: true, message: 'Success'});
+                }catch (e) {
+                    res.json(e);
+                }
+            }
+        }catch (e){
             res.json(e);
         }
     }

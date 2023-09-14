@@ -1,9 +1,9 @@
-import ContatoMongoRepository from "../repositories/ContatoMongoRepository.js";
+import ContatoRepository from "../repositories/ContatoRepository.js";
 
-class ContatoControllerMongo {
+class ContatoController {
     async findAll(req, res){
         try {
-            const result = await ContatoMongoRepository.findAll();
+            const result = await ContatoRepository.findAll();
             res.json(result);
         }catch (e) {
             res.json(e);
@@ -14,12 +14,12 @@ class ContatoControllerMongo {
         const contato = req.body;
         const numero = req.body.numero;
         try {
-            const exists = await ContatoMongoRepository.findByNumero(numero);
+            const exists = await ContatoRepository.findByNumero(numero);
             if (exists !== null){
                 res.json({status: false, message: 'Document already created'});
             }else{
                 try {
-                    await ContatoMongoRepository.create(contato);
+                    await ContatoRepository.create(contato);
                     res.json({status: true, message: 'Success'});
                 }catch (e) {
                     res.json(e);
@@ -33,7 +33,7 @@ class ContatoControllerMongo {
     async findByNumero(req, res){
         const numero = req.params.numero;
         try {
-            const result = await ContatoMongoRepository.findByNumero(numero);
+            const result = await ContatoRepository.findByNumero(numero);
             if (result !== null){
                 res.json(result);
             }else{
@@ -48,7 +48,7 @@ class ContatoControllerMongo {
         const numero = req.params.numero;
         const contato = req.body;
         try {
-            const result = await ContatoMongoRepository.update(numero, contato);
+            const result = await ContatoRepository.update(numero, contato);
             if (result.modifiedCount === 1){
                 res.json({status: true, message: 'Success. Document updated'});
             }else{
@@ -62,7 +62,7 @@ class ContatoControllerMongo {
     async deleteByNumero(req, res){
         const numero = req.params.numero;
         try {
-            const result = await ContatoMongoRepository.delete(numero);
+            const result = await ContatoRepository.delete(numero);
             if (result.deletedCount === 1){
                 res.json({status: true, message: 'Success. Deleted document'})
             }else{
@@ -75,4 +75,4 @@ class ContatoControllerMongo {
 
 }
 
-export default new ContatoControllerMongo();
+export default new ContatoController();

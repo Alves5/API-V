@@ -21,4 +21,5 @@ const campanhaSchema = new mongoose.Schema({
     camposAdicionais: mongoose.Schema.Types.Mixed
 },{ collection: 'Campanha' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
 
-export default campanhaSchema;
+const campanhaModel = mongoose.model('Campanha', campanhaSchema);
+export default campanhaModel;

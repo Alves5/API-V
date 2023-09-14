@@ -16,4 +16,5 @@ const contratoSchema = new mongoose.Schema({
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, { collection: 'Contrato' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
 
-export default contratoSchema;
+const contratoModel = mongoose.model('Contrato', contratoSchema);
+export default contratoModel;
