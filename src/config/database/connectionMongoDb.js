@@ -1,16 +1,24 @@
-import mongoose, {mongo} from 'mongoose';
+import mongoose from 'mongoose';
 
-//configurações nosql
-const connectionMongoDb =  mongoose.connect('mongodb://127.0.0.1:27017/db', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+export default function connectDB() {
+    const url = "mongodb+srv://root:W3rgYSm2Z5Al3zfr@db.cm37ov4.mongodb.net/db?retryWrites=true&w=majority";
 
-//conectando ao banco de dados nosql
-connectionMongoDb.then(function(db) {
-    console.log('MongoDB conectado');
-}).catch(function(err) {
-    console.log('Erro ao conectar ao MongoDB: ' + err);
-});
+    try {
+        mongoose.connect(url, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+    } catch (err) {
+        console.error(err.message);
+        process.exit(1);
+    }
+    const dbConnection = mongoose.connection;
+    dbConnection.once("open", (_) => {
+        console.log(`Database connected`);
+    });
 
-export default connectionMongoDb;
+    dbConnection.on("error", (err) => {
+        console.error(`connection error: ${err}`);
+    });
+    return;
+}

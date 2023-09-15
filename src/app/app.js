@@ -1,5 +1,5 @@
 import express from "express";
-import connectionMongoDb from "../config/database/connectionMongoDb.js";
+import connectDB from "../config/database/connectionMongoDb.js";
 import routes from "./routes.js";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -7,6 +7,8 @@ import swaggerUi from "swagger-ui-express";
 import swaggerDocument from '../config/swagger.json' assert { type: 'json' };
 
 const app = express();
+
+connectDB();
 
 app.use((req, res, next) => {
     //Qual site tem permissão de realizar a conexão, no exemplo abaixo está o "*" indicando que qualquer site pode fazer a conexão
