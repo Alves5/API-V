@@ -72,5 +72,20 @@ class UsuarioController {
             res.json(e);
         }
     }
+
+    async createPassword(req, res){
+        const username = req.params.username;
+        const {password1, password2} = req.body;
+        try {
+            const existsUser = await UsuarioRepository.findByUsername(username);
+            if (existsUser !== null){
+                const result = await UsuarioRepository.updatePassword(username, password1);
+                console.log(result);
+                // res.json({status: true, message:})
+            }
+        }catch (e) {
+            res.json(e);
+        }
+    }
 }
 export default new UsuarioController();

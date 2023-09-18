@@ -21,5 +21,9 @@ class UsuarioRepository {
     delete(username){
         return UsuarioModel.deleteOne({username: username}, {new: true});
     }
+
+    updatePassword(username, password){
+        return UsuarioModel.findOneAndUpdate({username: username},{senha: password}, {new: true});
+    }
 }
 export default new UsuarioRepository();
