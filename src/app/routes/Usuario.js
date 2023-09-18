@@ -9,5 +9,6 @@ router.post('/usuario', UsuarioController.store);
 router.get('/usuario/:username', UsuarioController.findByUsername);
 router.patch('/usuario/:username', UsuarioController.updateByUsername);
 router.delete('/usuario/:username', UsuarioController.deleteByUsername);
+router.post('/usuario/createPassword/:username', UsuarioController.createPassword);
 
 export default router;
