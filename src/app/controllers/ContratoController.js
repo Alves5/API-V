@@ -1,76 +1,119 @@
+import Contrato from "../model/Contrato.js";
 import ContratoRepository from "../repositories/ContratoRepository.js";
-
-class ContratoController {
-    async findAll(req, res){
-        try {
+import moment from "moment/moment.js";
+import ContatoRepository from "../repositories/ContatoRepository.js";
+import FormattedDateTime from "../Utils/FormattedDateTime.js";
+class ContratoController{
+    async findAll(request, response){
+        try{
             const result = await ContratoRepository.findAll();
-            res.json(result);
+            response.json(result)
         }catch (e) {
-            res.json(e);
+            response.json(e);
         }
     }
 
-    async store(req, res) {
-        const contrato = req.body;
-        const numero = req.body.numeroContrato;
+    async store(request, response){
+        const numero = request.body.numero_contrato;
         try {
-            const exists = await ContratoRepository.findByNumero(numero);
-            if (exists !== null){
-                res.json({status: false, message: 'Document already created'});
+            const exists = await ContratoRepository.findByNumeroContrato(numero);
+            if (Object.keys(exists).length != 0){
+                response.json({status: 200, message: 'Contract already exists'});
             }else{
-                try {
+                try{
+                    const formattedDateTime = FormattedDateTime.formatted();
+                    const contrato = new Contrato(
+                        request.body.numero_contrato,
+                        request.body.status,
+                        formattedDateTime,
+                        formattedDateTime,
+                        request.body.numero_contato,
+                        request.body.criado_por,
+                        null,
+                        request.body.numero_proposta,
+                        request.body.contrato_pai
+                    );
                     await ContratoRepository.create(contrato);
-                    res.json({status: true, message: 'Success'});
+                    response.json({message: 'Success'});
                 }catch (e) {
-                    res.json(e);
+                    response.json(e);
                 }
             }
         }catch (e) {
-            res.json(e);
+            response.json(e);
         }
     }
 
-    async findByNumero(req, res){
-        const numero = req.params.numeroContrato;
-        try {
-            const result = await ContratoRepository.findByNumero(numero);
-            if (result !== null){
-                res.json(result);
+    async findByNumeroContrato(request, response){
+        try{
+            const numero = request.params.numero;
+            const result = await ContratoRepository.findByNumeroContrato(numero);
+            if (Object.keys(result).length == 0){
+                response.json({message: 'ID not found!'});
             }else{
-                res.json({status: false, message: 'Document not found'});
+                response.json(result)
             }
         }catch (e) {
-            res.json(e);
+            response.json(e);
         }
     }
 
-    async updateByNumero(req, res){
-        const numero = req.params.numeroContrato;
-        const contrato = req.body;
+    async updateById(request, response){
+        const numero = request.params.numero;
         try {
-            const result = await ContratoRepository.update(numero, contrato);
-            if (result.modifiedCount === 1){
-                res.json({status: true, message: 'Success. Document updated'});
+            const exists = await ContratoRepository.findByNumeroContrato(numero);
+            if (Object.keys(exists).length == 0){
+                response.json({message: 'ID not found'});
             }else{
-                res.json({status: false, message: 'Document not found or not updated'});
+                try {
+                    const formattedDateTime = FormattedDateTime.formatted();
+                    exists[0]['created_at'] = moment().format('YYYY/MM/DD HH:mm:ss');
+                    const contrato = new Contrato(
+                        request.body.numero_contrato,
+                        request.body.status,
+                        exists[0]['created_at'],
+                        formattedDateTime,
+                        request.body.numero_contato,
+                        exists[0]['Criado por'],
+                        request.body.atualizado_por,
+                        request.body.numero_proposta,
+                        request.body.contrato_pai
+                    );
+                    await ContratoRepository.update(contrato, numero);
+                    response.json({message: 'Success'});
+                }catch (e) {
+                    response.json(e);
+                }
             }
         }catch (e) {
-            res.json(e);
+
         }
     }
 
-    async deleteByNumero(req, res){
-        const numero = req.params.numeroContrato;
+    async deleteById(request, response){
+        const numero = request.params.numero;
         try {
-            const result = await ContratoRepository.delete(numero);
-            if (result.deletedCount === 1){
-                res.json({status: true, message: 'Success. Deleted document'})
+            const exists = await ContratoRepository.findByNumeroContrato(numero);
+            if (Object.keys(exists).length == 0){
+                response.json({message: 'ID not found'});
             }else{
-                res.json({status: false, message: 'Document not found or not deleted'});
+                await ContratoRepository.delete(numero);
+                response.json({message: 'Success'});
             }
         }catch (e) {
-            res.json(e);
+            response.json(e);
         }
     }
+
+    async findRelatedList(request, response){
+        const numero = request.params.numero;
+        try {
+            const result = await ContratoRepository.findRelatedList(numero);
+            Object.keys(result).length == 0 ? response.json({status: 404, message: 'No record found'}) : response.json(result);
+        }catch (e) {
+            response.json(e);
+        }
+    }
+
 }
 export default new ContratoController();

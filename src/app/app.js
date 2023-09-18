@@ -1,14 +1,10 @@
 import express from "express";
-import connectDB from "../config/database/connectionMongoDb.js";
 import routes from "./routes.js";
-import bodyParser from "body-parser";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from '../config/swagger.json' assert { type: 'json' };
 
 const app = express();
-
-connectDB();
 
 app.use((req, res, next) => {
     //Qual site tem permissão de realizar a conexão, no exemplo abaixo está o "*" indicando que qualquer site pode fazer a conexão
@@ -17,7 +13,6 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
     res.setHeader("Access-Control-Allow-Headers", "Content-type")
     app.use(cors());
-    app.use(bodyParser.json());
     next();
 });
 
