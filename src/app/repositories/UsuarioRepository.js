@@ -15,8 +15,8 @@ class UsuarioRepository {
         return UsuarioModel.findOne(filter);
     }
 
-    update(username, user){
-        return UsuarioModel.updateOne({username: username}, {$set: user}, {new: true});
+    update(filter, set){
+        return UsuarioModel.updateOne(filter, {$set: set}, {new: true});
     }
 
     delete(username){

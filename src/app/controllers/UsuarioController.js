@@ -71,7 +71,7 @@ class UsuarioController {
         const username = req.params.username;
         const usuario = req.body;
         try {
-            const result = await UsuarioRepository.update(username, usuario);
+            const result = await UsuarioRepository.update({username: username}, usuario);
             if (result.modifiedCount === 1){
                 res.json({status: true, message: 'Success. Document updated'});
             }else{
@@ -143,9 +143,9 @@ class UsuarioController {
                     };
                     usuario.token.push(novoToken);
 
-
+                    await UsuarioRepository.update({email: email}, usuario);
                     // Enviar email para recuperar conta do usuário
-                    let link = `http://localhost:3000/usuario/recuperarUsuario/${usuario.token[0].text}`;
+                    let link = `http://localhost:3000/usuario/recuperarUsuario/${novoToken.text}`;
                     EmailService.enviarEmail(
                         'Recuperar conta',
                         '<h4>Foi feito um pedido para recuperar sua conta</h4></br>' +
