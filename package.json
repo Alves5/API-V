@@ -2,7 +2,6 @@
   "name": "vizion",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
   "type": "module",
   "scripts": {
     "dev": "nodemon ./src/config/server/server.js",
