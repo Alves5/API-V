@@ -73,6 +73,26 @@ class ContatoController {
         }
     }
 
+    async relatedList(req, res){
+        const numeroContato = req.params.numero;
+        try {
+            const exists = await ContatoRepository.findByNumero(numeroContato);
+            if (!exists){
+                res.json({status: false, message: 'Document not found'});
+                return false;
+            }
+
+            const result = await ContatoRepository.searchRelatedList(numeroContato);
+            if (Object.keys(result).length !== 0){
+                res.json(result);
+            }else{
+                res.json({status: false, message: 'No records found'});
+            }
+        }catch (e) {
+            res.json(e);
+        }
+    }
+
 }
 
 export default new ContatoController();

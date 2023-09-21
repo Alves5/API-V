@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import GenerateToken from "../Utils/GenerateToken.js";
 
 const usuarioSchema = new mongoose.Schema({
         id: Number,
@@ -14,6 +15,13 @@ const usuarioSchema = new mongoose.Schema({
         titulo: String,
         criadoPor: String,
         atualizadoPor: String,
+        token: [{
+            text: String,
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }],
         camposAdicionais: mongoose.Schema.Types.Mixed
     },
     {

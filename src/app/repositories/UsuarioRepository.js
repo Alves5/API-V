@@ -1,4 +1,5 @@
 import UsuarioModel from "../model/Usuario.js";
+import usuarioModel from "../model/Usuario.js";
 
 class UsuarioRepository {
     findAll(){
@@ -10,20 +11,25 @@ class UsuarioRepository {
         usuario.save();
     }
 
-    findByUsername(username){
-        return UsuarioModel.findOne({username: username});
+    findByArgs(filter){
+        return UsuarioModel.findOne(filter);
     }
 
-    update(username, user){
-        return UsuarioModel.updateOne({username: username}, {$set: user}, {new: true});
+    update(filter, set){
+        return UsuarioModel.updateOne(filter, {$set: set}, {new: true});
     }
 
     delete(username){
         return UsuarioModel.deleteOne({username: username}, {new: true});
     }
 
-    updatePassword(username, password){
-        return UsuarioModel.findOneAndUpdate({username: username},{senha: password}, {new: true});
+    searchTokenAndUpdatePassword(token, senha){
+        return UsuarioModel.findOneAndUpdate({"token.text": token}, {senha: senha, "token.$[].text": null, "token.$[].createdAt": null},{new: true});
     }
+
+    searchUserLogin(email, senha){
+        return UsuarioModel.findOne({email: email, senha: senha});
+    }
+
 }
 export default new UsuarioRepository();
