@@ -15,7 +15,7 @@ class CampanhaRepository {
         return CampanhaModel.updateOne({codigo: codigo}, {$set: camp}, {new: true});
     }
     delete(codigo){
-        return CampanhaModel.deleteOne({});
+        return CampanhaModel.deleteOne({codigo: codigo});
     }
 }
 export default new CampanhaRepository();
