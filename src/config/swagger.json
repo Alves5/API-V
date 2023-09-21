@@ -2639,7 +2639,7 @@
           "nomeCompleto": {
             "type": "string"
           },
-          "perfil": {
+          "perfil_n": {
             "type": "string"
           },
           "apelido": {
@@ -2668,7 +2668,7 @@
           "nomeCompleto": {
             "type": "string"
           },
-          "perfil": {
+          "perfil_n": {
             "type": "string"
           },
           "apelido": {
