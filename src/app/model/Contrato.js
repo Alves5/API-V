@@ -4,7 +4,7 @@ const contratoSchema = new mongoose.Schema({
         id: Number,
         numeroContrato: String,
         status: String,
-        numeroContato: String,
+        numeroContato_n: String,
         numeroProposta: String,
         seguroViajem: String,
         visto: String,

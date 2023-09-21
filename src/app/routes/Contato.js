@@ -8,5 +8,6 @@ router.post('/contato', ContatoController.store);
 router.get('/contato/:numero', ContatoController.findByNumero);
 router.patch('/contato/:numero', ContatoController.updateByNumero);
 router.delete('/contato/:numero', ContatoController.deleteByNumero);
+router.get('/contrato/contato/:numero', ContatoController.relatedList);
 
 export default router
