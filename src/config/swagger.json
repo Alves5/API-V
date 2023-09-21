@@ -2285,6 +2285,9 @@
         }
       },
       "Lead": {
+        "required": [
+          "codigo"
+        ],
         "type": "object",
         "properties": {
           "codigo": {
@@ -2340,6 +2343,9 @@
         }
       },
       "Contato": {
+        "required": [
+          "numero"
+        ],
         "type": "object",
         "properties": {
           "numero": {
@@ -2445,6 +2451,9 @@
         }
       },
       "Contrato": {
+        "required": [
+          "numeroContrato"
+        ],
         "type": "object",
         "properties": {
           "numeroContrato": {
@@ -2518,6 +2527,9 @@
         }
       },
       "Oportunidade": {
+        "required": [
+          "numeroOportunidade"
+        ],
         "type": "object",
         "properties": {
           "numeroOportunidade": {
@@ -2619,6 +2631,9 @@
         }
       },
       "Usuario": {
+        "required": [
+          "username"
+        ],
         "type": "object",
         "properties": {
           "nomeCompleto": {
@@ -2674,6 +2689,9 @@
         }
       },
       "Conta": {
+        "required": [
+          "numeroConta"
+        ],
         "type": "object",
         "properties": {
           "nome": {
@@ -2787,6 +2805,9 @@
         }
       },
       "Orcamento": {
+        "required": [
+          "numeroOrcamento"
+        ],
         "type": "object",
         "properties": {
           "numeroOrcamento": {

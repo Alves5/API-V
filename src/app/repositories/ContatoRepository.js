@@ -1,4 +1,5 @@
-import ContatoModel from "../model/Contato.js"
+import ContatoModel from "../model/Contato.js";
+import ContratoModel from "../model/Contrato.js"
 
 class ContatoRepository {
 
@@ -21,6 +22,10 @@ class ContatoRepository {
 
     delete(numero){
         return ContatoModel.deleteOne({numero: numero}, {new: true});
+    }
+
+    searchRelatedList(numero){
+        return ContratoModel.find({numeroContato_n: numero}).sort({createdAt: -1});
     }
 }
 export default new ContatoRepository();
