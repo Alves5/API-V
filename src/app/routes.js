@@ -1,4 +1,5 @@
 import { Router } from "express";
+import ArquivoRelacionado from "./routes/ArquivosRelacionados.js";
 import Campanha from "./routes/Campanha.js";
 import Conta from "./routes/Conta.js";
 import Lead from "./routes/Lead.js";
@@ -12,6 +13,7 @@ import Orcamento from "./routes/Orcamento.js";
 const router = Router();
 
 // Rotas
+router.use(ArquivoRelacionado)
 router.use(Contato);
 router.use(Campanha);
 router.use(Conta);

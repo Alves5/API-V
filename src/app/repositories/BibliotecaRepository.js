@@ -2,25 +2,25 @@ import BibliotecaModel from "../model/Biblioteca.js";
 
 class BibliotecaRepository {
 
-    findAll(){
-        return BibliotecaModel.find();
+    async create(biblioteca){
+        const bibliotecaModel = new BibliotecaModel(biblioteca);
+        bibliotecaModel.save();
     }
 
-    create(biblio){
-        const biblioteca = new BibliotecaModel(biblio);
-        biblioteca.save();
+    async findAll(){
+        return await BibliotecaModel.find();
     }
 
-    findByCodigo(codigo){
-        return BibliotecaModel.findOne({codigo: codigo});
+    async findByCodigo(codigo){
+        return await BibliotecaModel.findOne({codigo: codigo});
     }
 
-    update(codigo, biblio){
-        return BibliotecaModel.updateOne({codigo: codigo}, {$set: biblio}, {new: true});
+    async update(codigo, biblioteca){
+        return await BibliotecaModel.updateOne({codigo: codigo}, biblioteca);
     }
 
-    delete(codigo){
-        return BibliotecaModel.deleteOne({codigo: codigo}, {new: true});
+    async delete(codigo){
+        return await BibliotecaModel.deleteOne({codigo: codigo});
     }
 }
 export default new BibliotecaRepository();

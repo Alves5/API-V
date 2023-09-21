@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
 
 const bibliotecaSchema = new mongoose.Schema({
-        id: Number,
         codigo: String,
         nome: String,
         tipo: String,
         modeloTexto: String,
-        modeloContrato: Object,
+        modeloContrato: {
+            originalname : String,
+            mimetype  : String,
+            buffer    : Buffer,
+            size     : Number
+        },
         descricao: String,
         criadoPor: String,
         atualizadoPor: String,
