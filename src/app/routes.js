@@ -10,6 +10,7 @@ import Usuario from "./routes/Usuario.js";
 import Contato from "./routes/Contato.js";
 import Contrato from "./routes/Contrato.js";
 import Orcamento from "./routes/Orcamento.js";
+import Perfil from "./routes/Perfil.js";
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use(Biblioteca);
 router.use(Usuario);
 router.use(Contrato);
 router.use(Orcamento);
+router.use(Perfil);
 
 export default router;

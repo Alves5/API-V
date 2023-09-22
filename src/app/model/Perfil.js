@@ -13,6 +13,13 @@ const perfilSchema = new mongoose.Schema({
     criadoPor: String,
     atualizadoPor: String,
     camposAdicionais: mongoose.Schema.Types.Mixed
-}, { collection: 'Perfil' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
+}, {
+    timestamps: true,
+    versionKey: false,
+    _id: true,
+    strict: false,
+    collection: 'Perfil'});
 
-export default perfilSchema;
+const perfilModel = mongoose.model('Perfil', perfilSchema);
+
+export default perfilModel;
