@@ -117,11 +117,12 @@ class UsuarioController {
         try {
             const passCrypto = CryptoUtil.criptografar(senha);
             const user = await UsuarioRepository.searchUserLogin(email, passCrypto);
+            let verifiedToken = null;
             if (!user){
-                throw new Error('Invalid email or password');
+                res.json({status: false, token: verifiedToken});
             }else{
-                // pode haver um redirect aqui
-                res.json({status: true, message: 'Login com sucesso'})
+                verifiedToken = GenerateToken.generateToken(18);
+                res.json({status: true, token: verifiedToken});
             }
         }catch (e) {
             res.json({status: false, message: e.message});
@@ -156,6 +157,27 @@ class UsuarioController {
                     res.json(e);
                 }
             }
+        }catch (e) {
+            res.json(e);
+        }
+    }
+
+    async PermissionsUser(req, res){
+        const username = req.params.username;
+        try {
+            const user = await UsuarioRepository.findByArgs({username: username});
+            const result = await UsuarioRepository.searchProfileAndPermissions(user.perfil_n);
+            res.json(result.permissoes);
+        }catch (e) {
+            res.json(e);
+        }
+    }
+
+    async relatedList(req, res){
+        const email = req.params.email;
+        try {
+            const result = await UsuarioRepository.searchRelatedList({criadoPor: email});
+            res.json(result);
         }catch (e) {
             res.json(e);
         }

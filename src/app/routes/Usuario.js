@@ -10,8 +10,9 @@ router.get('/usuario/:username', UsuarioController.findByUsername);
 router.patch('/usuario/:username', UsuarioController.updateByUsername);
 router.delete('/usuario/:username', UsuarioController.deleteByUsername);
 router.post('/usuario/ativarUsuario/:token', UsuarioController.activateUserOrRecoverUser);
-router.post('/usuario/userLogin', UsuarioController.userLogin);
 router.post('/usuario/recuperarUsuario', UsuarioController.recoverUser);
 router.post('/usuario/recuperarUsuario/:token', UsuarioController.activateUserOrRecoverUser)
+router.get('/usuario/:username/permissions', UsuarioController.PermissionsUser);
+router.get('/usuario/relatedList/:email', UsuarioController.relatedList);
 
 export default router;
