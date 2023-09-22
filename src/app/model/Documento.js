@@ -4,9 +4,10 @@ const documentoSchema = new mongoose.Schema({
     id: Number,
     nome: String,
     documento: {
-        nome: String,
-        data: Buffer,
-        contentType: String
+        originalname: String,
+        mimetype: String,
+        buffer: Buffer,
+        size: Number
     },
     descricao: String,
     relacionadoA: String,
@@ -14,5 +15,5 @@ const documentoSchema = new mongoose.Schema({
     atualizado: String,
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, { collection: 'Documento' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
-
-export default documentoSchema;
+const documento = mongoose.model('Documento', documentoSchema);
+export default documento;

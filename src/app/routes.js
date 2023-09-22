@@ -1,6 +1,7 @@
 import { Router } from "express";
 import ArquivoRelacionado from "./routes/ArquivosRelacionados.js";
 import Campanha from "./routes/Campanha.js";
+import Documento from "./routes/Documento.js";
 import Conta from "./routes/Conta.js";
 import Lead from "./routes/Lead.js";
 import Oportunidade from "./routes/Oportunidade.js";
@@ -17,6 +18,7 @@ const router = Router();
 // Rotas
 router.post('/login', UsuarioController.userLogin);
 
+router.use(Documento);
 router.use(ArquivoRelacionado)
 router.use(Contato);
 router.use(Campanha);
