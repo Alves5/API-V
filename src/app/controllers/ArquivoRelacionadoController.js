@@ -1,97 +1,95 @@
-import ArquivoRelacionadoRepository from "../repositories/ArquivoRelacionadoRepository.js";
-import ArquivoRelacionado from "../model/ArquivoRelacionado.js";
-import moment from "moment";
-import AcessoRepository from "../repositories/AcessoRepository.js";
-import FormattedDateTime from "../Utils/FormattedDateTime.js";
+import ArquivoRelacionadoRepository from '../repositories/ArquivoRelacionadoRepository.js';
+import ArquivoRelacionado from '../model/ArquivoRelacionado.js';
 class ArquivoRelacionadoController {
-    async findAll(request, response) {
+    async store(req, res) {
         try {
-            const result = await ArquivoRelacionadoRepository.findAll();
-            response.json(result);
+            const { id, nomeDocumento, objetoReferente, criadoPor, atualizadoPor, camposAdicionais } = req.body;
+
+            const novoArquivoRelacionado = new ArquivoRelacionado({
+                id,
+                nomeDocumento,
+                objetoReferente,
+                arquivo: req.file,
+                criadoPor,
+                atualizadoPor,
+                camposAdicionais,
+            });
+            console.log(novoArquivoRelacionado);
+            await ArquivoRelacionadoRepository.create(novoArquivoRelacionado);
+
+            res.status(201).json({ message: 'Arquivo armazenado com sucesso!' });
         } catch (error) {
-            response.json(error);
+            console.error(error);
+            res.status(500).json({ message: 'Erro ao armazenar o arquivo.' });
         }
+
     }
 
-    async store(request, response) {
+    async index(req, res) {
         try {
-            const formattedDateTime = FormattedDateTime.formatted();
-            const arquivoRelacionado = new ArquivoRelacionado(
-                null,
-                request.body.nome,
-                request.body.objeto,
-                request.body.numero_contato,
-                request.body.arquivo,
-                formattedDateTime,
-                request.body.criado_por,
-                formattedDateTime,
-                request.body.atualizado_por
-            );
-            await ArquivoRelacionadoRepository.create(arquivoRelacionado);
-            response.json({message: 'Success'});
+            const arquivoRelacionados = await ArquivoRelacionadoRepository.findAll();
+            res.status(200).json(arquivoRelacionados);
         } catch (error) {
-            response.json(error);
+            console.error(error);
+            res.status(500).json({ message: 'Erro ao buscar os arquivos.' });
         }
     }
 
-    async findById(request, response) {
+    async show(req, res) {
         try {
-            const id = request.params.id;
-            const result = await ArquivoRelacionadoRepository.findById(id);
-            if (Object.keys(result).length == 0) {
-                response.json({message: "ID not found"});
-            } else {
-                response.json(result);
-            }
-        } catch (e) {
-            response.json(e);
-        }
-    }
-
-    async updateById(request, response) {
-        const id = request.params.id;
-        try {
-            const exists = await ArquivoRelacionadoRepository.findById(id);
-            if (Object.keys(exists).length == 0) {
-                response.json({message: "ID not found"});
-            } else {
-                try {
-                    const formattedDateTime = FormattedDateTime.formatted();
-                    exists[0]['created_at'] = moment().format('YYYY/MM/DD HH:mm:ss');
-                    const arquivoRelacionado = new ArquivoRelacionado(
-                        request.body.id,
-                        request.body.nome,
-                        request.body.objeto,
-                        request.body.numero_contato,
-                        request.body.arquivo,
-                        exists[0]['created_at'],
-                        exists[0]['Criado por'],
-                        formattedDateTime,
-                        request.body.atualizado_por
-                    );
-                    await ArquivoRelacionadoRepository.update(arquivoRelacionado, id);
-                    response.json({message: "Success"});
-                } catch (e) {
-                    response.json(e);
-                }
-            }
-        } catch (e) {
-            response.json(e);
-        }
-    }
-
-    async deleteById(request, response) {
-        const id = request.params.id;
-        try {
-            const exists = await ArquivoRelacionadoRepository.findById(id);
-            if (Object.keys(exists).length == 0) {
-                response.json({ message: "ID not found" });
-            } else {
-                await ArquivoRelacionadoRepository.delete(id);
-                response.json({ message: "Success" });
-            }
+            const { id } = req.params;
+            const arquivoRelacionado = await ArquivoRelacionadoRepository.findById(id);
+            res.status(200).json(arquivoRelacionado);
         } catch (error) {
-            response.json(error);
+            console.error(error);
+            res.status(500).json({ message: 'Erro ao buscar o arquivo.' });
+        }
+    }
+
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const { nomeDocumento, objetoReferente, criadoPor, atualizadoPor, camposAdicionais } = req.body;
+
+            const arquivoRelacionado = await ArquivoRelacionadoRepository.findById(id);
+
+            if (!arquivoRelacionado) {
+                res.status(404).json({ message: 'Arquivo não encontrado.' });
+            }
+
+            const arquivoRelacionadoAtualizado = {
+                nomeDocumento,
+                objetoReferente,
+                arquivo: req.file,
+                criadoPor,
+                atualizadoPor,
+                camposAdicionais,
+            };
+
+            await ArquivoRelacionadoRepository.update(id, arquivoRelacionadoAtualizado);
+
+            res.status(200).json({ message: 'Arquivo atualizado com sucesso!' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Erro ao atualizar o arquivo.' });
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            const { id } = req.params;
+            const arquivoRelacionado = await ArquivoRelacionadoRepository.findById(id);
+
+            if (!arquivoRelacionado) {
+                res.status(404).json({ message: 'Arquivo não encontrado.' });
+            }
+
+            await ArquivoRelacionadoRepository.delete(id);
+
+            res.status(200).json({ message: 'Arquivo excluído com sucesso!' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Erro ao excluir o arquivo.' });
         }
     }
 

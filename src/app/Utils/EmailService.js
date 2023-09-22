@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 class EmailService {
-    enviarEmail() {
+    enviarEmail(subject, html) {
         // Configurações de transporte para o servidor SMTP
         let transport = nodemailer.createTransport({
             host: "sandbox.smtp.mailtrap.io",
@@ -15,8 +15,8 @@ class EmailService {
         let mailOptions = {
             from: 'danielalves.jittechnology@gmail.com',
             to: 'dtest.treinamentos@gmail.com',
-            subject: 'Teste de Email',
-            text: 'Olá, este é um email de teste!'
+            subject: subject,
+            html: html
         };
 
         // Enviar email

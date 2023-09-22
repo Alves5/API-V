@@ -1,133 +1,98 @@
 import ContatoRepository from "../repositories/ContatoRepository.js";
-import Contato from "../model/Contato.js";
-import FormattedDateTime from "../Utils/FormattedDateTime.js";
 
-class ContatoController{
-    async findAll(request, response){
+class ContatoController {
+    async findAll(req, res){
         try {
             const result = await ContatoRepository.findAll();
-            response.json(result);
+            res.json(result);
         }catch (e) {
-            response.json(e);
+            res.json(e);
         }
     }
 
-    async store(request, response){
-        const numero = request.body.numero;
+    async store(req, res) {
+        const contato = req.body;
+        const numero = req.body.numero;
         try {
             const exists = await ContatoRepository.findByNumero(numero);
-            if (Object.keys(exists).length != 0){
-                response.json({status: 200, message: 'Contact already exists'});
+            if (exists !== null){
+                res.json({status: false, message: 'Document already created'});
             }else{
                 try {
-                    const formattedDateTime = FormattedDateTime.formatted();
-                    const contato = new Contato(
-                        null,
-                        request.body.nome_completo,
-                        request.body.numero,
-                        formattedDateTime,
-                        null,
-                        request.body.responsavel,
-                        request.body.criado_por,
-                        null,
-                        request.body.nacionalidade,
-                        request.body.data_nascimento,
-                        request.body.cpf,
-                        request.body.identidade,
-                        request.body.cep,
-                        request.body.endereco,
-                        request.body.bairro,
-                        request.body.cidade,
-                        request.body.estado,
-                        request.body.email
-                    );
                     await ContatoRepository.create(contato);
-                    response.json({message: 'Success'});
+                    res.json({status: true, message: 'Success'});
                 }catch (e) {
-                    response.json(e);
+                    res.json(e);
                 }
             }
         }catch (e) {
-            response.json(e);
+            res.json(e);
         }
     }
 
-    async findByNumero(request, response){
-        const numero = request.params.numero;
+    async findByNumero(req, res){
+        const numero = req.params.numero;
         try {
             const result = await ContatoRepository.findByNumero(numero);
-            Object.keys(result).length == 0 ? response.json({message: 'Number not found'}) : response.json(result);
-        }catch (e) {
-            response.json(e);
-        }
-    }
-
-    async updateByNumero(request, response){
-        const numero = request.params.numero;
-        try {
-            const exists = await ContatoRepository.findByNumero(numero);
-            if (Object.keys(exists).length == 0){
-                response.json({message: 'Number not found'});
+            if (result !== null){
+                res.json(result);
             }else{
-                try {
-                    const formattedDateTime = FormattedDateTime.formatted();
-                    const contato = new Contato(
-                        null,
-                        request.body.nome_completo,
-                        null,
-                        null,
-                        formattedDateTime,
-                        request.body.responsavel,
-                        null,
-                        request.body.atualizado_por,
-                        request.body.nacionalidade,
-                        request.body.data_nascimento,
-                        request.body.cpf,
-                        request.body.identidade,
-                        request.body.cep,
-                        request.body.endereco,
-                        request.body.bairro,
-                        request.body.cidade,
-                        request.body.estado,
-                        request.body.email
-                    );
-                    await ContatoRepository.update(contato, numero);
-                    response.json({message: 'Success'});
-                }catch (e) {
-                    response.json(e);
-                }
+                res.json({status: false, message: 'Document not found'});
             }
         }catch (e) {
-            response.json(e);
+            res.json(e);
         }
     }
-
-    async deleteByNumero(request, response){
-        const numero = request.params.numero;
+    
+    async updateByNumero(req, res){
+        const numero = req.params.numero;
+        const contato = req.body;
         try {
-            const exists = await ContatoRepository.findByNumero(numero);
-            if (Object.keys(exists).length == 0){
-                response.json({message: 'Number not found'});
+            const result = await ContatoRepository.update(numero, contato);
+            if (result.modifiedCount === 1){
+                res.json({status: true, message: 'Success. Document updated'});
             }else{
-                await ContatoRepository.delete(numero);
-                response.json({message: 'Success'});
+                res.json({status: false, message: 'Document not found or not updated'});
             }
         }catch (e) {
-            response.json(e);
+            res.json(e);
         }
     }
 
-    async findRelatedList(request, response){
-        let {objeto, numero} = request.params;
+    async deleteByNumero(req, res){
+        const numero = req.params.numero;
         try {
-            if (objeto === 'ArquivoRelacionado'){
-                objeto = 'Arquivo relacionado';
+            const result = await ContatoRepository.delete(numero);
+            if (result.deletedCount === 1){
+                res.json({status: true, message: 'Success. Deleted document'})
+            }else{
+                res.json({status: false, message: 'Document not found or not deleted'});
             }
-            const result = await ContatoRepository.findRelatedList(objeto, numero);
-            Object.keys(result).length == 0 ? response.json({status: 404, message: 'No record found'}) : response.json(result);
         }catch (e) {
-            response.json(e);
+            res.json(e);
         }
     }
+
+    async relatedList(req, res){
+        const numeroContato = req.params.numero;
+        try {
+            const exists = await ContatoRepository.findByNumero(numeroContato);
+            if (!exists){
+                res.json({status: false, message: 'Document not found'});
+                return false;
+            }
+
+            const result = await ContatoRepository.searchRelatedList(numeroContato);
+            if (Object.keys(result).length !== 0){
+                res.json(result);
+            }else{
+                res.json({status: false, message: 'No records found'});
+            }
+        }catch (e) {
+            res.json(e);
+        }
+    }
+
 }
+
 export default new ContatoController();

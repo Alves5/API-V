@@ -1,36 +1,20 @@
-import QueryObjectUtils from "../Utils/QueryObjectUtils.js";
-class PerfilRepository{
+import PerfilModel from "../model/Perfil.js";
+class PerfilRepository {
     findAll(){
-        const sql = "SELECT * FROM Perfil ORDER BY Nome ASC;";
-        return QueryObjectUtils.queryObjeto(sql);
+        return PerfilModel.find();
     }
-    create(perfil){
-        const sql = "INSERT INTO Perfil(Nome, `Acessa configurações`, `Criado por`, `Atualizado por`, created_at, updated_at) VALUES(?,?,?,?,?,?);"
-        return QueryObjectUtils.queryObjeto(sql, [
-            perfil.nome,
-            perfil.acessa_configuracoes,
-            perfil.criado_por,
-            perfil.atualizado_por,
-            perfil.created_at,
-            perfil.updated_at
-        ])
+    create(per){
+        const perfil = new PerfilModel(per);
+        perfil.save();
     }
     findByNome(nome){
-        const sql = `SELECT * FROM Perfil WHERE Nome='${nome}';`;
-        return QueryObjectUtils.queryObjeto(sql);
+        return PerfilModel.findOne({nome: nome});
     }
-    update(perfil, nome){
-        const sql = "UPDATE Perfil SET `Acessa configurações`=?, `Atualizado por`=?, updated_at=?  WHERE Nome='"+nome+"';";
-        return QueryObjectUtils.queryObjeto(sql, [
-            perfil.acessa_configuracoes,
-            perfil.atualizado_por,
-            perfil.updated_at
-        ]);
+    update(nome, per){
+        return PerfilModel.updateOne({nome: nome}, {$set: per}, {new: true});
     }
     delete(nome){
-        const sql = `DELETE FROM Perfil WHERE Nome='${nome}';`;
-        return QueryObjectUtils.queryObjeto(sql);
+        return PerfilModel.deleteOne({nome: nome});
     }
-
 }
 export default new PerfilRepository();

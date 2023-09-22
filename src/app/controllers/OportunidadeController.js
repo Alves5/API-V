@@ -1,9 +1,9 @@
-import ContratoRepository from "../repositories/ContratoRepository.js";
+import OportunidadeRepository from "../repositories/OportunidadeRepository.js";
 
-class ContratoController {
+class OportunidadeController {
     async findAll(req, res){
         try {
-            const result = await ContratoRepository.findAll();
+            const result = await OportunidadeRepository.findAll();
             res.json(result);
         }catch (e) {
             res.json(e);
@@ -11,15 +11,15 @@ class ContratoController {
     }
 
     async store(req, res) {
-        const contrato = req.body;
-        const numero = req.body.numeroContrato;
+        const oportunidade = req.body;
+        const numero = req.body.numeroOportunidade;
         try {
-            const exists = await ContratoRepository.findByNumero(numero);
+            const exists = await OportunidadeRepository.findByNumero(numero);
             if (exists !== null){
                 res.json({status: false, message: 'Document already created'});
             }else{
                 try {
-                    await ContratoRepository.create(contrato);
+                    await OportunidadeRepository.create(oportunidade);
                     res.json({status: true, message: 'Success'});
                 }catch (e) {
                     res.json(e);
@@ -31,9 +31,9 @@ class ContratoController {
     }
 
     async findByNumero(req, res){
-        const numero = req.params.numeroContrato;
+        const numero = req.params.numeroOportunidade;
         try {
-            const result = await ContratoRepository.findByNumero(numero);
+            const result = await OportunidadeRepository.findByNumero(numero);
             if (result !== null){
                 res.json(result);
             }else{
@@ -45,10 +45,10 @@ class ContratoController {
     }
 
     async updateByNumero(req, res){
-        const numero = req.params.numeroContrato;
-        const contrato = req.body;
+        const numero = req.params.numeroOportunidade;
+        const oportunidade = req.body;
         try {
-            const result = await ContratoRepository.update(numero, contrato);
+            const result = await OportunidadeRepository.update(numero, oportunidade);
             if (result.modifiedCount === 1){
                 res.json({status: true, message: 'Success. Document updated'});
             }else{
@@ -60,9 +60,9 @@ class ContratoController {
     }
 
     async deleteByNumero(req, res){
-        const numero = req.params.numeroContrato;
+        const numero = req.params.numeroOportunidade;
         try {
-            const result = await ContratoRepository.delete(numero);
+            const result = await OportunidadeRepository.delete(numero);
             if (result.deletedCount === 1){
                 res.json({status: true, message: 'Success. Deleted document'})
             }else{
@@ -73,4 +73,4 @@ class ContratoController {
         }
     }
 }
-export default new ContratoController();
+export default new OportunidadeController();

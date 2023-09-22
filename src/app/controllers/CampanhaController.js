@@ -1,25 +1,26 @@
-import PerfilRepository from "../repositories/PerfilRepository.js";
+import CampanhaRepository from "../repositories/CampanhaRepository.js";
+import ContatoMongoRepository from "../repositories/ContatoRepository.js";
 
-class PerfilController {
+class CampanhaController {
     async findAll(req, res){
         try {
-            const result = await PerfilRepository.findAll();
-            (Object.keys(result).length !== 0) ? res.json(result) : res.json({status: false, message: 'No documents found'});
+            const result = await CampanhaRepository.findAll();
+            (result !== null) ? res.json(result) : res.json({status: false, message: 'No documents found'});
         }catch (e) {
             res.json(e);
         }
     }
 
     async store(req, res){
-        const perfil = req.body;
-        const nome = req.body.nome;
+        const campanha = req.body;
+        const codigo = req.body.codigo;
         try {
-            const exists = await PerfilRepository.findByNome(nome);
+            const exists = await CampanhaRepository.findByCodigo(codigo);
             if (exists !== null){
                 res.json({status: false, message: "Document already created"});
             }else{
                 try {
-                    await PerfilRepository.create(perfil);
+                    await CampanhaRepository.create(campanha);
                     res.json({status: true, message: 'Success'});
                 }catch (e) {
                     res.json(e);
@@ -30,10 +31,10 @@ class PerfilController {
         }
     }
 
-    async findByNome(req, res){
-        const nome = req.params.nome;
+    async findByCodigo(req, res){
+        const codigo = req.params.codigo;
         try {
-            const result = await PerfilRepository.findByNome(nome);
+            const result = await CampanhaRepository.findByCodigo(codigo);
             (result !== null) ? res.json(result) : res.json({status: false, message: 'Document not found'});
         }catch (e) {
             res.json(e);
@@ -41,10 +42,10 @@ class PerfilController {
     }
 
     async update(req, res){
-        const nome = req.params.nome;
-        const perfil = req.body;
+        const codigo = req.params.codigo;
+        const campanha = req.body;
         try {
-            const result = await PerfilRepository.update(nome, perfil);
+            const result = await CampanhaRepository.update(codigo, campanha);
             if (result.modifiedCount === 1){
                 res.json({status: true, message: 'Success. Document updated'});
             }else{
@@ -55,10 +56,10 @@ class PerfilController {
         }
     }
 
-    async deleteByNome(req, res){
-        const nome = req.params.nome;
+    async deleteByCodigo(req, res){
+        const codigo = req.params.codigo;
         try {
-            const result = await PerfilRepository.delete(nome);
+            const result = await CampanhaRepository.delete(codigo);
             if (result.deletedCount === 1){
                 res.json({status: true, message: 'Success. Deleted document'})
             }else{
@@ -69,4 +70,4 @@ class PerfilController {
         }
     }
 }
-export default new PerfilController();
+export default new CampanhaController();
