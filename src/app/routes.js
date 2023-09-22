@@ -10,10 +10,13 @@ import Contato from "./routes/Contato.js";
 import Contrato from "./routes/Contrato.js";
 import Orcamento from "./routes/Orcamento.js";
 import Perfil from "./routes/Perfil.js";
+import UsuarioController from "./controllers/UsuarioController.js";
 
 const router = Router();
 
 // Rotas
+router.post('/login', UsuarioController.userLogin);
+
 router.use(ArquivoRelacionado)
 router.use(Contato);
 router.use(Campanha);

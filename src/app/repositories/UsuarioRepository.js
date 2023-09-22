@@ -1,5 +1,6 @@
 import UsuarioModel from "../model/Usuario.js";
-import usuarioModel from "../model/Usuario.js";
+import PerfilModel from "../model/Perfil.js";
+import ContatoModel from "../model/Contato.js";
 
 class UsuarioRepository {
     findAll(){
@@ -29,6 +30,14 @@ class UsuarioRepository {
 
     searchUserLogin(email, senha){
         return UsuarioModel.findOne({email: email, senha: senha});
+    }
+
+    searchProfileAndPermissions(nomePerfil){
+        return PerfilModel.findOne({nome: nomePerfil});
+    }
+
+    searchRelatedList(filter){
+        return ContatoModel.find(filter).sort({createdAt: -1});
     }
 
 }
