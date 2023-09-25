@@ -2141,7 +2141,22 @@
             "type": "string"
           },
           "modeloContrato": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+              "originalname" : {
+                "type": "string"
+              },
+              "mimetype"  : {
+                "type": "string"
+              },
+              "buffer": {
+                "type": "string",
+                "format": "binary"
+              },
+              "size": {
+                "type": "number"
+              }
+            }
           },
           "descricao": {
             "type": "string"
@@ -2296,7 +2311,48 @@
           "nomeCompleto": {
             "type": "string"
           },
-          "companhia": {
+          "resposavel": {
+            "type": "string"
+          },
+          "tipoLead": {
+            "type": "string"
+          },
+          "empresa": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }]
+          },
+          "origem": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }]
+          },
+          "dataNascimento": {
+            "type": "string",
+            "format": "Date"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "nacionalidade": {
             "type": "string"
           },
           "telefone": {
@@ -2305,7 +2361,31 @@
           "email": {
             "type": "string"
           },
+          "website": {
+            "type": "string"
+          },
+          "cep": {
+            "type": "string"
+          },
+          "logradouro": {
+            "type": "string"
+          },
+          "numero": {
+            "type": "string"
+          },
+          "bairro": {
+            "type": "string"
+          },
+          "cidade": {
+            "type": "string"
+          },
+          "pais": {
+            "type": "string"
+          },
           "status": {
+            "type": "string"
+          },
+          "companhia": {
             "type": "string"
           },
           "criadoPor": {
@@ -2322,7 +2402,48 @@
           "nomeCompleto": {
             "type": "string"
           },
-          "companhia": {
+          "resposavel": {
+            "type": "string"
+          },
+          "tipoLead": {
+            "type": "string"
+          },
+          "empresa": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }]
+          },
+          "origem": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }]
+          },
+          "dataNascimento": {
+            "type": "string",
+            "format": "Date"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "nacionalidade": {
             "type": "string"
           },
           "telefone": {
@@ -2331,7 +2452,31 @@
           "email": {
             "type": "string"
           },
+          "website": {
+            "type": "string"
+          },
+          "cep": {
+            "type": "string"
+          },
+          "logradouro": {
+            "type": "string"
+          },
+          "numero": {
+            "type": "string"
+          },
+          "bairro": {
+            "type": "string"
+          },
+          "cidade": {
+            "type": "string"
+          },
+          "pais": {
+            "type": "string"
+          },
           "status": {
+            "type": "string"
+          },
+          "companhia": {
             "type": "string"
           },
           "criadoPor": {
@@ -3105,24 +3250,38 @@
       },
       "Perfil": {
         "required": [
-          "acessa_configuracoes",
-          "atualizado_por",
-          "criado_por",
-          "nome"
+          "nome",
+          "permissoes"
         ],
         "type": "object",
         "properties": {
           "nome": {
             "type": "string"
           },
-          "acessa_configuracoes": {
-            "type": "integer",
-            "format": "tinyint"
+          "permissoes": {
+            "type": "object",
+            "properties": {
+              "criar": {
+                "type": "boolean"
+              },
+              "excluir": {
+                "type": "boolean"
+              },
+              "editar": {
+                "type": "boolean"
+              },
+              "editarTodos": {
+                "type": "boolean"
+              },
+              "verTodos": {
+                "type": "boolean"
+              }
+            }
           },
-          "criado_por": {
+          "criadoPor": {
             "type": "string"
           },
-          "atualizado_por": {
+          "atualizadoPor": {
             "type": "string"
           }
         }
