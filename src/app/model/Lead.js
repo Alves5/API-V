@@ -4,10 +4,30 @@ const leadSchema = new mongoose.Schema({
         id: Number,
         codigo: String,
         nomeCompleto: String,
-        companhia: String,
+        resposavel: String,
+        tipoLead: String,
+        empresa: [{
+            name: String,
+            value: String
+        }],
+        origem: [{
+            name: String,
+            value: String
+        }],
+        dataNascimento: Date,
+        cpf: String,
+        nacionalidade: String,
         telefone: String,
         email: String,
+        website: String,
+        cep: String,
+        logradouro: String,
+        numero: String,
+        bairro: String,
+        cidade: String,
+        pais: String,
         status: String,
+        companhia: String,
         criadoPor: String,
         atualizadoPor: String,
         camposAdicionais: mongoose.Schema.Types.Mixed
