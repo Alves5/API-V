@@ -6,7 +6,6 @@
     "version": "1.0.0"
   },
   "servers": [
-    
     {
       "url": "https://creepy-top-hat-bull.cyclic.cloud/",
       "description": "Online server"
