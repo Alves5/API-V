@@ -20,14 +20,20 @@ const leadSchema = new mongoose.Schema({
         telefone: String,
         email: String,
         website: String,
-        cep: String,
-        logradouro: String,
-        numero: String,
-        bairro: String,
-        cidade: String,
-        pais: String,
+        endereco: {
+            cep: String,
+            logradouro: String,
+            numero: String,
+            bairro: String,
+            cidade: String,
+            estado: String,
+            pais: String
+        },
         status: String,
         companhia: String,
+        campanha_n:[{
+            codigo: String
+        }],
         criadoPor: String,
         atualizadoPor: String,
         camposAdicionais: mongoose.Schema.Types.Mixed

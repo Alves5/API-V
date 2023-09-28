@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "start": "node ./src/config/server/server.js",
+    "start": "nodemon ./src/config/server/server.js",
     "dev": "nodemon ./src/config/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

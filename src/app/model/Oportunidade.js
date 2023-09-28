@@ -8,7 +8,11 @@ const oportunidadeSchema = new mongoose.Schema({
         nomeOportunidade: String,
         nomeConta: String,
         tipo: String,
-        leadSource: String,
+        funcoesContato: [{
+            codigo: String,
+            nome: String,
+            funcao: String
+        }],
         quantia: Decimal128,
         dataEncerramento: Date,
         proximaEtapa: String,
@@ -16,6 +20,20 @@ const oportunidadeSchema = new mongoose.Schema({
         propabilidade: String,
         origemPrincipalCampanha: String,
         descricao: String,
+        produto_n: [{
+            codigo: String,
+            quantidade: {
+                type: Number,
+                default: null
+            },
+            preco: {
+                type: Decimal128,
+                default: null
+            },
+        }],
+        arquivoRelacionado_n: [{
+            codigo: String
+        }],
         criadoPor: String,
         atualizadoPor: String,
         camposAdicionais: mongoose.Schema.Types.Mixed

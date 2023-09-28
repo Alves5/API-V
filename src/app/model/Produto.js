@@ -2,11 +2,18 @@ import mongoose from "mongoose";
 
 const produtoSchema = new mongoose.Schema({
     id: Number,
-    nomeProduto: String,
-    status: String,
+    nome: String,
+    ativo: Boolean,
     criadoPor: String,
     atualizadoPor: String,
     camposAdicionais: mongoose.Schema.Types.Mixed
-}, { collection: 'Produto' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
+}, {
+    timestamps: true,
+    versionKey: false,
+    _id: true,
+    strict: false,
+    collection: 'Produto'});
 
-export default produtoSchema;
+const produtoModel = mongoose.model('Produto', produtoSchema);
+
+export default produtoModel;
