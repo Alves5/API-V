@@ -71,25 +71,46 @@ class LeadController {
     }
 
     async convertLeadToContact(req, res){
-        const {nomeCompleto, companhia, telefone, email, criadoPor} = req.body;
+        const lead = req.body;
         try {
+            const empresas = lead.empresa || [];
+            const origens = lead.origem || [];
+            const campanhas = lead.campanha_n || [];
+
             const contato = new Contato({
-                numero: telefone,
-                nomeCompleto: nomeCompleto,
-                companhia: companhia,
-                responsavel: null,
-                nacionalidade: null,
-                dataNascimento: null,
-                cpf: null,
+                numero: lead.telefone,
+                nomeCompleto: lead.nomeCompleto,
+                resposavel: lead.resposavel,
+                empresa: empresas.map(empresa => ({
+                    name: empresa.name || null,
+                    value: empresa.value || null
+                })),
+                origem: origens.map(origem => ({
+                    name: origem.name || null,
+                    value: origem.value || null
+                })),
+                dataNascimento: lead.dataNascimento,
+                cpf: lead.cpf,
                 identidade: null,
-                cep: null,
-                endereco: null,
-                bairro: null,
-                cidade: null,
-                estado: null,
-                email: email,
-                criadoPor: criadoPor,
-                atualizadoPor: null
+                nacionalidade: lead.nacionalidade,
+                email: lead.email,
+                website: lead.website,
+                endereco: {
+                    cep: lead.cep,
+                    logradouro: lead.logradouro,
+                    numero: lead.numero,
+                    bairro: lead.bairro,
+                    cidade: lead.cidade,
+                    estado: lead.estado,
+                    pais: lead.pais
+                },
+                companhia: lead.companhia,
+                campanha_n: campanhas.map(campanha => ({
+                    codigo: campanha.codigo || null
+                })),
+                arquivoRelacionado: [],
+                criadoPor: lead.criadoPor,
+                atualizadoPor: lead.atualizadoPor
             });
             await ContatoRepository.create(contato);
             res.json({status: true, message: 'Lead convertida para Contato'});

@@ -12,6 +12,13 @@ const tarefaSchema = new mongoose.Schema({
     criadoPor: String,
     atualizadoPor: String,
     camposAdicionais: mongoose.Schema.Types.Mixed
-}, { collection: 'Tarefa' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
+}, {
+    timestamps: true,
+    versionKey: false,
+    _id: true,
+    strict: false,
+    collection: 'Tarefa'});
 
-export default tarefaSchema;
+const tarefaModel = mongoose.model('Tarefa', tarefaSchema);
+
+export default tarefaModel;

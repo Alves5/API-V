@@ -11,6 +11,8 @@ import Contato from "./routes/Contato.js";
 import Contrato from "./routes/Contrato.js";
 import Orcamento from "./routes/Orcamento.js";
 import Perfil from "./routes/Perfil.js";
+import Tarefa from "./routes/Tarefa.js";
+import Proposta from "./routes/Proposta.js";
 import UsuarioController from "./controllers/UsuarioController.js";
 
 const router = Router();
@@ -30,5 +32,7 @@ router.use(Usuario);
 router.use(Contrato);
 router.use(Orcamento);
 router.use(Perfil);
+router.use(Tarefa);
+router.use(Proposta);
 
 export default router;

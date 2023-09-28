@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {Double} from "mongodb";
+import {Decimal128} from "mongodb";
 
 const propostaSchema = new mongoose.Schema({
     id: Number,
@@ -10,41 +10,48 @@ const propostaSchema = new mongoose.Schema({
     cidade: String,
     instituicao: String,
     tipo: String,
-    valor: Double,
+    valor: Decimal128,
     turma: String,
     duracao: String,
     cargaHoraria: Date,
     tipoAcomodacao: String,
     duracaoAcomodacao: String,
-    valorAcomodacao: Double,
+    valorAcomodacao: Decimal128,
     descricaoTaxaAcomodacao: String,
-    taxaAcomodacao: Double,
+    taxaAcomodacao: Decimal128,
     descricaoAgenciaAcomodacao: String,
     agenciaAcomodacao: String,
-    cambio: Double,
-    totalPessoa: Double,
+    cambio: Decimal128,
+    totalPessoa: Decimal128,
     moedaContratante: String,
     simboloMoedaContratante: String,
     moedaDestino: String,
     simboloMoedaDestino: String,
     dataPrevistaEmbarque: Date,
     dataMaximaEmbarque: Date,
-    taxaDesistenciaAluno: Double,
-    valorEntrada: Double,
+    taxaDesistenciaAluno: Decimal128,
+    valorEntrada: Decimal128,
     tipoPagamentoEntrada: String,
     dataEntrada: Date,
     quantidadeParcela: {
         type: Number,
         validate:{
-            validator: Number.isInteger(),
+            validator: Number.isInteger,
             message: '{VALUE} is not an integer value'
         }
     },
-    valorParcela: Double,
+    valorParcela: Decimal128,
     tipoPagamentoParcela: String,
     criadoPor: String,
     atualizadoPor: String,
     camposAdicionais: mongoose.Schema.Types.Mixed
-}, { collection: 'Proposta' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
+}, {
+    timestamps: true,
+    versionKey: false,
+    _id: true,
+    strict: false,
+    collection: 'Proposta'});
 
-export default propostaSchema;
+const propostaModel = mongoose.model('Proposta', propostaSchema)
+
+export default propostaModel;

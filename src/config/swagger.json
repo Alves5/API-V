@@ -262,7 +262,7 @@
           "Lead"
         ],
         "description": "retorna todos os registros",
-        "operationId": "findAll",
+        "operationId": "findAllLead",
         "responses": {
           "200": {
             "description": "Success"
@@ -272,7 +272,7 @@
       "post": {
         "tags": ["Lead"],
         "description": "Cria um novo Lead",
-        "operationId": "store",
+        "operationId": "storeLead",
         "requestBody": {
           "required": true,
           "content": {
@@ -376,7 +376,7 @@
           "Contato"
         ],
         "description": "retorna todos os registros",
-        "operationId": "findAll",
+        "operationId": "findAllContato",
         "responses": {
           "200": {
             "description": "Success"
@@ -386,7 +386,7 @@
       "post": {
         "tags": ["Contato"],
         "description": "Cria um novo Contato",
-        "operationId": "store",
+        "operationId": "storeContato",
         "requestBody": {
           "required": true,
           "content": {
@@ -410,7 +410,7 @@
           "Contato"
         ],
         "description": "retorna um registro especifico pelo número",
-        "operationId": "findByNumero",
+        "operationId": "findByNumeroContato",
         "parameters": [
           {
             "name": "numero",
@@ -674,7 +674,7 @@
           "Oportunidade"
         ],
         "description": "retorna um registro especifico pelo número",
-        "operationId": "findByNumero",
+        "operationId": "findByNumeroOportunidade",
         "parameters": [
           {
             "name": "numero",
@@ -1225,6 +1225,186 @@
             "schema": {
               "type": "integer",
               "format": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/produto": {
+      "get": {
+        "tags": [
+          "Produto"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllProduto",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Produto"],
+        "description": "Cria um novo produto",
+        "operationId": "createProduto",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Produto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/produto/{id}": {
+      "put": {
+        "tags": ["Produto"],
+        "description": "Atualiza um registro especifico",
+        "operationId": "updateByIdProduto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Produto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Produto"],
+        "description": "Remove um registro especifico",
+        "operationId": "deleteByIdProduto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/tarefa": {
+      "get": {
+        "tags": [
+          "Tarefa"
+        ],
+        "description": "retorna todos os registros",
+        "operationId": "findAllTarefa",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Tarefa"],
+        "description": "Cria uma nova Tarefa",
+        "operationId": "createTarefa",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tarefa"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/tarefa/{id}": {
+      "put": {
+        "tags": ["Tarefa"],
+        "description": "Atualiza um registro especifico",
+        "operationId": "updateByIdTarefa",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Produto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Tarefa"],
+        "description": "Remove um registro especifico",
+        "operationId": "deleteByIdTarefa",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1843,7 +2023,7 @@
           "Proposta"
         ],
         "description": "Retorna uma lista relacionada baseada no objeto e no numero especificado",
-        "operationId": "findByNumeroContratoContato",
+        "operationId": "findByNumeroContratoContatoProposta",
         "parameters": [
           {
             "name": "objeto",
@@ -2305,7 +2485,8 @@
       },
       "Lead": {
         "required": [
-          "codigo"
+          "codigo",
+          "telefone"
         ],
         "type": "object",
         "properties": {
@@ -2368,29 +2549,49 @@
           "website": {
             "type": "string"
           },
-          "cep": {
-            "type": "string"
-          },
-          "logradouro": {
-            "type": "string"
-          },
-          "numero": {
-            "type": "string"
-          },
-          "bairro": {
-            "type": "string"
-          },
-          "cidade": {
-            "type": "string"
-          },
-          "pais": {
-            "type": "string"
+          "endereco": {
+            "type": "object",
+            "properties": {
+              "cep": {
+                "type": "string"
+              },
+              "logradouro": {
+                "type": "string"
+              },
+              "numero": {
+                "type": "string"
+              },
+              "bairro": {
+                "type": "string"
+              },
+              "cidade": {
+                "type": "string"
+              },
+              "estado": {
+                "type": "string"
+              },
+              "pais": {
+                "type": "string"
+              }
+            }
           },
           "status": {
             "type": "string"
           },
           "companhia": {
             "type": "string"
+          },
+          "campanha_n": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                }
+              }
+            }
+            ]
           },
           "criadoPor": {
             "type": "string"
@@ -2401,6 +2602,9 @@
         }
       },
       "LeadSemCodigo": {
+        "required": [
+          "telefone"
+        ],
         "type": "object",
         "properties": {
           "nomeCompleto": {
@@ -2459,29 +2663,49 @@
           "website": {
             "type": "string"
           },
-          "cep": {
-            "type": "string"
-          },
-          "logradouro": {
-            "type": "string"
-          },
-          "numero": {
-            "type": "string"
-          },
-          "bairro": {
-            "type": "string"
-          },
-          "cidade": {
-            "type": "string"
-          },
-          "pais": {
-            "type": "string"
+          "endereco": {
+            "type": "object",
+            "properties": {
+              "cep": {
+                "type": "string"
+              },
+              "logradouro": {
+                "type": "string"
+              },
+              "numero": {
+                "type": "string"
+              },
+              "bairro": {
+                "type": "string"
+              },
+              "cidade": {
+                "type": "string"
+              },
+              "estado": {
+                "type": "string"
+              },
+              "pais": {
+                "type": "string"
+              }
+            }
           },
           "status": {
             "type": "string"
           },
           "companhia": {
             "type": "string"
+          },
+          "campanha_n": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                }
+              }
+            }
+            ]
           },
           "criadoPor": {
             "type": "string"
@@ -2503,14 +2727,36 @@
           "nomeCompleto": {
             "type": "string"
           },
-          "companhia": {
-            "type": "string"
-          },
           "responsavel": {
             "type": "string"
           },
-          "nacionalidade": {
-            "type": "string"
+          "empresa": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }]
+          },
+          "origem": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }]
           },
           "dataNascimento": {
             "type": "string",
@@ -2522,23 +2768,67 @@
           "identidade": {
             "type": "string"
           },
-          "cep": {
-            "type": "string"
-          },
-          "endereco": {
-            "type": "string"
-          },
-          "bairro": {
-            "type": "string"
-          },
-          "cidade": {
-            "type": "string"
-          },
-          "estado": {
+          "nacionalidade": {
             "type": "string"
           },
           "email": {
             "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "endereco": {
+            "type": "object",
+            "properties": {
+              "cep": {
+                "type": "string"
+              },
+              "logradouro": {
+                "type": "string"
+              },
+              "numero": {
+                "type": "string"
+              },
+              "bairro": {
+                "type": "string"
+              },
+              "cidade": {
+                "type": "string"
+              },
+              "estado": {
+                "type": "string"
+              },
+              "pais": {
+                "type": "string"
+              }
+            }
+          },
+          "companhia": {
+            "type": "string"
+          },
+          "campanha_n": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                }
+              }
+            }
+            ]
+          },
+          "arquivoRelacionado_n": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                }
+              }
+            }
+            ]
           },
           "criadoPor": {
             "type": "string"
@@ -2551,17 +2841,42 @@
       "ContatoSemNumero": {
         "type": "object",
         "properties": {
-          "nomeCompleto": {
+          "numero": {
             "type": "string"
           },
-          "companhia": {
+          "nomeCompleto": {
             "type": "string"
           },
           "responsavel": {
             "type": "string"
           },
-          "nacionalidade": {
-            "type": "string"
+          "empresa": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }]
+          },
+          "origem": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }]
           },
           "dataNascimento": {
             "type": "string",
@@ -2573,23 +2888,67 @@
           "identidade": {
             "type": "string"
           },
-          "cep": {
-            "type": "string"
-          },
-          "endereco": {
-            "type": "string"
-          },
-          "bairro": {
-            "type": "string"
-          },
-          "cidade": {
-            "type": "string"
-          },
-          "estado": {
+          "nacionalidade": {
             "type": "string"
           },
           "email": {
             "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "endereco": {
+            "type": "object",
+            "properties": {
+              "cep": {
+                "type": "string"
+              },
+              "logradouro": {
+                "type": "string"
+              },
+              "numero": {
+                "type": "string"
+              },
+              "bairro": {
+                "type": "string"
+              },
+              "cidade": {
+                "type": "string"
+              },
+              "estado": {
+                "type": "string"
+              },
+              "pais": {
+                "type": "string"
+              }
+            }
+          },
+          "companhia": {
+            "type": "string"
+          },
+          "campanha_n": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                }
+              }
+            }
+            ]
+          },
+          "arquivoRelacionado_n": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                }
+              }
+            }
+            ]
           },
           "criadoPor": {
             "type": "string"
@@ -2696,8 +3055,23 @@
           "tipo": {
             "type": "string"
           },
-          "leadSource": {
-            "type": "string"
+          "funcoesContato": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                },
+                "nome": {
+                  "type": "string"
+                },
+                "funcao": {
+                  "type": "string"
+                }
+              }
+            }
+            ]
           },
           "quantia": {
             "type": "number",
@@ -2721,6 +3095,38 @@
           },
           "descricao": {
             "type": "string"
+          },
+          "produto_n": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                },
+                "quantidade": {
+                  "type": "number",
+                  "format": "Integer"
+                },
+                "preco": {
+                  "type": "number",
+                  "format": "Decimal"
+                }
+              }
+            }
+            ]
+          },
+          "arquivoRelacionado_n": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                }
+              }
+            }
+            ]
           },
           "criadoPor": {
             "type": "string"
@@ -2745,8 +3151,23 @@
           "tipo": {
             "type": "string"
           },
-          "leadSource": {
-            "type": "string"
+          "funcoesContato": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                },
+                "nome": {
+                  "type": "string"
+                },
+                "funcao": {
+                  "type": "string"
+                }
+              }
+            }
+            ]
           },
           "quantia": {
             "type": "number",
@@ -2770,6 +3191,38 @@
           },
           "descricao": {
             "type": "string"
+          },
+          "produto_n": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                },
+                "quantidade": {
+                  "type": "number",
+                  "format": "Integer"
+                },
+                "preco": {
+                  "type": "number",
+                  "format": "Decimal"
+                }
+              }
+            }
+            ]
+          },
+          "arquivoRelacionado_n": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string"
+                }
+              }
+            }
+            ]
           },
           "criadoPor": {
             "type": "string"
@@ -3094,41 +3547,80 @@
         }
       },
       "ArquivoRelacionado": {
-        "required": [
-          "arquivo",
-          "created_at",
-          "nome",
-          "objeto",
-          "numero_contato",
-          "updated_at"
-        ],
+        "type": "object",
+        "properties": {
+          "nomeDocumento": {
+            "type": "string"
+          },
+          "arquivo": {
+            "type": "object",
+            "properties": {
+              "originalname": {
+                "type": "string"
+              },
+              "mimetype": {
+                "type": "string"
+              },
+              "buffer": {
+                "type": "string",
+                "format": "Buffer"
+              },
+              "size": {
+                "type": "number"
+              }
+            }
+          },
+          "criadoPor": {
+            "type": "string"
+          },
+          "atualizadoPor": {
+            "type": "string"
+          }
+        }
+      },
+      "Produto": {
         "type": "object",
         "properties": {
           "nome": {
             "type": "string"
           },
-          "objeto": {
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
             "type": "string"
           },
-          "numero_contato": {
+          "atualizadoPor": {
+            "type": "string"
+          }
+        }
+      },
+      "Tarefa": {
+        "type": "object",
+        "properties": {
+          "assunto": {
             "type": "string"
           },
-          "arquivo": {
-            "type": "integer",
-            "format": "int32"
+          "dataVencimento": {
+            "type": "string"
           },
-          "created_at": {
+          "prioridade": {
             "type": "string",
-            "format": "timestamp"
+            "enum": ["máxima", "média", "mínima"]
           },
-          "criado_por": {
+          "status": {
             "type": "string"
           },
-          "updated_at": {
-            "type": "string",
-            "format": "timestamp"
+          "nomeConta": {
+            "type": "string"
           },
-          "atualizado_por": {
+          "descricao": {
+            "type": "string"
+          },
+          "criadoPor": {
+            "type": "string"
+          },
+          "atualizadoPor": {
             "type": "string"
           }
         }
@@ -3392,17 +3884,14 @@
       },
       "Proposta": {
         "required": [
-          "atualizado_por",
-          "criado_por",
-          "fase",
-          "numero_proposta"
+          "numeroProposta"
         ],
         "type": "object",
         "properties": {
-          "numero_proposta": {
+          "numeroProposta": {
             "type": "string"
           },
-          "numero_contato": {
+          "numeroContato": {
             "type": "string"
           },
           "fase": {
@@ -3417,115 +3906,114 @@
           "instituicao": {
             "type": "string"
           },
-          "tipo_curso": {
+          "tipo": {
             "type": "string"
           },
-          "valor_curso": {
+          "valor": {
             "type": "number",
             "format": "decimal"
           },
-          "turma_curso": {
+          "turma": {
             "type": "string"
           },
-          "duracao_curso": {
+          "duracao": {
             "type": "string"
           },
-          "carga_horaria_curso": {
+          "cargaHoraria": {
             "type": "string"
           },
-          "tipo_acomodacao": {
+          "tipoAcomodacao": {
             "type": "string"
           },
-          "duracao_acomodacao": {
+          "duracaoAcomodacao": {
             "type": "string"
           },
-          "valor_acomodacao": {
+          "valorAcomodacao": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "descricao_taxa_acomodacao": {
+          "descricaoTaxaAcomodacao": {
             "type": "string"
           },
-          "taxa_acomodacao": {
+          "taxaAcomodacao": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "descricao_agencia_acomodacao": {
+          "descricaoAgenciaAcomodacao": {
             "type": "string"
           },
-          "agencia_acomodacao": {
+          "agenciaAcomodacao": {
             "type": "string"
           },
           "cambio": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "total_pessoa": {
+          "totalPessoa": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "moeda_contratante": {
+          "moedaContratante": {
             "type": "string"
           },
-          "simbolo_moeda_contratante": {
+          "simboloMoedaContratante": {
             "type": "string"
           },
-          "moeda_destino": {
+          "moedaDestino": {
             "type": "string"
           },
-          "simbolo_moeda_destino": {
+          "simboloMoedaDestino": {
             "type": "string"
           },
-          "data_prevista_embarque": {
+          "dataPrevistaEmbarque": {
             "type": "string",
             "format": "date"
           },
-          "data_maxima_embarque": {
+          "dataMaximaEmbarque": {
             "type": "string",
             "format": "date"
           },
-          "taxa_desistencia_aluno": {
+          "taxaDesistenciaAluno": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "tipo_pagamento": {
-            "type": "string"
-          },
-          "valor_entrada": {
+          "valorEntrada": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "data_entrada": {
+          "tipoPagamentoEntrada": {
+            "type": "string"
+          },
+          "dataEntrada": {
             "type": "string",
             "format": "date"
           },
-          "tipo_pagamento_entrada": {
-            "type": "string"
-          },
-          "quantidade_parcela": {
+          "quantidadeParcela": {
             "type": "integer",
             "format": "int32"
           },
-          "tipo_pagamento_parcela": {
+          "valorParcela": {
+            "type": "string",
+            "format": "Decimal"
+          },
+          "tipoPagamentoParcela": {
             "type": "string"
           },
-          "criado_por": {
+          "criadoPor": {
             "type": "string"
           },
-          "atualizado_por": {
+          "atualizadoPor": {
             "type": "string"
           }
         }
       },
       "PropostaSemNumeroProposta": {
-        "required": [
-          "atualizado_por",
-          "criado_por",
-          "fase"
-        ],
         "type": "object",
         "properties": {
-          "numero_contato": {
+          "numeroProposta": {
+            "type": "string"
+          },
+          "numeroContato": {
             "type": "string"
           },
           "fase": {
@@ -3540,99 +4028,103 @@
           "instituicao": {
             "type": "string"
           },
-          "tipo_curso": {
+          "tipo": {
             "type": "string"
           },
-          "valor_curso": {
+          "valor": {
             "type": "number",
             "format": "decimal"
           },
-          "turma_curso": {
+          "turma": {
             "type": "string"
           },
-          "duracao_curso": {
+          "duracao": {
             "type": "string"
           },
-          "carga_horaria_curso": {
+          "cargaHoraria": {
             "type": "string"
           },
-          "tipo_acomodacao": {
+          "tipoAcomodacao": {
             "type": "string"
           },
-          "duracao_acomodacao": {
+          "duracaoAcomodacao": {
             "type": "string"
           },
-          "valor_acomodacao": {
+          "valorAcomodacao": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "descricao_taxa_acomodacao": {
+          "descricaoTaxaAcomodacao": {
             "type": "string"
           },
-          "taxa_acomodacao": {
+          "taxaAcomodacao": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "descricao_agencia_acomodacao": {
+          "descricaoAgenciaAcomodacao": {
             "type": "string"
           },
-          "agencia_acomodacao": {
+          "agenciaAcomodacao": {
             "type": "string"
           },
           "cambio": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "total_pessoa": {
+          "totalPessoa": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "moeda_contratante": {
+          "moedaContratante": {
             "type": "string"
           },
-          "simbolo_moeda_contratante": {
+          "simboloMoedaContratante": {
             "type": "string"
           },
-          "moeda_destino": {
+          "moedaDestino": {
             "type": "string"
           },
-          "simbolo_moeda_destino": {
+          "simboloMoedaDestino": {
             "type": "string"
           },
-          "data_prevista_embarque": {
+          "dataPrevistaEmbarque": {
             "type": "string",
             "format": "date"
           },
-          "data_maxima_embarque": {
+          "dataMaximaEmbarque": {
             "type": "string",
             "format": "date"
           },
-          "taxa_desistencia_aluno": {
+          "taxaDesistenciaAluno": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "tipo_pagamento": {
-            "type": "string"
-          },
-          "valor_entrada": {
+          "valorEntrada": {
             "type": "number",
             "format": "decimal(10,2)"
           },
-          "data_entrada": {
+          "tipoPagamentoEntrada": {
+            "type": "string"
+          },
+          "dataEntrada": {
             "type": "string",
             "format": "date"
           },
-          "tipo_pagamento_entrada": {
-            "type": "string"
-          },
-          "quantidade_parcela": {
+          "quantidadeParcela": {
             "type": "integer",
             "format": "int32"
           },
-          "tipo_pagamento_parcela": {
+          "valorParcela": {
+            "type": "string",
+            "format": "Decimal"
+          },
+          "tipoPagamentoParcela": {
             "type": "string"
           },
-          "atualizado_por": {
+          "criadoPor": {
+            "type": "string"
+          },
+          "atualizadoPor": {
             "type": "string"
           }
         }

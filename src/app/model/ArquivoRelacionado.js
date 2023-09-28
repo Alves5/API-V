@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 const arquivoRelacionadoSchema = new mongoose.Schema({
+    id: Number,
     nomeDocumento: String,
-    objetoReferente: String,
     arquivo: {
         originalname : String,
         mimetype  : String,
@@ -12,6 +12,12 @@ const arquivoRelacionadoSchema = new mongoose.Schema({
     criadoPor: String,
     atualizadoPor: String,
     camposAdicionais: mongoose.Schema.Types.Mixed,
-}, { collection: 'ArquivoRelacionado' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
+}, {
+    timestamps: true,
+    versionKey: false,
+    _id: true,
+    strict: false,
+    collection: 'ArquivoRelacionado'});
+
 const arquivoRelacionadoModel = mongoose.model('ArquivoRelacionado', arquivoRelacionadoSchema);
 export default arquivoRelacionadoModel;
