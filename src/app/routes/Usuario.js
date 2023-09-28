@@ -7,7 +7,7 @@ import UsuarioController from "../controllers/UsuarioController.js";
 router.get('/usuario', UsuarioController.findAll);
 router.post('/usuario', UsuarioController.store);
 router.get('/usuario/:username', UsuarioController.findByUsername);
-router.patch('/usuario/:username', UsuarioController.updateByUsername);
+router.put('/usuario/:username', UsuarioController.updateByUsername);
 router.delete('/usuario/:username', UsuarioController.deleteByUsername);
 router.post('/usuario/ativarUsuario/:token', UsuarioController.activateUserOrRecoverUser);
 router.post('/usuario/recuperarUsuario', UsuarioController.recoverUser);

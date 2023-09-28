@@ -11,7 +11,7 @@ import BibliotecaController from "../controllers/BibliotecaController.js";
 router.post('/biblioteca', upload.single('modeloContrato') ,BibliotecaController.store);
 router.get('/biblioteca', BibliotecaController.findAll);
 router.get('/biblioteca/:codigo', BibliotecaController.findByCodigo);
-router.patch('/biblioteca/:codigo', upload.single('modeloContrato'), BibliotecaController.updateByCodigo);
+router.put('/biblioteca/:codigo', upload.single('modeloContrato'), BibliotecaController.updateByCodigo);
 router.delete('/biblioteca/:codigo', BibliotecaController.deleteByCodigo);
 
 export default router;

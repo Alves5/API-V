@@ -7,7 +7,7 @@ import OportunidadeController from "../controllers/OportunidadeController.js";
 router.get('/oportunidade', OportunidadeController.findAll);
 router.post('/oportunidade', OportunidadeController.store);
 router.get('/oportunidade/:numeroOportunidade', OportunidadeController.findByNumero);
-router.patch('/oportunidade/:numeroOportunidade', OportunidadeController.updateByNumero);
+router.put('/oportunidade/:numeroOportunidade', OportunidadeController.updateByNumero);
 router.delete('/oportunidade/:numeroOportunidade', OportunidadeController.deleteByNumero);
 
 export default router;

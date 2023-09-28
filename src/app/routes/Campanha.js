@@ -7,7 +7,7 @@ import CampanhaController from "../controllers/CampanhaController.js";
 router.post('/campanha', CampanhaController.store);
 router.get('/campanha/:codigo', CampanhaController.findByCodigo);
 router.get('/campanha', CampanhaController.findAll);
-router.patch('/campanha/:codigo', CampanhaController.update);
+router.put('/campanha/:codigo', CampanhaController.update);
 router.delete('/campanha/:codigo', CampanhaController.deleteByCodigo);
 
 export default router;

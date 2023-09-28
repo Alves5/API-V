@@ -11,7 +11,7 @@ import DocumentoController from "../controllers/DocumentoController.js";
 router.post('/documento', upload.single('documento'), DocumentoController.store);
 router.get('/documento', DocumentoController.findAll);
 router.get('/documento/:id', DocumentoController.findById);
-router.patch('/documento/:id', upload.single('documento'), DocumentoController.updateById);
+router.put('/documento/:id', upload.single('documento'), DocumentoController.updateById);
 router.delete('/documento/:id', DocumentoController.deleteById);
 
 

@@ -7,7 +7,7 @@ import ContaController from "../controllers/ContaController.js";
 router.get('/conta', ContaController.findAll);
 router.post('/conta', ContaController.store);
 router.get('/conta/:numeroConta', ContaController.findByNumero);
-router.patch('/conta/:numeroConta', ContaController.updateByNumero);
+router.put('/conta/:numeroConta', ContaController.updateByNumero);
 router.delete('/conta/:numeroConta', ContaController.deleteByNumero);
 
 export default router;

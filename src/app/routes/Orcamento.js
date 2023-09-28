@@ -7,7 +7,7 @@ import OrcamentoController from '../controllers/OrcamentoController.js';
 router.get('/orcamento', OrcamentoController.findAll);
 router.post('/orcamento', OrcamentoController.store);
 router.get('/orcamento/:numeroOrcamento', OrcamentoController.findByNumero);
-router.patch('/orcamento/:numeroOrcamento', OrcamentoController.updateByNumero);
+router.put('/orcamento/:numeroOrcamento', OrcamentoController.updateByNumero);
 router.delete('/orcamento/:numeroOrcamento', OrcamentoController.deleteByNumero);
 
 export default router;
