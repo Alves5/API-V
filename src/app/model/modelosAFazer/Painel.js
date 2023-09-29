@@ -7,6 +7,11 @@ const painelSchema = new mongoose.Schema({
     criadoPor: String,
     atualizadoPor: String,
     camposAdicionais: mongoose.Schema.Types.Mixed
-}, { collection: 'Painel' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
+}, {
+    timestamps: true,
+    versionKey: false,
+    _id: true,
+    strict: false,
+    collection: 'Painel'});
 
 export default painelSchema;

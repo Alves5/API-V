@@ -18,10 +18,9 @@ class BibliotecaController {
 
             await BibliotecaRepository.create(novaBiblioteca);
 
-            res.status(201).json({ message: 'Biblioteca armazenada com sucesso!' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao armazenar a biblioteca.' });
+            res.status(201).json({response: 1, message: 'Biblioteca armazenada com sucesso!' });
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao armazenar a biblioteca.', errors: e});
         }
 
     }
@@ -29,10 +28,13 @@ class BibliotecaController {
     async findAll(req, res) {
         try {
             const bibliotecas = await BibliotecaRepository.findAll();
-            res.status(200).json(bibliotecas);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao buscar as bibliotecas.' });
+            if(Object.keys(bibliotecas).length === 0){
+                res.status(200).json({response: 0, message: 'Nenhuma biblioteca encontrada.'});
+            }else{
+                res.status(200).json({response: bibliotecas, message: 'Bibliotecas encontradas com sucesso.'});
+            }
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao buscar as bibliotecas.', errors: e});
         }
     }
 
@@ -40,10 +42,13 @@ class BibliotecaController {
         try {
             const { codigo } = req.params;
             const biblioteca = await BibliotecaRepository.findByCodigo(codigo);
-            res.status(200).json(biblioteca);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao buscar a biblioteca.' });
+            if(biblioteca !== null){
+                res.status(200).json({response: biblioteca, message: "Biblioteca encontrada."});
+            }else{
+                res.status(200).json({response: 0, message: "Nenhuma biblioteca encontrada."});
+            }
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao buscar a biblioteca.', errors: e});
         }
     }
 
@@ -55,7 +60,7 @@ class BibliotecaController {
             const biblioteca = await BibliotecaRepository.findByCodigo(codigo);
 
             if (!biblioteca) {
-                res.status(404).json({ message: 'Biblioteca não encontrada.' });
+                res.status(404).json({response: 0, message: 'Biblioteca não encontrada.' });
             }
 
             const bibliotecaAtualizada = {
@@ -67,10 +72,9 @@ class BibliotecaController {
 
             await BibliotecaRepository.update(codigo, bibliotecaAtualizada);
 
-            res.status(200).json({ message: 'Biblioteca atualizada com sucesso!' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao atualizar a biblioteca.' });
+            res.status(200).json({response: 1, message: 'Biblioteca atualizada com sucesso!' });
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao atualizar a biblioteca.', errors: e});
         }
     }
 
@@ -81,15 +85,14 @@ class BibliotecaController {
             const biblioteca = await BibliotecaRepository.findByCodigo(codigo);
 
             if (!biblioteca) {
-                res.status(404).json({ message: 'Biblioteca não encontrada.' });
+                res.status(404).json({response: 0, message: 'Biblioteca não encontrada.' });
             }
 
             await BibliotecaRepository.delete(codigo);
 
-            res.status(200).json({ message: 'Biblioteca excluída com sucesso!' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao excluir a biblioteca.' });
+            res.status(200).json({response: 0, message: 'Biblioteca excluída com sucesso!' });
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao excluir a biblioteca.', errors: e});
         }
     }
 }

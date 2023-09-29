@@ -18,10 +18,9 @@ class DocumentoController {
 
             await DocumentoRepository.create(novoDocumento);
 
-            res.status(201).json({ message: 'Documento armazenado com sucesso!' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao armazenar o documento.' });
+            res.status(201).json({response: 1, message: 'Documento armazenado com sucesso!'});
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao armazenar o documento.', errors: e});
         }
 
     }
@@ -29,10 +28,13 @@ class DocumentoController {
     async findAll(req, res) {
         try {
             const documentos = await DocumentoRepository.findAll();
-            res.status(200).json(documentos);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao buscar os documentos.' });
+            if(Object.keys(documentos).length === 0){
+                res.status(200).json({response: 0, message: 'Nenhum documento encontrado.'});
+            }else{
+                res.status(200).json({response: documentos, message: 'Documentos encontrados com sucesso.'});
+            }
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao buscar os documentos.', errors: e});
         }
     }
 
@@ -40,10 +42,13 @@ class DocumentoController {
         try {
             const { id } = req.params;
             const documento = await DocumentoRepository.findById(id);
-            res.status(200).json(documento);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao buscar o documento.' });
+            if(documento !== null){
+                res.status(200).json({response: documento, message: "Documento encontrado."});
+            }else{
+                res.status(200).json({response: 0, message: "Nenhum documento encontrado"});
+            }
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao buscar o documento.', errors: e});
         }
     }
 
@@ -55,7 +60,7 @@ class DocumentoController {
             const documento = await DocumentoRepository.findById(id);
 
             if (!documento) {
-                res.status(404).json({ message: 'Documento não encontrado.' });
+                res.status(404).json({response: 0, message: 'Documento não encontrado.'});
             }
 
             await DocumentoRepository.update(id, {
@@ -68,10 +73,9 @@ class DocumentoController {
                 documento: req.file,
             });
 
-            res.status(200).json({ message: 'Documento atualizado com sucesso!' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao atualizar o documento.' });
+            res.status(200).json({response: 1, message: 'Documento atualizado com sucesso!' });
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao atualizar o documento.', errors: e});
         }
     }
 
@@ -82,15 +86,14 @@ class DocumentoController {
             const documento = await DocumentoRepository.findById(id);
 
             if (!documento) {
-                res.status(404).json({ message: 'Documento não encontrado.' });
+                res.status(404).json({response: 0, message: 'Documento não encontrado.'});
             }
 
             await DocumentoRepository.delete(id);
 
-            res.status(200).json({ message: 'Documento deletado com sucesso!' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao deletar o documento.' });
+            res.status(200).json({response: 1, message: 'Documento deletado com sucesso!'});
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao deletar o documento.', errors: e});
         }
     }
 }

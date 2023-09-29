@@ -9,6 +9,11 @@ const publicoSchema = new mongoose.Schema({
     criadoPor: String,
     atualizdoPor: String,
     camposAdicionais: mongoose.Schema.Types.Mixed
-}, { collection: 'Publico' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
+}, {
+    timestamps: true,
+    versionKey: false,
+    _id: true,
+    strict: false,
+    collection: 'Publico'});
 
 export default publicoSchema;

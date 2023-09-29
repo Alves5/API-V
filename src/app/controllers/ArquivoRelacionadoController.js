@@ -14,13 +14,11 @@ class ArquivoRelacionadoController {
                 atualizadoPor,
                 camposAdicionais,
             });
-            console.log(novoArquivoRelacionado);
             await ArquivoRelacionadoRepository.create(novoArquivoRelacionado);
 
-            res.status(201).json({ message: 'Arquivo armazenado com sucesso!' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao armazenar o arquivo.' });
+            res.status(201).json({response: 1, message: 'Arquivo armazenado com sucesso!' });
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao armazenar o arquivo.', errors: e});
         }
 
     }
@@ -28,10 +26,13 @@ class ArquivoRelacionadoController {
     async index(req, res) {
         try {
             const arquivoRelacionados = await ArquivoRelacionadoRepository.findAll();
-            res.status(200).json(arquivoRelacionados);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao buscar os arquivos.' });
+            if(Object.keys(arquivoRelacionados).length === 0){
+                res.status(200).json({response: 0, message: 'Nenhum arquivo encontrado.'});
+            }else{
+                res.status(200).json({response: arquivoRelacionados, message: 'Arquivos encontrados com sucesso.'});
+            }
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao buscar os arquivos.', errors: e});
         }
     }
 
@@ -39,10 +40,13 @@ class ArquivoRelacionadoController {
         try {
             const { id } = req.params;
             const arquivoRelacionado = await ArquivoRelacionadoRepository.findById(id);
-            res.status(200).json(arquivoRelacionado);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao buscar o arquivo.' });
+            if(arquivoRelacionado !== null){
+                res.status(200).json({response: arquivoRelacionado, message: "Arquivo encontrado."});
+            }else{
+                res.status(200).json({response: 0, message: "Nenhum arquivo encontrado"});
+            }
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao buscar o arquivo.', errors: e});
         }
     }
 
@@ -54,7 +58,7 @@ class ArquivoRelacionadoController {
             const arquivoRelacionado = await ArquivoRelacionadoRepository.findById(id);
 
             if (!arquivoRelacionado) {
-                res.status(404).json({ message: 'Arquivo não encontrado.' });
+                res.status(404).json({response: 0, message: 'Arquivo não encontrado.' });
             }
 
             const arquivoRelacionadoAtualizado = {
@@ -68,10 +72,9 @@ class ArquivoRelacionadoController {
 
             await ArquivoRelacionadoRepository.update(id, arquivoRelacionadoAtualizado);
 
-            res.status(200).json({ message: 'Arquivo atualizado com sucesso!' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao atualizar o arquivo.' });
+            res.status(200).json({response: 1, message: 'Arquivo atualizado com sucesso!' });
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao atualizar o arquivo.', errors: e});
         }
     }
 
@@ -81,15 +84,14 @@ class ArquivoRelacionadoController {
             const arquivoRelacionado = await ArquivoRelacionadoRepository.findById(id);
 
             if (!arquivoRelacionado) {
-                res.status(404).json({ message: 'Arquivo não encontrado.' });
+                res.status(404).json({response: 0, message: 'Arquivo não encontrado.' });
             }
 
             await ArquivoRelacionadoRepository.delete(id);
 
-            res.status(200).json({ message: 'Arquivo excluído com sucesso!' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao excluir o arquivo.' });
+            res.status(200).json({response: 1, message: 'Arquivo excluído com sucesso!' });
+        } catch (e) {
+            res.status(500).json({response: 0, message: 'Erro ao excluir o arquivo.', errors: e});
         }
     }
 
