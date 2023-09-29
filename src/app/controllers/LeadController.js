@@ -6,9 +6,13 @@ class LeadController {
     async findAll(req, res){
         try {
             const result = await LeadRepository.findAll();
-            (result !== null) ? res.json(result) : res.json({status: true, message: 'No documents found'});
+            if(Object.keys(result).length === 0){
+                res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
+            }else{
+                res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
+            }
         }catch (e) {
-            res.json(e);
+            res.status(500).json({response: 0, errors: e});
         }
     }
 
@@ -18,17 +22,17 @@ class LeadController {
         try {
             const exists = await LeadRepository.findByCodigo(codigo);
             if (exists !== null){
-                res.json({status: false, message: 'document already exists'});
+                res.status(422).json({response: 0, message: "O registro já existe"});
             }else{
                 try {
                     await LeadRepository.create(lead);
-                    res.json({status: true, message: 'Success'});
+                    res.status(201).json({response: 1, message: "Registro criado com sucesso."});
                 }catch (e) {
-                    res.json(e);
+                    res.status(500).json({response: 0, errors: e});
                 }
             }
         }catch (e) {
-            res.json(e);
+            res.status(500).json({response: 0, errors: e});
         }
     }
 
@@ -36,9 +40,13 @@ class LeadController {
         const codigo = req.params.codigo;
         try{
             const result = await LeadRepository.findByCodigo(codigo);
-            (result !== null) ? res.json(result) : res.json({status: false, message: 'Document not found'});
+            if(result !== null){
+                res.status(200).json({response: result, message: "Registro encontrado."});
+            }else{
+                res.status(200).json({response: 0, message: "Nenhum registro encontrado."});
+            }
         }catch (e) {
-            res.json(e);
+            res.status(500).json({response: 0, errors: e});
         }
     }
     async updateByCodigo(req, res){
@@ -47,12 +55,12 @@ class LeadController {
         try {
             const result = await LeadRepository.update(codigo, lead);
             if (result.modifiedCount === 1){
-                res.json({status: true, message: 'Success. Document updated'});
+                res.status(200).json({response: result.modifiedCount, message: 'Sucesso, registro atualizado'});
             }else{
-                res.json({status: false, message: 'Document already updated or not found'});
+                res.status(200).json({response: result.modifiedCount, message: 'Registro não atualizado'});
             }
         }catch (e) {
-            res.json(e);
+            res.status(500).json({response: 0, errors: e});
         }
     }
 
@@ -61,12 +69,12 @@ class LeadController {
         try {
             const result = await LeadRepository.delete(codigo);
             if (result.deletedCount === 1){
-                res.json({status: true, message: 'Success. Deleted document'})
+                res.status(200).json({response: result.deletedCount, message: 'Registro deletado com sucesso'});
             }else{
-                res.json({status: false, message: 'Document not found or not deleted'});
+                res.status(404).json({response: result.deletedCount, message: 'Registro não existe ou não deletado.'});
             }
         }catch (e) {
-            res.json(e);
+            res.status(500).json({response: 0, errors: e});
         }
     }
 
@@ -113,9 +121,9 @@ class LeadController {
                 atualizadoPor: lead.atualizadoPor
             });
             await ContatoRepository.create(contato);
-            res.json({status: true, message: 'Lead convertida para Contato'});
+            res.json({response: 1, message: 'Lead convertida para Contato'});
         }catch (e) {
-            res.json(e);
+            res.status(500).json({response: 0, errors: e});
         }
     }
 }

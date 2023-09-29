@@ -4,9 +4,13 @@ class ContratoController {
     async findAll(req, res){
         try {
             const result = await ContratoRepository.findAll();
-            res.json(result);
+            if(Object.keys(result).length === 0){
+                res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
+            }else{
+                res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
+            }
         }catch (e) {
-            res.json(e);
+            res.status(500).json(e);
         }
     }
 
@@ -16,17 +20,17 @@ class ContratoController {
         try {
             const exists = await ContratoRepository.findByNumero(numero);
             if (exists !== null){
-                res.json({status: false, message: 'Document already created'});
+                res.status(422).json({response: 0, message: "O registro já existe"});
             }else{
                 try {
                     await ContratoRepository.create(contrato);
-                    res.json({status: true, message: 'Success'});
+                    res.status(201).json({response: 1, message: "Registro criado com sucesso."});
                 }catch (e) {
-                    res.json(e);
+                    res.status(500).json(e);
                 }
             }
         }catch (e) {
-            res.json(e);
+            res.status(500).json(e);
         }
     }
 
@@ -34,10 +38,10 @@ class ContratoController {
         const numero = req.params.numeroContrato;
         try {
             const result = await ContratoRepository.findByNumero(numero);
-            if (result !== null){
-                res.json(result);
+            if(result !== null){
+                res.status(200).json({response: result, message: "Registro encontrado."});
             }else{
-                res.json({status: false, message: 'Document not found'});
+                res.status(200).json({response: 0, message: "Nenhum registro encontrado"});
             }
         }catch (e) {
             res.json(e);
@@ -50,12 +54,12 @@ class ContratoController {
         try {
             const result = await ContratoRepository.update(numero, contrato);
             if (result.modifiedCount === 1){
-                res.json({status: true, message: 'Success. Document updated'});
+                res.status(200).json({response: result.modifiedCount, message: 'Sucesso, registro atualizado'});
             }else{
-                res.json({status: false, message: 'Document not found or not updated'});
+                res.status(200).json({response: result.modifiedCount, message: 'Registro não atualizado'});
             }
         }catch (e) {
-            res.json(e);
+            res.status(500).json(e);
         }
     }
 
@@ -64,9 +68,9 @@ class ContratoController {
         try {
             const result = await ContratoRepository.delete(numero);
             if (result.deletedCount === 1){
-                res.json({status: true, message: 'Success. Deleted document'})
+                res.status(200).json({response: result.deletedCount, message: 'Registro deletado com sucesso'});
             }else{
-                res.json({status: false, message: 'Document not found or not deleted'});
+                res.status(404).json({response: result.deletedCount, message: 'Registro não existe ou não deletado.'});
             }
         }catch (e) {
             res.json(e);

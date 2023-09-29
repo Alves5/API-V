@@ -7,7 +7,7 @@ import TarefaController from "../controllers/TarefaController.js";
 router.post('/tarefa', TarefaController.store);
 router.get('/tarefa/:id', TarefaController.findById);
 router.get('/tarefa', TarefaController.findAll);
-router.patch('/tarefa/:id', TarefaController.update);
+router.put('/tarefa/:id', TarefaController.update);
 router.delete('/tarefa/:id', TarefaController.deleteById);
 
 export default router;
