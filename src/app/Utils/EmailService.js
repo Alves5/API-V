@@ -1,20 +1,22 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
 class EmailService {
     enviarEmail(subject, html) {
         // Configurações de transporte para o servidor SMTP
         let transport = nodemailer.createTransport({
-            host: "sandbox.smtp.mailtrap.io",
-            port: 2525,
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
             auth: {
-                user: "a7a0a1578bf229",
-                pass: "9a0478865f64b6"
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
             }
         });
 
         // Configurações do email
         let mailOptions = {
-            from: 'danielalves.jittechnology@gmail.com',
-            to: 'dtest.treinamentos@gmail.com',
+            from: process.env.EMAIL_FROM,
+            to: process.env.EMAIL_TO,
             subject: subject,
             html: html
         };

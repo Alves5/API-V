@@ -2,8 +2,8 @@ import * as crypto from "crypto";
 class CryptoUtil{
     constructor() {
         this.algorithm = 'aes-256-cbc';
-        this.key = 'dT56nL@My00K5U50i@lOz09iB1&o70@S';
-        this.iv = Buffer.from('0123456789ABCDEF0123456789ABCDEF', 'hex');
+        this.key = process.env.CRYPTO_KEY;
+        this.iv = Buffer.from(process.env.CRYPTO_IV , 'hex');
     }
 
     criptografar(texto) {

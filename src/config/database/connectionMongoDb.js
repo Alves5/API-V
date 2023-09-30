@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
-
+import dotenv from 'dotenv';
+dotenv.config();
 export default function connectDB() {
-    const url = "mongodb+srv://root:W3rgYSm2Z5Al3zfr@db.cm37ov4.mongodb.net/db?retryWrites=true&w=majority";
+    const url = process.env.MONGO_URI;
 
     try {
         mongoose.connect(url, {
