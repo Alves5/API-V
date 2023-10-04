@@ -7,7 +7,11 @@ class UsuarioController {
     async findAll(req, res){
         try {
             const result = await UsuarioRepository.findAll();
-            res.json(result);
+            if(Object.keys(result).length === 0){
+                res.status(200).json({response: 0, message: 'Nenhum usuário encontrado.'});
+            }else{
+                res.status(200).json({response: result, message: 'Usuários encontrados com sucesso.'});
+            }
         }catch (e) {
             res.json(e);
         }
@@ -21,7 +25,7 @@ class UsuarioController {
             // Verificar se o usuário existe
             const exists = await UsuarioRepository.findByArgs(filter);
             if (exists){
-                res.json({status: false, message:'This user already exists'});
+                res.status(422).json({response: 0, message: "Usuário já existe."});
                 return false;
             }
 
@@ -43,12 +47,12 @@ class UsuarioController {
                     '<h4>Sua conta de usuário foi criada</h4></br>' +
                     '<p>Agora só é preciso ativar e criar uma senha, vamos lá e clique no link abaixo</p></br>' +
                     `<a href="${link}">${link}</a>`);
-                res.json({status: true, message: 'Success'});
+                res.status(201).json({response: 1, message: "Usuário criado com sucesso."});
             }catch (e) {
-                res.json(e);
+                res.status(500).json({response: 0, errors: e});
             }
         }catch (e) {
-            res.json(e);
+            res.status(500).json({response: 0, errors: e});
         }
     }
 
@@ -57,10 +61,10 @@ class UsuarioController {
         try {
             const filter = {username: username};
             const result = await UsuarioRepository.findByArgs(filter);
-            if (result !== null){
-                res.json(result);
+            if(result !== null){
+                res.status(200).json({response: result, message: "Usuário encontrado."});
             }else{
-                res.json({status: false, message: 'Document not found'});
+                res.status(200).json({response: 0, message: "Nenhum usuário encontrado."});
             }
         }catch (e) {
             res.json(e);
@@ -73,9 +77,9 @@ class UsuarioController {
         try {
             const result = await UsuarioRepository.update({username: username}, usuario);
             if (result.modifiedCount === 1){
-                res.json({status: true, message: 'Success. Document updated'});
+                res.status(200).json({response: result.modifiedCount, message: 'Sucesso, usuário atualizado.'});
             }else{
-                res.json({status: false, message: 'Document not found or not updated'});
+                res.status(200).json({response: result.modifiedCount, message: 'Usuário não atualizado.'});
             }
         }catch (e) {
             res.json(e);
@@ -87,9 +91,9 @@ class UsuarioController {
         try {
             const result = await UsuarioRepository.delete(username);
             if (result.deletedCount === 1){
-                res.json({status: true, message: 'Success. Deleted document'})
+                res.status(200).json({response: result.deletedCount, message: 'Usuário deletado com sucesso'});
             }else{
-                res.json({status: false, message: 'Document not found or not deleted'});
+                res.status(404).json({response: result.deletedCount, message: 'Usuário não existe ou não deletado.'});
             }
         }catch (e) {
             res.json(e);
@@ -103,29 +107,16 @@ class UsuarioController {
             if (senha1 === senha2){
                 const passCrypto = CryptoUtil.criptografar(senha1);
                 const result = await UsuarioRepository.searchTokenAndUpdatePassword(token, passCrypto);
-                (result === null) ? res.json({status: false, message: 'Token not found'})  : res.json({status: true, message: 'Password created/updated'});
+                if(result === null){
+                    res.status(404).json({response: 0, message: 'Token not found'});
+                }else{
+                    res.status(200).json({response: 1, message: 'Password created/updated'});
+                }
             }else{
                 throw new Error('Passwords are not the same');
             }
         }catch (e) {
-            res.json({status: false, message: e.message});
-        }
-    }
-
-    async userLogin(req, res){
-        const {email, senha} = req.body;
-        try {
-            const passCrypto = CryptoUtil.criptografar(senha);
-            const user = await UsuarioRepository.searchUserLogin(email, passCrypto);
-            let verifiedToken = null;
-            if (!user){
-                res.json({status: false, token: verifiedToken});
-            }else{
-                verifiedToken = GenerateToken.generateToken(18);
-                res.json({status: true, token: verifiedToken});
-            }
-        }catch (e) {
-            res.json({status: false, message: e.message});
+            res.status(500).json({response: 0, errors: e.message});
         }
     }
 
@@ -152,13 +143,13 @@ class UsuarioController {
                         '<h4>Foi feito um pedido para recuperar sua conta</h4></br>' +
                         '<p>Para recuperar a conta basta acessar o link e trocar sua senha</p></br>' +
                         `<a href="${link}">${link}</a>`);
-                    res.json({status: true, message: 'Success, send email'});
+                    res.status(200).json({response: 1, message: 'Sucesso, email enviado.'});
                 }catch (e) {
-                    res.json(e);
+                    res.status(500).json({response: 0, errors: e});
                 }
             }
         }catch (e) {
-            res.json(e);
+            res.status(500).json({response: 0, errors: e});
         }
     }
 
@@ -167,9 +158,9 @@ class UsuarioController {
         try {
             const user = await UsuarioRepository.findByArgs({username: username});
             const result = await UsuarioRepository.searchProfileAndPermissions(user.perfil_n);
-            res.json(result.permissoes);
+            res.status(200).json({response: result.permissoes, message: 'Permissões encontradas.'});
         }catch (e) {
-            res.json(e);
+            res.status(500).json({response: 0, errors: e});
         }
     }
 
@@ -177,9 +168,13 @@ class UsuarioController {
         const email = req.params.email;
         try {
             const result = await UsuarioRepository.searchRelatedList({criadoPor: email});
-            res.json(result);
+            if(Object.keys(result).length === 0){
+                res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
+            }else{
+                res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
+            }
         }catch (e) {
-            res.json(e);
+            res.status(500).json({response: 0, errors: e});
         }
     }
 

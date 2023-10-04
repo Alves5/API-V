@@ -13,13 +13,16 @@ import Orcamento from "./routes/Orcamento.js";
 import Perfil from "./routes/Perfil.js";
 import Tarefa from "./routes/Tarefa.js";
 import Proposta from "./routes/Proposta.js";
-import UsuarioController from "./controllers/UsuarioController.js";
+import LoginController from "./controllers/users/loginController.js";
+import {authenticateToken} from "./middleware/authMiddleware.js";
 
 const router = Router();
 
-// Rotas
-router.post('/login', UsuarioController.userLogin);
+router.post("/login", LoginController.login);
 
+router.use(authenticateToken);
+
+// Rotas
 router.use(Documento);
 router.use(ArquivoRelacionado)
 router.use(Contato);
