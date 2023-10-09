@@ -16,28 +16,26 @@ class ContatoController {
 
     async store(req, res) {
         const contato = req.body;
-        const numero = req.body.numero;
+
         try {
-            const exists = await ContatoRepository.findByNumero(numero);
-            if (exists !== null){
-                res.status(422).json({response: 0, message: "O registro já existe"});
-            }else{
-                try {
-                    await ContatoRepository.create(contato);
-                    res.status(201).json({response: 1, message: "Registro criado com sucesso."});
-                }catch (e) {
-                    res.status(500).json(e);
-                }
+            const exists = await ContatoRepository.findByCodigo(contato.codigo);
+
+            if (exists !== null) {
+                return res.status(422).json({ response: 0, message: "O registro já existe" });
             }
-        }catch (e) {
-            res.status(500).json(e);
+
+            await ContatoRepository.create(contato);
+
+            return res.status(201).json({ response: 1, message: "Registro criado com sucesso." });
+        } catch (error) {
+            return res.status(500).json({ response: 0, message: "Erro interno do servidor" });
         }
     }
 
-    async findByNumero(req, res){
-        const numero = req.params.numero;
+    async findByCodigo(req, res){
+        const codigo = req.params.codigo;
         try {
-            const result = await ContatoRepository.findByNumero(numero);
+            const result = await ContatoRepository.findByCodigo(codigo);
             if(result !== null){
                 res.status(200).json({response: result, message: "Registro encontrado."});
             }else{
@@ -48,11 +46,11 @@ class ContatoController {
         }
     }
     
-    async updateByNumero(req, res){
-        const numero = req.params.numero;
+    async updateByCodigo(req, res){
+        const codigo = req.params.codigo;
         const contato = req.body;
         try {
-            const result = await ContatoRepository.update(numero, contato);
+            const result = await ContatoRepository.update(codigo, contato);
             if (result.modifiedCount === 1){
                 res.status(200).json({response: result.modifiedCount, message: 'Sucesso, registro atualizado'});
             }else{
@@ -63,10 +61,10 @@ class ContatoController {
         }
     }
 
-    async deleteByNumero(req, res){
-        const numero = req.params.numero;
+    async deleteByCodigo(req, res){
+        const codigo = req.params.codigo;
         try {
-            const result = await ContatoRepository.delete(numero);
+            const result = await ContatoRepository.delete(codigo);
             if (result.deletedCount === 1){
                 res.status(200).json({response: result.deletedCount, message: 'Registro deletado com sucesso'});
             }else{
@@ -78,15 +76,15 @@ class ContatoController {
     }
 
     async relatedList(req, res){
-        const numeroContato = req.params.numero;
+        const codigoContato = req.params.codigo;
         try {
-            const exists = await ContatoRepository.findByNumero(numeroContato);
+            const exists = await ContatoRepository.findByCodigo(codigoContato);
             if (!exists){
                 res.status(404).json({response: 0, message: 'Registro não encontrado.'});
                 return false;
             }
 
-            const result = await ContatoRepository.searchRelatedList(numeroContato);
+            const result = await ContatoRepository.searchRelatedList(codigoContato);
             if (Object.keys(result).length !== 0){
                 res.status(404).json({response: result, message: 'Registros encontrados com sucesso.'});
             }else{

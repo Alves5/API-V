@@ -12,20 +12,20 @@ class ContatoRepository {
         contato.save();
     }
 
-    findByNumero(numero){
-        return ContatoModel.findOne({numero: numero});
+    findByCodigo(codigo){
+        return ContatoModel.findOne({codigo: codigo});
     }
 
-    update(numero, cont){
-        return ContatoModel.updateOne({numero: numero}, {$set: cont}, {new: true});
+    update(codigo, cont){
+        return ContatoModel.updateOne({codigo: codigo}, {$set: cont}, {new: true});
     }
 
-    delete(numero){
-        return ContatoModel.deleteOne({numero: numero}, {new: true});
+    delete(codigo){
+        return ContatoModel.deleteOne({codigo: codigo}, {new: true});
     }
 
-    searchRelatedList(numero){
-        return ContratoModel.find({numeroContato_n: numero}).sort({createdAt: -1});
+    searchRelatedList(codigo){
+        return ContratoModel.find({codigoContato_n: codigo}).sort({createdAt: -1});
     }
 }
 export default new ContatoRepository();
