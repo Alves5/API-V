@@ -5,9 +5,9 @@ import ContatoController from "../controllers/ContatoController.js";
 // Contato
 router.get('/contato', ContatoController.findAll);
 router.post('/contato', ContatoController.store);
-router.get('/contato/:numero', ContatoController.findByNumero);
-router.put('/contato/:numero', ContatoController.updateByNumero);
-router.delete('/contato/:numero', ContatoController.deleteByNumero);
-router.get('/contrato/contato/:numero', ContatoController.relatedList);
+router.get('/contato/:codigo', ContatoController.findByCodigo);
+router.put('/contato/:codigo', ContatoController.updateByCodigo);
+router.delete('/contato/:codigo', ContatoController.deleteByCodigo);
+router.get('/contrato/contato/:codigo', ContatoController.relatedList);
 
 export default router

@@ -5,17 +5,44 @@
     "description": "Description Example",
     "version": "1.0.0"
   },
+  "security": [
+    {
+      "my_auth": []
+    }
+  ],
   "servers": [
     {
-      "url": "https://creepy-top-hat-bull.cyclic.cloud/",
-      "description": "Online server"
+      "url": "http://localhost:3000/v1",
+      "description": "Local server"
     },
     {
-      "url": "http://localhost:3000/",
-      "description": "Local server"
+      "url": "https://creepy-top-hat-bull.cyclic.cloud/v1",
+      "description": "Online server"
     }
   ],
   "paths": {
+    "/login": {
+      "post": {
+        "tags": ["Login"],
+        "description": "Verifica se existe um usuário com esse login",
+        "operationId": "loginUsuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/biblioteca": {
       "get": {
         "tags": [
@@ -404,16 +431,31 @@
         }
       }
     },
-    "/contato/{numero}":{
+    "/contato/{codigo}":{
       "get": {
         "tags": [
           "Contato"
         ],
         "description": "retorna um registro especifico pelo número",
-        "operationId": "findByNumeroContato",
+        "security": [
+          {
+            "my_auth": []
+          }
+        ],
+        "operationId": "findByCodigoContato",
         "parameters": [
           {
-            "name": "numero",
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "codigo",
             "in": "path",
             "required": true,
             "style": "simple",
@@ -450,7 +492,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ContatoSemNumero"
+                "$ref": "#/components/schemas/ContatoSemCodigo"
               }
             }
           }
@@ -2170,28 +2212,6 @@
         }
       }
     },
-    "/login": {
-      "post": {
-        "tags": ["Usuário"],
-        "description": "Verifica se existe um usuário com esse login",
-        "operationId": "loginUsuario",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/login"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/RecuperarConta": {
       "post": {
         "tags": ["Usuário"],
@@ -2308,6 +2328,13 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "my_auth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    },
     "schemas": {
       "Biblioteca": {
         "type": "object",
@@ -2717,11 +2744,11 @@
       },
       "Contato": {
         "required": [
-          "numero"
+          "codigo"
         ],
         "type": "object",
         "properties": {
-          "numero": {
+          "codigo": {
             "type": "string"
           },
           "nomeCompleto": {
@@ -2838,7 +2865,7 @@
           }
         }
       },
-      "ContatoSemNumero": {
+      "ContatoSemCodigo": {
         "type": "object",
         "properties": {
           "numero": {

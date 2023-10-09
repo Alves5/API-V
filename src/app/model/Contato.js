@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const contatoSchema = new mongoose.Schema({
         id: Number,
-        numero: String,
+        codigo: String,
         nomeCompleto: String,
         resposavel: String,
         empresa: [{
@@ -17,6 +17,7 @@ const contatoSchema = new mongoose.Schema({
         cpf: String,
         identidade: String,
         nacionalidade: String,
+        telefone: String,
         email: String,
         website: String,
         endereco: {
