@@ -43,7 +43,7 @@ const contatoSchema = new mongoose.Schema({
     timestamps: true,
     versionKey: false,
     _id: true,
-    strict: false,
+    strict: true,
     collection: 'Contato'});
 
 const contatoModel = mongoose.model('Contato', contatoSchema);
