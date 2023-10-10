@@ -1,4 +1,6 @@
 import ContatoRepository from "../repositories/ContatoRepository.js";
+import contatoModel from "../model/Contato.js";
+import FieldsCompatible from "../Utils/FieldsCompatible.js";
 
 class ContatoController {
     async findAll(req, res){
@@ -16,19 +18,22 @@ class ContatoController {
 
     async store(req, res) {
         const contato = req.body;
-
         try {
             const exists = await ContatoRepository.findByCodigo(contato.codigo);
-
             if (exists !== null) {
                 return res.status(422).json({ response: 0, message: "O registro já existe" });
             }
 
-            await ContatoRepository.create(contato);
+            const isCompatible = FieldsCompatible.areFieldsCompatible(contatoModel, contato);
+            if (!isCompatible){
+                return res.status(400).json({ response: 0, message: "JSON não é compatível com o modelo de dados." });
+            }
 
-            return res.status(201).json({ response: 1, message: "Registro criado com sucesso." });
+            await ContatoRepository.create(contato);
+            res.status(201).json({ response: 1, message: "Registro criado com sucesso." });
         } catch (error) {
-            return res.status(500).json({ response: 0, message: "Erro interno do servidor" });
+            console.log(error);
+            res.status(500).json({ response: 0, message: "Erro interno do servidor", errors: error});
         }
     }
 
@@ -88,7 +93,7 @@ class ContatoController {
             if (Object.keys(result).length !== 0){
                 res.status(404).json({response: result, message: 'Registros encontrados com sucesso.'});
             }else{
-                res.status(404).json({response: 0, message: 'Registros não encontrados.'});
+                res.status(404).json({response: [], message: 'Registros não encontrados.'});
             }
         }catch (e) {
             res.status(500).json(e);
