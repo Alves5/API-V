@@ -14,6 +14,7 @@ connectDB();
 // APP
 const app = express();
 app.use(express.urlencoded({extended: true}));
+app.use(cors());
 app.use((req, res, next) => {
     //Qual site tem permissão de realizar a conexão, no exemplo abaixo está o "*" indicando que qualquer site pode fazer a conexão
     res.setHeader("Access-Control-Allow-Origin", "*")
