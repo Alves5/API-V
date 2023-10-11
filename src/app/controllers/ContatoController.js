@@ -17,8 +17,12 @@ class ContatoController {
     }
 
     async store(req, res) {
-        const contato = req.body;
         try {
+            const contato = req.body;
+            if (Object.keys(contato).length === 0){
+                return res.status(400).json({ response: 0, message: "O corpo da requisição não foi enviado. Certifique-se de incluir os dados necessários no corpo da sua requisição antes de tentar novamente." });
+            }
+
             const exists = await ContatoRepository.findByCodigo(contato.codigo);
             if (exists !== null) {
                 return res.status(422).json({ response: 0, message: "O registro já existe" });
@@ -52,9 +56,18 @@ class ContatoController {
     }
     
     async updateByCodigo(req, res){
-        const codigo = req.params.codigo;
-        const contato = req.body;
         try {
+            const codigo = req.params.codigo;
+            const contato = req.body;
+            if (Object.keys(contato).length === 0){
+                return res.status(400).json({ response: 0, message: "O corpo da requisição não foi enviado. Certifique-se de incluir os dados necessários no corpo da sua requisição antes de tentar novamente." });
+            }
+
+            const isCompatible = FieldsCompatible.areFieldsCompatible(contatoModel, contato, ['codigo']);
+            if (!isCompatible){
+                return res.status(400).json({ response: 0, message: "JSON não é compatível com o modelo de dados." });
+            }
+
             const result = await ContatoRepository.update(codigo, contato);
             if (result.modifiedCount === 1){
                 res.status(200).json({response: result.modifiedCount, message: 'Sucesso, registro atualizado'});
