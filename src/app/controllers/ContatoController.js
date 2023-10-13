@@ -1,18 +1,19 @@
 import ContatoRepository from "../repositories/ContatoRepository.js";
 import contatoModel from "../model/Contato.js";
 import FieldsCompatible from "../Utils/FieldsCompatible.js";
+import {HTTP_STATUS, RESPONSE, MESSAGES} from "../Utils/ApiMessages.js";
 
 class ContatoController {
     async findAll(req, res){
         try {
             const result = await ContatoRepository.findAll();
             if(Object.keys(result).length === 0){
-                res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
+                res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }else{
-                res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
+                res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
             }
         }catch (e) {
-            res.status(500).json(e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
 
@@ -20,24 +21,23 @@ class ContatoController {
         try {
             const contato = req.body;
             if (Object.keys(contato).length === 0){
-                return res.status(400).json({ response: 0, message: "O corpo da requisição não foi enviado. Certifique-se de incluir os dados necessários no corpo da sua requisição antes de tentar novamente." });
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
             const exists = await ContatoRepository.findByCodigo(contato.codigo);
             if (exists !== null) {
-                return res.status(422).json({ response: 0, message: "O registro já existe" });
+                return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({ response: RESPONSE.WARNING, message: MESSAGES.CREATED_EXISTS });
             }
 
             const isCompatible = FieldsCompatible.areFieldsCompatible(contatoModel, contato);
             if (!isCompatible){
-                return res.status(400).json({ response: 0, message: "JSON não é compatível com o modelo de dados." });
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_JSON });
             }
 
             await ContatoRepository.create(contato);
-            res.status(201).json({ response: 1, message: "Registro criado com sucesso." });
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({ response: 0, message: "Erro interno do servidor", errors: error});
+            res.status(HTTP_STATUS.CREATED).json({ response: RESPONSE.SUCCESS, message: MESSAGES.CREATED });
+        } catch (e) {
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
 
@@ -46,12 +46,12 @@ class ContatoController {
         try {
             const result = await ContatoRepository.findByCodigo(codigo);
             if(result !== null){
-                res.status(200).json({response: result, message: "Registro encontrado."});
+                res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
             }else{
-                res.status(200).json({response: 0, message: "Nenhum registro encontrado"});
+                res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }
         }catch (e) {
-            res.status(500).json(e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
     
@@ -60,22 +60,22 @@ class ContatoController {
             const codigo = req.params.codigo;
             const contato = req.body;
             if (Object.keys(contato).length === 0){
-                return res.status(400).json({ response: 0, message: "O corpo da requisição não foi enviado. Certifique-se de incluir os dados necessários no corpo da sua requisição antes de tentar novamente." });
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
             const isCompatible = FieldsCompatible.areFieldsCompatible(contatoModel, contato, ['codigo']);
             if (!isCompatible){
-                return res.status(400).json({ response: 0, message: "JSON não é compatível com o modelo de dados." });
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_JSON});
             }
 
             const result = await ContatoRepository.update(codigo, contato);
             if (result.modifiedCount === 1){
-                res.status(200).json({response: result.modifiedCount, message: 'Sucesso, registro atualizado'});
+                res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
             }else{
-                res.status(200).json({response: result.modifiedCount, message: 'Registro não atualizado'});
+                res.status(HTTP_STATUS.OK).json({response: RESPONSE.ERROR, message: MESSAGES.UPDATED_NO_UPDATED});
             }
         }catch (e) {
-            res.status(500).json(e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
 
@@ -84,12 +84,12 @@ class ContatoController {
         try {
             const result = await ContatoRepository.delete(codigo);
             if (result.deletedCount === 1){
-                res.status(200).json({response: result.deletedCount, message: 'Registro deletado com sucesso'});
+                res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE});
             }else{
-                res.status(404).json({response: result.deletedCount, message: 'Registro não existe ou não deletado.'});
+                res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
             }
         }catch (e) {
-            res.status(500).json(e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
 
@@ -98,18 +98,18 @@ class ContatoController {
         try {
             const exists = await ContatoRepository.findByCodigo(codigoContato);
             if (!exists){
-                res.status(404).json({response: 0, message: 'Registro não encontrado.'});
+                res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
                 return false;
             }
 
             const result = await ContatoRepository.searchRelatedList(codigoContato);
             if (Object.keys(result).length !== 0){
-                res.status(404).json({response: result, message: 'Registros encontrados com sucesso.'});
+                res.status(HTTP_STATUS.NOT_FOUND).json({response: result, message: MESSAGES.FIND});
             }else{
-                res.status(404).json({response: [], message: 'Registros não encontrados.'});
+                res.status(HTTP_STATUS.NOT_FOUND).json({response: [], message: MESSAGES.FIND_NO_EXISTS});
             }
         }catch (e) {
-            res.status(500).json(e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
 

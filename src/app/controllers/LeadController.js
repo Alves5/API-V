@@ -39,7 +39,7 @@ class LeadController {
             await LeadRepository.create(lead);
             res.status(HTTP_STATUS.CREATED).json({response: RESPONSE.SUCCESS, message: MESSAGES.CREATED});
         }catch (e) {
-            res.status(500).json({response: RESPONSE.ERROR, errors: e});
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
         }
     }
 
