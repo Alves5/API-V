@@ -2,7 +2,7 @@ import LeadModel from "../model/Lead.js";
 
 class LeadRepository {
     findAll(){
-        return LeadModel.find();
+        return LeadModel.find().limit(30);
     }
 
     create(lea){

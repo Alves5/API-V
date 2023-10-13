@@ -4,7 +4,7 @@ import ContratoModel from "../model/Contrato.js"
 class ContatoRepository {
 
     findAll(){
-        return ContatoModel.find();
+        return ContatoModel.find().limit(30);
     }
 
     create(cont){
