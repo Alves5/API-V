@@ -4,16 +4,23 @@ import ContatoRepository from "../repositories/ContatoRepository.js";
 import FieldsCompatible from "../Utils/FieldsCompatible.js";
 import leadModel from "../model/Lead.js";
 import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js"
+import {meuCache} from "../Utils/Utils.js";
 
 class LeadController {
     async findAll(req, res){
         try {
-            const result = await LeadRepository.findAll();
-            if(Object.keys(result).length === 0){
-                res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
-            }else{
-                res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
+            const value = meuCache.get("teste");
+            if (value !== undefined){
+                return res.status(HTTP_STATUS.OK).json({response: JSON.parse(value), message: 'Cache'});
             }
+
+            const result = await LeadRepository.findAll();
+            meuCache.set("teste", JSON.stringify(result), 10);
+            if(Object.keys(result).length === 0){
+                return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
+            }
+
+            res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
         }catch (e) {
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
         }
