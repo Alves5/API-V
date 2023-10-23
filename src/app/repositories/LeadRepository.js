@@ -10,16 +10,16 @@ class LeadRepository {
         lead.save();
     }
 
-    findByCodigo(codigo){
-        return LeadModel.findOne({codigo: codigo});
+    findByOne(filter){
+        return LeadModel.findOne(filter);
     }
 
-    update(codigo, lea){
-        return LeadModel.updateOne({codigo: codigo}, {$set: lea}, {new: true});
+    update(id, lea){
+        return LeadModel.updateOne({_id: id}, {$set: lea}, {new: true});
     }
 
-    delete(codigo){
-        return LeadModel.deleteOne({codigo: codigo}, {new: true});
+    delete(id){
+        return LeadModel.deleteOne({_id: id}, {new: true});
     }
 
 }

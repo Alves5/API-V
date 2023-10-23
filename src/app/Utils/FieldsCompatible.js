@@ -1,6 +1,6 @@
 class FieldsCompatible {
     areFieldsCompatible(model, json, fields = []) {
-        let camposIgnorados = ['_id', 'id', 'createdAt', 'updatedAt', 'camposAdicionais', 'endereco'];
+        let camposIgnorados = ['_id', 'id', 'createdAt', 'updatedAt', 'camposAdicionais', 'endereco', 'processoQualificacao_n'];
         if (fields.length !== 0){
             camposIgnorados = camposIgnorados.concat(fields);
         }

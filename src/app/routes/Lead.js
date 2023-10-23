@@ -3,11 +3,10 @@ const router = Router();
 
 import LeadController from "../controllers/LeadController.js";
 
-// Lead
 router.post('/lead', LeadController.store);
-router.get('/lead/:codigo', LeadController.findByCodigo);
+router.get('/lead/:id', LeadController.findById);
 router.get('/lead', LeadController.findAll);
-router.put('/lead/:codigo', LeadController.updateByCodigo);
-router.delete('/lead/:codigo', LeadController.deleteByCodigo);
-router.post('/lead/convertToContact/:codigo', LeadController.convertToContact);
+router.put('/lead/:id', LeadController.updateById);
+router.delete('/lead/:id', LeadController.deleteById);
+router.post('/lead/convertToContact/:id', LeadController.convertToContact);
 export default router;

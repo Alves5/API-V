@@ -34,6 +34,10 @@ const leadSchema = new mongoose.Schema({
         campanha_n:[{
             codigo: String
         }],
+        processoQualificacao_n: {
+            codigo: String,
+            nome: String
+        },
         criadoPor: String,
         atualizadoPor: String,
         camposAdicionais: mongoose.Schema.Types.Mixed

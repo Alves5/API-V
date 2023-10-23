@@ -12,16 +12,16 @@ class ContatoRepository {
         contato.save();
     }
 
-    findByCodigo(codigo){
-        return ContatoModel.findOne({codigo: codigo});
+    findByFilter(filter){
+        return ContatoModel.findOne(filter);
     }
 
-    update(codigo, cont){
-        return ContatoModel.updateOne({codigo: codigo}, {$set: cont}, {new: true});
+    update(id, cont){
+        return ContatoModel.updateOne({_id: id}, {$set: cont}, {new: true});
     }
 
-    delete(codigo){
-        return ContatoModel.deleteOne({codigo: codigo}, {new: true});
+    delete(id){
+        return ContatoModel.deleteOne({_id: id}, {new: true});
     }
 
     searchRelatedList(codigo){
