@@ -2,16 +2,25 @@ import UsuarioRepository from "../repositories/UsuarioRepository.js";
 import CryptoUtil from "../Utils/CryptoUtil.js";
 import GenerateToken from "../Utils/GenerateToken.js";
 import EmailService from "../Utils/EmailService.js";
+import {HTTP_STATUS, MESSAGES} from "../Utils/ApiMessages.js";
+import NodeCache from "node-cache";
+const meuCache = new NodeCache();
 
 class UsuarioController {
     async findAll(req, res){
         try {
+            const cachedData = meuCache.get("findAllUsuario");
+            if (cachedData !== undefined) {
+                return res.status(HTTP_STATUS.OK).json({ response: JSON.parse(cachedData), message: MESSAGES.FIND });
+            }
+
             const result = await UsuarioRepository.findAll();
             if(Object.keys(result).length === 0){
                 res.status(200).json({response: 0, message: 'Nenhum usuário encontrado.'});
-            }else{
-                res.status(200).json({response: result, message: 'Usuários encontrados com sucesso.'});
             }
+
+            meuCache.set("findAllUsuario", JSON.stringify(result), 60);
+            res.status(200).json({response: result, message: 'Usuários encontrados com sucesso.'});
         }catch (e) {
             res.json(e);
         }
@@ -19,9 +28,11 @@ class UsuarioController {
 
     async store(req, res) {
         const usuario = req.body;
-        const username = req.body.username;
         try {
-            const filter = {username: username};
+            // Apagar cache
+            meuCache.del("findAllUsuario");
+
+            const filter = {username: usuario.username};
             // Verificar se o usuário existe
             const exists = await UsuarioRepository.findByArgs(filter);
             if (exists){

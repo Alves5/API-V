@@ -6,17 +6,17 @@ const meuCache = new NodeCache();
 class ContatoController {
     async findAll(req, res){
         try {
-            const value = meuCache.get("findAllContato");
-            if (value !== undefined){
-                return res.status(HTTP_STATUS.OK).json({response: JSON.parse(value), message: MESSAGES.FIND});
+            const cachedData = meuCache.get("findAllContato");
+            if (cachedData !== undefined){
+                return res.status(HTTP_STATUS.OK).json({response: JSON.parse(cachedData), message: MESSAGES.FIND});
             }
 
             const result = await ContatoRepository.findAll();
-            meuCache.set("findAllContato", JSON.stringify(result), 60);
             if(Object.keys(result).length === 0){
                 return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }
 
+            meuCache.set("findAllContato", JSON.stringify(result), 60);
             res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
         }catch (e) {
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});

@@ -6,10 +6,10 @@ class ProcessoQualificacaoController {
         try {
             const result = await ProcessoQualificacao.findAll();
             if(Object.keys(result).length === 0){
-                res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
-            }else{
-                res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
+                return res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
             }
+
+            res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
         }catch (e) {
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR});
         }
@@ -17,19 +17,14 @@ class ProcessoQualificacaoController {
 
     async store(req, res){
         const processo = req.body;
-        const apiNome = req.body.apiNome;
         try {
-            const exists = await ProcessoQualificacao.findByNome({apiNome: apiNome});
-            if (exists !== null){
-                res.status(422).json({response: 0, message: "O registro já existe"});
-            }else{
-                try {
-                    await ProcessoQualificacao.create(processo);
-                    res.status(201).json({response: 1, message: "Registro criado com sucesso."});
-                }catch (e) {
-                    res.status(500).json({response: 0, errors: e});
-                }
+            const exists = await ProcessoQualificacao.findByNome({apiNome: processo.apiNome});
+            if (exists !== null) {
+                return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({ response: RESPONSE.WARNING, message: MESSAGES.CREATED_EXISTS });
             }
+
+            await ProcessoQualificacao.create(processo);
+            res.status(201).json({response: 1, message: "Registro criado com sucesso."});
         }catch (e){
             res.status(500).json({response: 0, errors: e});
         }
