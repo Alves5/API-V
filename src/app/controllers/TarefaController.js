@@ -1,22 +1,34 @@
 import TarefaRepository from "../repositories/TarefaRepository.js";
+import NodeCache from "node-cache";
+import {HTTP_STATUS, MESSAGES} from "../Utils/ApiMessages.js";
+const meuCache = new NodeCache();
 
 class TarefaController {
     async findAll(req, res){
         try {
+            const cachedData = meuCache.get("findAllTarefa");
+            if (cachedData !== undefined) {
+                return res.status(HTTP_STATUS.OK).json({ response: JSON.parse(cachedData), message: MESSAGES.FIND });
+            }
+
             const result = await TarefaRepository.findAll();
             if(Object.keys(result).length === 0){
                 res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
-            }else{
-                res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
             }
+
+            meuCache.set("findAllTarefa", JSON.stringify(result), 60);
+            res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
         }catch (e) {
             res.status(500).json({response: 0, errors: e});
         }
     }
 
     async store(req, res){
-        const tarefa = req.body;
         try {
+            // Apagar cache
+            meuCache.del("findAllTarefa");
+
+            const tarefa = req.body;
             await TarefaRepository.create(tarefa);
             res.status(201).json({response: 1, message: "Registro criado com sucesso."});
         }catch (e) {

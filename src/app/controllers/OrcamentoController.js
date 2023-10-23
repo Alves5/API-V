@@ -1,34 +1,41 @@
 import OrcamentoRepository from "../repositories/OrcamentoRepository.js";
+import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js";
+import NodeCache from "node-cache";
+const meuCache = new NodeCache();
 
 class OrcamentoController {
     async findAll(req, res){
         try {
+            const cachedData = meuCache.get("findAllOrcamento");
+            if (cachedData !== undefined) {
+                return res.status(HTTP_STATUS.OK).json({ response: JSON.parse(cachedData), message: MESSAGES.FIND });
+            }
+
             const result = await OrcamentoRepository.findAll();
             if(Object.keys(result).length === 0){
-                res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
-            }else{
-                res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
+                return res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
             }
+
+            meuCache.set("findAllOrcamento", JSON.stringify(result), 60);
+            res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
         }catch (e) {
             res.status(500).json({response: 0, errors: e});
         }
     }
 
     async store(req, res) {
-        const orcamento = req.body;
-        const numero = req.body.numeroOrcamento;
         try {
-            const exists = await OrcamentoRepository.findByNumero(numero);
-            if (exists !== null){
-                res.status(422).json({response: 0, message: "O registro já existe"});
-            }else{
-                try {
-                    await OrcamentoRepository.create(orcamento);
-                    res.status(201).json({response: 1, message: "Registro criado com sucesso."});
-                }catch (e) {
-                    res.status(500).json({response: 0, errors: e});
-                }
+            // Apagar cache
+            meuCache.del("findAllOrcamento");
+
+            const orcamento = req.body;
+            const exists = await OrcamentoRepository.findByNumero(orcamento.numeroOrcamento);
+            if (exists !== null) {
+                return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({ response: RESPONSE.WARNING, message: MESSAGES.CREATED_EXISTS });
             }
+
+            await OrcamentoRepository.create(orcamento);
+            res.status(201).json({response: 1, message: "Registro criado com sucesso."});
         }catch (e) {
             res.status(500).json({response: 0, errors: e});
         }

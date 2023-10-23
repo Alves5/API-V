@@ -1,34 +1,41 @@
 import OportunidadeRepository from "../repositories/OportunidadeRepository.js";
+import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js";
+import NodeCache from "node-cache";
+const meuCache = new NodeCache();
 
 class OportunidadeController {
     async findAll(req, res){
         try {
+            const cachedData = meuCache.get("findAllOportunidade");
+            if (cachedData !== undefined) {
+                return res.status(HTTP_STATUS.OK).json({ response: JSON.parse(cachedData), message: MESSAGES.FIND });
+            }
+
             const result = await OportunidadeRepository.findAll();
             if(Object.keys(result).length === 0){
-                res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
-            }else{
-                res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
+                return res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
             }
+
+            meuCache.set("findAllOportunidade", JSON.stringify(result), 60);
+            res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
         }catch (e) {
             res.status(500).json({response: 0, errors: e});
         }
     }
 
     async store(req, res) {
-        const oportunidade = req.body;
-        const numero = req.body.numeroOportunidade;
         try {
-            const exists = await OportunidadeRepository.findByNumero(numero);
-            if (exists !== null){
-                res.status(422).json({response: 0, message: "O registro já existe"});
-            }else{
-                try {
-                    await OportunidadeRepository.create(oportunidade);
-                    res.status(201).json({response: 1, message: "Registro criado com sucesso."});
-                }catch (e) {
-                    res.status(500).json({response: 0, errors: e});
-                }
+            // Apagar cache
+            meuCache.del("findAllOportunidade");
+
+            const oportunidade = req.body;
+            const exists = await OportunidadeRepository.findByNumero(oportunidade.numeroOportunidade);
+            if (exists !== null) {
+                return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({ response: RESPONSE.WARNING, message: MESSAGES.CREATED_EXISTS });
             }
+
+            await OportunidadeRepository.create(oportunidade);
+            res.status(201).json({response: 1, message: "Registro criado com sucesso."});
         }catch (e) {
             res.status(500).json({response: 0, errors: e});
         }
