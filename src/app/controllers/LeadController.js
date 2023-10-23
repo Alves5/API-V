@@ -1,46 +1,57 @@
 import LeadRepository from "../repositories/LeadRepository.js";
 import Contato from "../model/Contato.js";
 import ContatoRepository from "../repositories/ContatoRepository.js";
-import FieldsCompatible from "../Utils/FieldsCompatible.js";
-import leadModel from "../model/Lead.js";
 import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js"
-import {meuCache} from "../Utils/Utils.js";
+import NodeCache from "node-cache";
+const meuCache = new NodeCache();
 
 class LeadController {
-    async findAll(req, res){
+    async findAll(req, res) {
+        const tipView = req.query.view;
+        const cacheKey = tipView === 'kanban' ? 'findAllKanban' : 'findAll';
+
         try {
-            const value = meuCache.get("teste");
-            if (value !== undefined){
-                return res.status(HTTP_STATUS.OK).json({response: JSON.parse(value), message: 'Cache'});
+            const cachedData = meuCache.get(cacheKey);
+            if (cachedData !== undefined) {
+                return res.status(HTTP_STATUS.OK).json({ response: JSON.parse(cachedData), message: MESSAGES.FIND });
             }
 
-            const result = await LeadRepository.findAll();
-            meuCache.set("teste", JSON.stringify(result), 10);
-            if(Object.keys(result).length === 0){
-                return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
+            const leads = await LeadRepository.findAll();
+            if (Object.keys(leads).length === 0) {
+                return res.status(HTTP_STATUS.NOT_FOUND).json({ response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS });
             }
 
-            res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
-        }catch (e) {
-            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
+            const result = {};
+            leads.forEach((lead) => {
+                // necessário corrigir esse for para trabalhar com um um objeto maior
+                result[lead.processoQualificacao_n.nome] = result[lead.processoQualificacao_n.nome] || [];
+                result[lead.processoQualificacao_n.nome].push(lead);
+            });
+
+            meuCache.set(cacheKey, JSON.stringify(cacheKey === 'findAllKanban' ? result : leads), 60);
+            if (cacheKey === 'findAllKanban') {
+                res.status(HTTP_STATUS.OK).json({ response: result, message: MESSAGES.FIND });
+            } else {
+                res.status(HTTP_STATUS.OK).json({ response: leads, message: MESSAGES.FIND });
+            }
+        } catch (e) {
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ response: RESPONSE.ERROR, errors: e });
         }
     }
 
     async store(req, res){
         try {
+            // Apagar cache
+            meuCache.del(["findAll", "findAllKanban"]);
+
             const lead = req.body;
             if (Object.keys(lead).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
-            const exists = await LeadRepository.findByCodigo(lead.codigo);
+            const exists = await LeadRepository.findByOne({codigo: lead.codigo});
             if (exists !== null){
                 return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({response: RESPONSE.WARNING, message: MESSAGES.CREATED_EXISTS});
-            }
-
-            const isCompatible = FieldsCompatible.areFieldsCompatible(leadModel, lead);
-            if (!isCompatible){
-                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_JSON });
             }
 
             await LeadRepository.create(lead);
@@ -50,10 +61,10 @@ class LeadController {
         }
     }
 
-    async findByCodigo(req, res){
-        const codigo = req.params.codigo;
+    async findById(req, res){
+        const id = req.params.id;
         try{
-            const result = await LeadRepository.findByCodigo(codigo);
+            const result = await LeadRepository.findByOne({_id: id});
             if(result !== null){
                 res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
             }else{
@@ -63,20 +74,16 @@ class LeadController {
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
         }
     }
-    async updateByCodigo(req, res){
+
+    async updateById(req, res){
         try {
-            const codigo = req.params.codigo;
+            const id = req.params.id;
             const lead = req.body;
             if (Object.keys(lead).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
-            const isCompatible = FieldsCompatible.areFieldsCompatible(leadModel, lead, ['codigo']);
-            if (!isCompatible){
-                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_JSON });
-            }
-
-            const result = await LeadRepository.update(codigo, lead);
+            const result = await LeadRepository.update(id, lead);
             if (result.modifiedCount === 1){
                 res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
             }else{
@@ -87,10 +94,10 @@ class LeadController {
         }
     }
 
-    async deleteByCodigo(req, res){
-        const codigo = req.params.codigo;
+    async deleteById(req, res){
+        const id = req.params.id;
         try {
-            const result = await LeadRepository.delete(codigo);
+            const result = await LeadRepository.delete(id);
             if (result.deletedCount === 1){
                 res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE});
             }else{
@@ -102,9 +109,9 @@ class LeadController {
     }
 
     async convertToContact(req, res){
-        const codigo = req.params.codigo;
+        const id = req.params.id;
         try {
-            const exists = await LeadRepository.findByCodigo(codigo);
+            const exists = await LeadRepository.findByOne({_id: id});
 
             if (!exists){
                 res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: 'Nehuma lead encontrada.'});
