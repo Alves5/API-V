@@ -10,16 +10,16 @@ class ContaRepository {
         conta.save();
     }
 
-    findByNumero(numero){
-        return ContaModel.findOne({numeroConta: numero});
+    findByNumero(filter){
+        return ContaModel.findOne(filter);
     }
 
-    update(numero, cont){
-        return ContaModel.updateOne({numeroConta: numero}, {$set: cont}, {new: true});
+    update(filter, cont){
+        return ContaModel.updateOne(filter, {$set: cont}, {new: true});
     }
 
-    delete(numero){
-        return ContaModel.deleteOne({numeroConta: numero}, {new: true});
+    delete(filter){
+        return ContaModel.deleteOne(filter, {new: true});
     }
 }
 export default new ContaRepository();

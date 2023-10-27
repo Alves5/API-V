@@ -4,10 +4,13 @@ import ContatoRepository from "../repositories/ContatoRepository.js";
 import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js"
 import NodeCache from "node-cache";
 const meuCache = new NodeCache();
+import jwt from "jsonwebtoken";
+import LeadModel from "../model/Lead.js";
+import mongoose from "mongoose";
 
 class LeadController {
     async findAll(req, res) {
-        const tipView = req.query.view;
+        const {tipView} = req.params;
         const cacheKey = tipView === 'kanban' ? 'findAllKanban' : 'findAll';
 
         try {
@@ -35,6 +38,7 @@ class LeadController {
                 res.status(HTTP_STATUS.OK).json({ response: leads, message: MESSAGES.FIND });
             }
         } catch (e) {
+            console.error('Erro ao buscar os registros:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ response: RESPONSE.ERROR, errors: e });
         }
     }
@@ -57,20 +61,22 @@ class LeadController {
             await LeadRepository.create(lead);
             res.status(HTTP_STATUS.CREATED).json({response: RESPONSE.SUCCESS, message: MESSAGES.CREATED});
         }catch (e) {
+            console.error('Erro ao criar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
         }
     }
 
     async findById(req, res){
-        const id = req.params.id;
         try{
+            const id = req.params.id;
             const result = await LeadRepository.findByOne({_id: id});
-            if(result !== null){
-                res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
-            }else{
-                res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
+            if(result === null){
+                return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }
+
+            res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
         }catch (e) {
+            console.error('Erro ao buscar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
         }
     }
@@ -84,12 +90,13 @@ class LeadController {
             }
 
             const result = await LeadRepository.update(id, lead);
-            if (result.modifiedCount === 1){
-                res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
-            }else{
-                res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.UPDATED_NO_UPDATED});
+            if (result.modifiedCount === 0){
+                return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.UPDATED_NO_UPDATED});
             }
+
+            res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
         }catch (e) {
+            console.error('Erro ao atualizar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
         }
     }
@@ -97,13 +104,15 @@ class LeadController {
     async deleteById(req, res){
         const id = req.params.id;
         try {
+            /** @type {Object} */
             const result = await LeadRepository.delete(id);
-            if (result.deletedCount === 1){
-                res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE});
-            }else{
-                res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
+            if (result.deletedCount === 0){
+                return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
             }
+
+            res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE});
         }catch (e) {
+            console.error('Erro ao deletar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
         }
     }
@@ -128,8 +137,54 @@ class LeadController {
             await ContatoRepository.create(contato);
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: 'Lead convertida para Contato.'});
         }catch (e) {
+            console.error('Erro ao converter o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
         }
     }
+
+    async deleteMultipleLeads(req, res){
+        try {
+            const { severalSelected } = req.body;
+            if (severalSelected === undefined){
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
+            }
+
+            const existingLeads = await LeadRepository.findExistingLeads(severalSelected);
+            const existingIds = existingLeads.map(lead => lead._id);
+
+            /** @type {Object} */
+            const result = await LeadRepository.deletarVarios(existingIds);
+            if (result.deletedCount === 0) {
+                return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_MANY });
+            }
+
+            res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE_MANY });
+        }catch (e) {
+            console.error(e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e });
+        }
+    }
+
+    // async testeTempoToken(req, res){
+    //     try {
+    //         const token = req.header("Authorization");
+    //         const decoded = jwt.decode(token);
+    //
+    //         if (decoded) {
+    //             const currentTime = Math.floor(Date.now() / 1000);
+    //             const expiresIn = decoded.exp - currentTime;
+    //
+    //             console.log('Tempo restante do token (segundos):', expiresIn);
+    //             console.log('Tempo restante do token (minutos):', expiresIn / 60);
+    //             console.log('Tempo restante do token (horas):', expiresIn / 3600);
+    //             console.log('--------------------------------------------------------');
+    //         } else {
+    //             console.log('Token inválido.');
+    //         }
+    //     }catch (e) {
+    //         console.log(e);
+    //     }
+    // }
+
 }
 export default new LeadController();

@@ -5,6 +5,10 @@ class LeadRepository {
         return LeadModel.find().limit(30);
     }
 
+    findExistingLeads(ids){
+        return LeadModel.find({ _id: { $in: ids } })
+    }
+
     create(lea){
         const lead = new LeadModel(lea);
         lead.save();
@@ -20,6 +24,10 @@ class LeadRepository {
 
     delete(id){
         return LeadModel.deleteOne({_id: id}, {new: true});
+    }
+
+    deletarVarios(ids){
+        return LeadModel.deleteMany({ _id: { $in: ids } })
     }
 
 }

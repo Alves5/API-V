@@ -10,16 +10,16 @@ class OrcamentoRepository {
         orcamento.save();
     }
 
-    findByNumero(numero){
-        return OrcamentoModel.findOne({numeroOrcamento: numero});
+    findByNumero(filter){
+        return OrcamentoModel.findOne(filter);
     }
 
-    update(numero, orc){
-        return OrcamentoModel.updateOne({numeroOrcamento: numero}, {$set: orc}, {new: true});
+    update(filter, orc){
+        return OrcamentoModel.updateOne(filter, {$set: orc}, {new: true});
     }
 
-    delete(numero){
-        return OrcamentoModel.deleteOne({numeroOrcamento: numero}, {new: true});
+    delete(filter){
+        return OrcamentoModel.deleteOne(filter, {new: true});
     }
 }
 export default new OrcamentoRepository();

@@ -10,16 +10,16 @@ class OportunidadeRepository {
         oportunidade.save();
     }
 
-    findByNumero(numero){
-        return OportunidadeModel.findOne({numeroOportunidade: numero});
+    findByNumero(filter){
+        return OportunidadeModel.findOne(filter);
     }
 
-    update(numero, opp){
-        return OportunidadeModel.updateOne({numeroOportunidade: numero}, {$set: opp}, {new: true});
+    update(filter, opp){
+        return OportunidadeModel.updateOne(filter, {$set: opp}, {new: true});
     }
 
     delete(numero){
-        return OportunidadeModel.deleteOne({numeroOportunidade: numero}, {new: true});
+        return OportunidadeModel.deleteOne(filter, {new: true});
     }
 }
 export default new OportunidadeRepository();

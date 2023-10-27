@@ -10,16 +10,16 @@ class ContratoRepository {
         contrato.save();
     }
 
-    findByNumero(numero){
-        return ContratoModel.findOne({numeroContrato: numero});
+    findByNumero(filter){
+        return ContratoModel.findOne(filter);
     }
 
-    update(numero, cont){
-        return ContratoModel.updateOne({numeroContrato: numero}, {$set: cont}, {new: true});
+    update(filter, cont){
+        return ContratoModel.updateOne(filter, {$set: cont}, {new: true});
     }
 
-    delete(numero){
-        return ContratoModel.deleteOne({numeroContrato: numero}, {new: true});
+    delete(filter){
+        return ContratoModel.deleteOne(filter, {new: true});
     }
 }
 export default new ContratoRepository();

@@ -1,6 +1,6 @@
 import TarefaRepository from "../repositories/TarefaRepository.js";
 import NodeCache from "node-cache";
-import {HTTP_STATUS, MESSAGES} from "../Utils/ApiMessages.js";
+import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js";
 const meuCache = new NodeCache();
 
 class TarefaController {
@@ -13,13 +13,14 @@ class TarefaController {
 
             const result = await TarefaRepository.findAll();
             if(Object.keys(result).length === 0){
-                res.status(200).json({response: 0, message: 'Nenhum registro encontrado.'});
+                res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }
 
             meuCache.set("findAllTarefa", JSON.stringify(result), 60);
-            res.status(200).json({response: result, message: 'Registros encontrados com sucesso.'});
+            res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
         }catch (e) {
-            res.status(500).json({response: 0, errors: e});
+            console.error('Erro ao buscar os registros:', e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
 
@@ -29,10 +30,15 @@ class TarefaController {
             meuCache.del("findAllTarefa");
 
             const tarefa = req.body;
+            if (Object.keys(tarefa).length === 0){
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
+            }
+
             await TarefaRepository.create(tarefa);
-            res.status(201).json({response: 1, message: "Registro criado com sucesso."});
+            res.status(HTTP_STATUS.CREATED).json({response: RESPONSE.SUCCESS, message: MESSAGES.CREATED});
         }catch (e) {
-            res.status(500).json({response: 0, errors: e});
+            console.error('Erro ao criar o registro:', e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
 
@@ -40,42 +46,49 @@ class TarefaController {
         const id = req.params.id;
         try {
             const result = await TarefaRepository.findById(id);
-            if(result !== null){
-                res.status(200).json({response: result, message: "Registro encontrado."});
-            }else{
-                res.status(200).json({response: 0, message: "Nenhum registro encontrado."});
+            if(result === null){
+                return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }
+
+            res.status(HTTP_STATUS.OK).json({response: result, message: MESSAGES.FIND});
         }catch (e) {
-            res.status(500).json({response: 0, errors: e});
+            console.error('Erro ao buscar o registro:', e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
 
     async update(req, res){
-        const id = req.params.id;
-        const tarefa = req.body;
         try {
-            const result = await TarefaRepository.update(id, tarefa);
-            if (result.modifiedCount === 1){
-                res.status(200).json({response: result.modifiedCount, message: 'Sucesso, registro atualizado'});
-            }else{
-                res.status(200).json({response: result.modifiedCount, message: 'Registro não atualizado'});
+            const id = req.params.id;
+            const tarefa = req.body;
+            if (Object.keys(tarefa).length === 0){
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
+
+            const result = await TarefaRepository.update(id, tarefa);
+            if (result.modifiedCount === 0){
+                return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.UPDATED_NO_UPDATED});
+            }
+
+            res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
         }catch (e) {
-            res.status(500).json({response: 0, errors: e});
+            console.error('Erro ao atualizar o registro:', e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
 
     async deleteById(req, res){
-        const id = req.params.id;
         try {
+            const id = req.params.id;
             const result = await TarefaRepository.delete(id);
-            if (result.deletedCount === 1){
-                res.status(200).json({response: result.deletedCount, message: 'Registro deletado com sucesso'});
-            }else{
-                res.status(404).json({response: result.deletedCount, message: 'Registro não existe ou não deletado.'});
+            if (result.deletedCount === 0){
+                res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
             }
+
+            res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE});
         }catch (e) {
-            res.json(e);
+            console.error('Erro ao deletar o registro:', e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
         }
     }
 }

@@ -11,16 +11,16 @@ class BibliotecaRepository {
         return await BibliotecaModel.find();
     }
 
-    async findByCodigo(codigo){
-        return await BibliotecaModel.findOne({codigo: codigo});
+    async findByCodigo(filter){
+        return await BibliotecaModel.findOne(filter);
     }
 
-    async update(codigo, biblioteca){
-        return await BibliotecaModel.updateOne({codigo: codigo}, biblioteca);
+    async update(filter, biblioteca){
+        return await BibliotecaModel.updateOne(filter, biblioteca);
     }
 
-    async delete(codigo){
-        return await BibliotecaModel.deleteOne({codigo: codigo});
+    async delete(filter){
+        return await BibliotecaModel.deleteOne(filter);
     }
 }
 export default new BibliotecaRepository();
