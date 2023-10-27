@@ -15,12 +15,15 @@ export const RESPONSE = {
 
 export const MESSAGES = {
     FIND: 'Registros encontrados com sucesso.',
+    FIND_ONE: 'Registro encontrado com sucesso.',
     FIND_NO_EXISTS: 'Nenhum registro encontrado.',
     CREATED: 'Registro criado com sucesso.',
     CREATED_EXISTS: 'O registro já existe.',
     UPDATED: 'Registro atualizado com sucesso.',
     UPDATED_NO_UPDATED: 'Registro não atualizado.',
     DELETE: 'Registro deletado com sucesso.',
+    DELETE_MANY: 'Registros deletados com sucesso',
+    DELETE_NO_MANY: 'Nenhum registro foi deletado',
     DELETE_NO_DELETE: 'Registro não existe ou não deletado.',
     ERROR_SERVIDOR: 'Erro interno no servidor.',
     ERROR_JSON: 'JSON não é compatível com o modelo de dados.',

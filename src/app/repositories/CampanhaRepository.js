@@ -8,14 +8,14 @@ class CampanhaRepository {
         const campanha = new CampanhaModel(camp);
         campanha.save();
     }
-    findByCodigo(codigo){
-        return CampanhaModel.findOne({codigo: codigo});
+    findByCodigo(filter){
+        return CampanhaModel.findOne(filter);
     }
-    update(codigo, camp){
-        return CampanhaModel.updateOne({codigo: codigo}, {$set: camp}, {new: true});
+    update(filter, camp){
+        return CampanhaModel.updateOne(filter, {$set: camp}, {new: true});
     }
-    delete(codigo){
-        return CampanhaModel.deleteOne({codigo: codigo});
+    delete(filter){
+        return CampanhaModel.deleteOne(filter);
     }
 }
 export default new CampanhaRepository();

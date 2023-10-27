@@ -1,10 +1,14 @@
 import BibliotecaRepository from "../repositories/BibliotecaRepository.js";
+import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js";
 class BibliotecaController {
 
     async store(req, res) {
         try {
-            const { codigo, nome, modeloTexto, tipo, descricao, criadoPor, atualizadoPor } = req.body;
+            if (Object.keys(req.body).length === 0){
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
+            }
 
+            const { codigo, nome, modeloTexto, tipo, descricao, criadoPor, atualizadoPor } = req.body;
             const novaBiblioteca = {
                 codigo,
                 nome,
@@ -18,9 +22,10 @@ class BibliotecaController {
 
             await BibliotecaRepository.create(novaBiblioteca);
 
-            res.status(201).json({response: 1, message: 'Biblioteca armazenada com sucesso!' });
+            res.status(HTTP_STATUS.CREATED).json({response: RESPONSE.SUCCESS, message: 'Biblioteca armazenada com sucesso!' });
         } catch (e) {
-            res.status(500).json({response: 0, message: 'Erro ao armazenar a biblioteca.', errors: e});
+            console.error('Erro ao criar o biblioteca:', e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: 'Erro ao armazenar a biblioteca.', errors: e});
         }
 
     }
@@ -29,38 +34,43 @@ class BibliotecaController {
         try {
             const bibliotecas = await BibliotecaRepository.findAll();
             if(Object.keys(bibliotecas).length === 0){
-                res.status(200).json({response: 0, message: 'Nenhuma biblioteca encontrada.'});
+                res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: 'Nenhuma biblioteca encontrada.'});
             }else{
-                res.status(200).json({response: bibliotecas, message: 'Bibliotecas encontradas com sucesso.'});
+                res.status(HTTP_STATUS.OK).json({response: bibliotecas, message: 'Bibliotecas encontradas com sucesso.'});
             }
         } catch (e) {
-            res.status(500).json({response: 0, message: 'Erro ao buscar as bibliotecas.', errors: e});
+            console.error('Erro ao buscar as bibliotecas:', e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: 'Erro ao buscar as bibliotecas.', errors: e});
         }
     }
 
     async findByCodigo(req, res) {
         try {
-            const { codigo } = req.params;
-            const biblioteca = await BibliotecaRepository.findByCodigo(codigo);
-            if(biblioteca !== null){
-                res.status(200).json({response: biblioteca, message: "Biblioteca encontrada."});
-            }else{
-                res.status(200).json({response: 0, message: "Nenhuma biblioteca encontrada."});
+            const { id } = req.params;
+            const biblioteca = await BibliotecaRepository.findByCodigo({_id: id});
+            if(biblioteca === null){
+                return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: "Nenhuma biblioteca encontrada."});
             }
+
+            res.status(HTTP_STATUS.OK).json({response: biblioteca, message: "Biblioteca encontrada."});
         } catch (e) {
-            res.status(500).json({response: 0, message: 'Erro ao buscar a biblioteca.', errors: e});
+            console.error('Erro ao buscar o biblioteca:', e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: 'Erro ao buscar a biblioteca.', errors: e});
         }
     }
 
     async updateByCodigo(req, res) {
         try {
-            const { codigo } = req.params;
-            const { nome, descricao, criadoPor, atualizadoPor } = req.body;
+            if (Object.keys(req.body).length === 0){
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
+            }
 
-            const biblioteca = await BibliotecaRepository.findByCodigo(codigo);
+            const { id } = req.params;
+            const { nome, descricao, criadoPor, atualizadoPor } = req.body;
+            const biblioteca = await BibliotecaRepository.findByCodigo({_id: id});
 
             if (!biblioteca) {
-                res.status(404).json({response: 0, message: 'Biblioteca não encontrada.' });
+                res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: 'Biblioteca não encontrada.' });
             }
 
             const bibliotecaAtualizada = {
@@ -70,29 +80,30 @@ class BibliotecaController {
                 atualizadoPor,
             };
 
-            await BibliotecaRepository.update(codigo, bibliotecaAtualizada);
+            await BibliotecaRepository.update({_id: id}, bibliotecaAtualizada);
 
-            res.status(200).json({response: 1, message: 'Biblioteca atualizada com sucesso!' });
+            res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: 'Biblioteca atualizada com sucesso!' });
         } catch (e) {
-            res.status(500).json({response: 0, message: 'Erro ao atualizar a biblioteca.', errors: e});
+            console.error('Erro ao atualizar a biblioteca:', e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: 'Erro ao atualizar a biblioteca.', errors: e});
         }
     }
 
     async deleteByCodigo(req, res) {
         try {
-            const { codigo } = req.params;
-
-            const biblioteca = await BibliotecaRepository.findByCodigo(codigo);
+            const { id } = req.params;
+            const biblioteca = await BibliotecaRepository.findByCodigo({_id: id});
 
             if (!biblioteca) {
-                res.status(404).json({response: 0, message: 'Biblioteca não encontrada.' });
+                res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: 'Biblioteca não encontrada.' });
             }
 
-            await BibliotecaRepository.delete(codigo);
+            await BibliotecaRepository.delete({_id: id});
 
-            res.status(200).json({response: 0, message: 'Biblioteca excluída com sucesso!' });
+            res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: 'Biblioteca excluída com sucesso!' });
         } catch (e) {
-            res.status(500).json({response: 0, message: 'Erro ao excluir a biblioteca.', errors: e});
+            console.error('Erro ao deletar a biblioteca:', e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: 'Erro ao excluir a biblioteca.', errors: e});
         }
     }
 }

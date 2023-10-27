@@ -24,7 +24,7 @@ class LoginController {
                 userId: user._id,
                 userEmail: user.email,
                 userSenha: user.senha
-            }, process.env.KEY_TOKEN, { expiresIn: 3600 });
+            }, process.env.KEY_TOKEN, { expiresIn: '1 day' });
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, token: token });
         } catch (e) {
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e });
