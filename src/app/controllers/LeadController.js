@@ -4,9 +4,7 @@ import ContatoRepository from "../repositories/ContatoRepository.js";
 import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js"
 import NodeCache from "node-cache";
 const meuCache = new NodeCache();
-import jwt from "jsonwebtoken";
-import LeadModel from "../model/Lead.js";
-import mongoose from "mongoose";
+
 
 class LeadController {
     async findAll(req, res) {
@@ -89,8 +87,9 @@ class LeadController {
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
-            const result = await LeadRepository.update(id, lead);
-            if (result.modifiedCount === 0){
+            const result = await LeadRepository.update({_id: id}, lead);
+            console.log(result);
+            if (result === null){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.UPDATED_NO_UPDATED});
             }
 

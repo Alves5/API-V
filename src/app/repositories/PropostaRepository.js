@@ -10,16 +10,16 @@ class PropostaRepository {
         proposta.save();
     }
 
-    findByNumero(numero){
-        return PropostaModel.findOne({numeroProposta: numero});
+    findByFilter(filter){
+        return PropostaModel.findOne(filter);
     }
 
-    update(numero, prop){
-        return PropostaModel.updateOne({numeroProposta: numero}, {$set: prop}, {new: true});
+    update(filter, prop){
+        return PropostaModel.updateOne(filter, {$set: prop}, {new: true});
     }
 
-    delete(numero){
-        return PropostaModel.deleteOne({numeroProposta: numero}, {new: true});
+    delete(filter){
+        return PropostaModel.deleteOne(filter, {new: true});
     }
 }
 export default new PropostaRepository();

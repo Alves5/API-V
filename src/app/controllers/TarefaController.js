@@ -43,8 +43,8 @@ class TarefaController {
     }
 
     async findById(req, res){
-        const id = req.params.id;
         try {
+            const id = req.params.id;
             const result = await TarefaRepository.findById(id);
             if(result === null){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});

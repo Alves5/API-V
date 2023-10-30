@@ -14,7 +14,15 @@ const leadSchema = new mongoose.Schema({
             name: String,
             value: String
         }],
-        dataNascimento: Date,
+        dataNascimento: {
+            type: String,
+            validate: {
+                validator: function(v) {
+                    return /\d{2}\/\d{2}\/\d{4}/.test(v);
+                },
+                message: props => `${props.value} não está no formato DD/MM/YYYY!`
+            }
+        },
         cpf: String,
         nacionalidade: String,
         telefone: String,
