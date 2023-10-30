@@ -34,7 +34,7 @@ class PerfilController {
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
-            const exists = await PerfilRepository.findByNome(perfil.nome);
+            const exists = await PerfilRepository.findByfilter({nome: perfil.nome});
             if (exists !== null) {
                 return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({ response: RESPONSE.WARNING, message: MESSAGES.CREATED_EXISTS });
             }
@@ -47,10 +47,10 @@ class PerfilController {
         }
     }
 
-    async findByNome(req, res){
-        const nome = req.params.nome;
+    async findById(req, res){
+        const id = req.params.id;
         try {
-            const result = await PerfilRepository.findByNome(nome);
+            const result = await PerfilRepository.findByfilter({_id: id});
             if(result === null){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }
@@ -62,15 +62,15 @@ class PerfilController {
         }
     }
 
-    async update(req, res){
+    async updateById(req, res){
         try {
-            const nome = req.params.nome;
+            const id = req.params.id;
             const perfil = req.body;
             if (Object.keys(perfil).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
-            const result = await PerfilRepository.update(nome, perfil);
+            const result = await PerfilRepository.update({_id: id}, perfil);
             if (result.modifiedCount === 0){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.UPDATED_NO_UPDATED});
             }
@@ -82,10 +82,10 @@ class PerfilController {
         }
     }
 
-    async deleteByNome(req, res){
+    async deleteById(req, res){
         try {
-            const nome = req.params.nome;
-            const result = await PerfilRepository.delete(nome);
+            const id = req.params.id;
+            const result = await PerfilRepository.delete({_id: id});
             if (result.deletedCount === 0){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
             }

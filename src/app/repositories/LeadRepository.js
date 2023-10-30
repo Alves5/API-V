@@ -9,17 +9,25 @@ class LeadRepository {
         return LeadModel.find({ _id: { $in: ids } })
     }
 
-    create(lea){
-        const lead = new LeadModel(lea);
-        lead.save();
+    create(leadData){
+        return new Promise((resolve, reject) => {
+            const lead = new LeadModel(leadData);
+            lead.save()
+                .then((registroSalvo) => {
+                    resolve(registroSalvo);
+                })
+                .catch((erro) => {
+                    reject(erro);
+                });
+        });
     }
 
     findByOne(filter){
         return LeadModel.findOne(filter);
     }
 
-    update(id, lea){
-        return LeadModel.updateOne({_id: id}, {$set: lea}, {new: true});
+    update(filter, leadData){
+        return LeadModel.findOneAndUpdate(filter, leadData, {new: true});
     }
 
     delete(id){

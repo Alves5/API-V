@@ -8,14 +8,14 @@ class ProcessoQualificacaoRepository {
         const processo = new EtapaModel(proc);
         processo.save();
     }
-    findByNome(filter){
+    findByFilter(filter){
         return EtapaModel.findOne(filter);
     }
-    update(apiNome, processo){
-        return EtapaModel.updateOne({apiNome: apiNome}, {$set: processo}, {new: true});
+    update(filter, processo){
+        return EtapaModel.updateOne(filter, {$set: processo}, {new: true});
     }
-    delete(apiNome){
-        return EtapaModel.deleteOne({apiNome: apiNome});
+    delete(filter){
+        return EtapaModel.deleteOne(filter);
     }
 }
 export default new ProcessoQualificacaoRepository();

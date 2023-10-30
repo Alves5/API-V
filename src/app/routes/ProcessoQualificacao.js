@@ -4,9 +4,9 @@ const router = Router();
 import ProcessoQualificacaoController from "../controllers/ProcessoQualificacaoController.js";
 
 router.post('/processo', ProcessoQualificacaoController.store);
-router.get('/processo/:apiNome', ProcessoQualificacaoController.findByApiNome);
+router.get('/processo/:id', ProcessoQualificacaoController.findById);
 router.get('/processo', ProcessoQualificacaoController.findAll);
-router.put('/processo/:apiNome', ProcessoQualificacaoController.update);
-router.delete('/processo/:apiNome', ProcessoQualificacaoController.deleteByNome);
+router.put('/processo/:id', ProcessoQualificacaoController.updateById);
+router.delete('/processo/:id', ProcessoQualificacaoController.deleteById);
 
 export default router;

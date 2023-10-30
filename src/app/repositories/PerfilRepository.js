@@ -7,14 +7,14 @@ class PerfilRepository {
         const perfil = new PerfilModel(per);
         perfil.save();
     }
-    findByNome(nome){
-        return PerfilModel.findOne({nome: nome});
+    findByfilter(filter){
+        return PerfilModel.findOne(filter);
     }
-    update(nome, per){
-        return PerfilModel.updateOne({nome: nome}, {$set: per}, {new: true});
+    update(filter, per){
+        return PerfilModel.updateOne(filter, {$set: per}, {new: true});
     }
-    delete(nome){
-        return PerfilModel.deleteOne({nome: nome});
+    delete(filter){
+        return PerfilModel.deleteOne(filter);
     }
 }
 export default new PerfilRepository();

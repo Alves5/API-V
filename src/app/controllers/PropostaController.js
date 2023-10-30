@@ -47,10 +47,10 @@ class PropostaController {
         }
     }
 
-    async findByNumero(req, res){
+    async findById(req, res){
         try {
-            const numero = req.params.numeroProposta;
-            const result = await PropostaRepository.findByNumero(numero);
+            const id = req.params.id;
+            const result = await PropostaRepository.findByFilter({_id: id});
             if(result === null){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }
@@ -62,15 +62,15 @@ class PropostaController {
         }
     }
 
-    async updateByNumero(req, res){
+    async updateById(req, res){
         try {
-            const numero = req.params.numeroProposta;
+            const id = req.params.id;
             const proposta = req.body;
             if (Object.keys(proposta).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
-            const result = await PropostaRepository.update(numero, proposta);
+            const result = await PropostaRepository.update({_id: id}, proposta);
             if (result.modifiedCount === 0){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.UPDATED_NO_UPDATED});
             }
@@ -82,10 +82,10 @@ class PropostaController {
         }
     }
 
-    async deleteByNumero(req, res){
+    async deleteById(req, res){
         try {
-            const numero = req.params.numeroProposta;
-            const result = await PropostaRepository.delete(numero);
+            const id = req.params.id;
+            const result = await PropostaRepository.delete({_id: id});
             if (result.deletedCount === 0){
                 return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
             }

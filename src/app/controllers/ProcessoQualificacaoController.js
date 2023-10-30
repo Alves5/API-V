@@ -23,7 +23,7 @@ class ProcessoQualificacaoController {
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
-            const exists = await ProcessoQualificacao.findByNome({apiNome: processo.apiNome});
+            const exists = await ProcessoQualificacao.findByFilter({apiNome: processo.apiNome});
             if (exists !== null) {
                 return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({ response: RESPONSE.WARNING, message: MESSAGES.CREATED_EXISTS });
             }
@@ -36,10 +36,10 @@ class ProcessoQualificacaoController {
         }
     }
 
-    async findByApiNome(req, res){
-        const apiNome = req.params.apiNome;
+    async findById(req, res){
+        const id = req.params.id;
         try {
-            const result = await ProcessoQualificacao.findByNome({apiNome: apiNome});
+            const result = await ProcessoQualificacao.findByFilter({_id: id});
             if(result === null){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }
@@ -51,15 +51,15 @@ class ProcessoQualificacaoController {
         }
     }
 
-    async update(req, res){
+    async updateById(req, res){
         try {
-            const apiNome = req.params.apiNome;
+            const id = req.params.id;
             const processo = req.body;
             if (Object.keys(processo).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
-            const result = await ProcessoQualificacao.update(apiNome, processo);
+            const result = await ProcessoQualificacao.update({_id: id}, processo);
             if (result.modifiedCount === 0){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.UPDATED_NO_UPDATED});
             }
@@ -71,10 +71,10 @@ class ProcessoQualificacaoController {
         }
     }
 
-    async deleteByNome(req, res){
-        const apiNome = req.params.apiNome;
+    async deleteById(req, res){
         try {
-            const result = await ProcessoQualificacao.delete(apiNome);
+            const id = req.params.id;
+            const result = await ProcessoQualificacao.delete({_id: id});
             if (result.deletedCount === 0){
                 return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
             }
