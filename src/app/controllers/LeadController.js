@@ -4,9 +4,7 @@ import ContatoRepository from "../repositories/ContatoRepository.js";
 import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js"
 import NodeCache from "node-cache";
 const meuCache = new NodeCache();
-import jwt from "jsonwebtoken";
-import LeadModel from "../model/Lead.js";
-import mongoose from "mongoose";
+
 
 class LeadController {
     async findAll(req, res) {
