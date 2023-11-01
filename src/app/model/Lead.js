@@ -42,9 +42,13 @@ const leadSchema = new mongoose.Schema({
         campanha_n:[{
             codigo: String
         }],
-        processoQualificacao_n: {
-            codigo: String,
-            nome: String
+        etapasPQ: {
+            type: [String],
+            default: ['aberto', 'contato', 'qualificado', 'fechado'] // Valores padrão
+        },
+        processoQualificacao: {
+            type: String,
+            default: 'aberto'
         },
         criadoPor: String,
         atualizadoPor: String,
@@ -55,6 +59,20 @@ const leadSchema = new mongoose.Schema({
     _id: true,
     strict: false,
     collection: 'Lead'});
+
+leadSchema.pre('findOneAndUpdate', function(next) {
+    const data = this.getUpdate();
+    if (data){
+        const defaultValues = leadSchema.path('etapasPQ').options.default;
+
+        if (!defaultValues.includes(data.processoQualificacao)){
+            return Promise.reject(new Error('Valor inválido para processoQualificacao'));
+        }
+    }
+
+    next();
+});
+
 
 const leadModel = mongoose.model('Lead', leadSchema);
 export default leadModel;
