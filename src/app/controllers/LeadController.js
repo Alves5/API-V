@@ -25,8 +25,8 @@ class LeadController {
             const result = {};
             leads.forEach((lead) => {
                 // necessário corrigir esse for para trabalhar com um um objeto maior
-                result[lead.processoQualificacao_n.nome] = result[lead.processoQualificacao_n.nome] || [];
-                result[lead.processoQualificacao_n.nome].push(lead);
+                result[lead.processoQualificacao] = result[lead.processoQualificacao] || [];
+                result[lead.processoQualificacao].push(lead);
             });
 
             meuCache.set(cacheKey, JSON.stringify(cacheKey === 'findAllKanban' ? result : leads), 60);
@@ -88,7 +88,6 @@ class LeadController {
             }
 
             const result = await LeadRepository.update({_id: id}, lead);
-            console.log(result);
             if (result === null){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.UPDATED_NO_UPDATED});
             }
@@ -96,7 +95,8 @@ class LeadController {
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
         }catch (e) {
             console.error('Erro ao atualizar o registro:', e);
-            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
+            const errorMessage = "Houve um erro ao processar a solicitação. Por favor, tente novamente mais tarde.";
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: errorMessage});
         }
     }
 
