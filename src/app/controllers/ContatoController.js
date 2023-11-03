@@ -26,9 +26,6 @@ class ContatoController {
 
     async store(req, res) {
         try {
-            // Apagar cache
-            meuCache.del(["findAllContato", "relatedListContato"]);
-
             const contato = req.body;
             if (Object.keys(contato).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
@@ -41,6 +38,8 @@ class ContatoController {
 
             await ContatoRepository.create(contato);
             res.status(HTTP_STATUS.CREATED).json({ response: RESPONSE.SUCCESS, message: MESSAGES.CREATED });
+            // Apagar cache
+            meuCache.del(["findAllContato", "relatedListContato"]);
         } catch (e) {
             console.error('Erro ao criar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -77,6 +76,8 @@ class ContatoController {
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
+            // Apagar cache
+            meuCache.del(["findAllContato", "relatedListContato"]);
         }catch (e) {
             console.error('Erro ao atualizar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -93,6 +94,8 @@ class ContatoController {
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE});
+            // Apagar cache
+            meuCache.del(["findAllContato", "relatedListContato"]);
         }catch (e) {
             console.error('Erro ao deletar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});

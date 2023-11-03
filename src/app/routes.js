@@ -13,6 +13,7 @@ import Orcamento from "./routes/Orcamento.js";
 import Perfil from "./routes/Perfil.js";
 import Tarefa from "./routes/Tarefa.js";
 import Proposta from "./routes/Proposta.js";
+import Processo from "./routes/ProcessoQualificacao.js";
 import LoginController from "./controllers/users/loginController.js";
 import {authenticateToken} from "./middleware/authMiddleware.js";
 
@@ -37,5 +38,6 @@ router.use(Orcamento);
 router.use(Perfil);
 router.use(Tarefa);
 router.use(Proposta);
+router.use(Processo);
 
 export default router;
