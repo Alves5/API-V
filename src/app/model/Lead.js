@@ -43,8 +43,8 @@ const leadSchema = new mongoose.Schema({
             codigo: String
         }],
         processoQualificacao_n: {
-            codigo: String,
-            nome: String
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ProcessoQualificacao'
         },
         criadoPor: String,
         atualizadoPor: String,

@@ -4,7 +4,7 @@ const contratoSchema = new mongoose.Schema({
         id: Number,
         numeroContrato: String,
         status: String,
-        codigoContato_n: String,
+        codigoContato_n: String, // adicionar referencia aqui
         numeroProposta: String,
         seguroViajem: String,
         visto: String,

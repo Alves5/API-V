@@ -1,8 +1,34 @@
 import LeadModel from "../model/Lead.js";
 
 class LeadRepository {
-    findAll(){
-        return LeadModel.find().limit(30);
+    findAll(type){
+        if (type === 'kanban'){
+            return LeadModel.aggregate([
+                {
+                    $lookup: {
+                        from: 'ProcessoQualificacao',
+                        localField: 'processoQualificacao_n',
+                        foreignField: '_id',
+                        as: 'processo_qualificacao'
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$processo_qualificacao.nome',
+                        leads: { $push: '$$ROOT' }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        nomeProcesso: '$_id',
+                        leads: 1
+                    }
+                }
+            ]);
+        }
+
+        return LeadModel.find();
     }
 
     findExistingLeads(ids){

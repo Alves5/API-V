@@ -3,13 +3,14 @@ import Contato from "../model/Contato.js";
 import ContatoRepository from "../repositories/ContatoRepository.js";
 import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js"
 import NodeCache from "node-cache";
+import ProcessoQualificacaoRepository from "../repositories/ProcessoQualificacaoRepository.js";
 const meuCache = new NodeCache();
 
 
 class LeadController {
     async findAll(req, res) {
         const {tipView} = req.params;
-        const cacheKey = tipView === 'kanban' ? 'findAllKanban' : 'findAll';
+        const cacheKey = tipView === 'kanban' ? 'findAllKanbanLead' : 'findAllLead';
 
         try {
             const cachedData = meuCache.get(cacheKey);
@@ -17,24 +18,13 @@ class LeadController {
                 return res.status(HTTP_STATUS.OK).json({ response: JSON.parse(cachedData), message: MESSAGES.FIND });
             }
 
-            const leads = await LeadRepository.findAll();
+            const leads = await LeadRepository.findAll(tipView);
             if (Object.keys(leads).length === 0) {
                 return res.status(HTTP_STATUS.NOT_FOUND).json({ response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS });
             }
 
-            const result = {};
-            leads.forEach((lead) => {
-                // necessário corrigir esse for para trabalhar com um um objeto maior
-                result[lead.processoQualificacao_n.nome] = result[lead.processoQualificacao_n.nome] || [];
-                result[lead.processoQualificacao_n.nome].push(lead);
-            });
-
-            meuCache.set(cacheKey, JSON.stringify(cacheKey === 'findAllKanban' ? result : leads), 60);
-            if (cacheKey === 'findAllKanban') {
-                res.status(HTTP_STATUS.OK).json({ response: result, message: MESSAGES.FIND });
-            } else {
-                res.status(HTTP_STATUS.OK).json({ response: leads, message: MESSAGES.FIND });
-            }
+            meuCache.set(cacheKey, JSON.stringify(leads), 60);
+            res.status(HTTP_STATUS.OK).json({ response: leads, message: MESSAGES.FIND });
         } catch (e) {
             console.error('Erro ao buscar os registros:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ response: RESPONSE.ERROR, errors: e });
@@ -43,9 +33,6 @@ class LeadController {
 
     async store(req, res){
         try {
-            // Apagar cache
-            meuCache.del(["findAll", "findAllKanban"]);
-
             const lead = req.body;
             if (Object.keys(lead).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
@@ -56,8 +43,13 @@ class LeadController {
                 return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({response: RESPONSE.WARNING, message: MESSAGES.CREATED_EXISTS});
             }
 
+            const result = await ProcessoQualificacaoRepository.findByFilter({apiNome: 'aberto'});
+            lead.processoQualificacao_n = result._id !== null ? result._id : null;
+
             await LeadRepository.create(lead);
             res.status(HTTP_STATUS.CREATED).json({response: RESPONSE.SUCCESS, message: MESSAGES.CREATED});
+            // Apagar cache
+            meuCache.del(["findAllLead", "findAllKanbanLead"]);
         }catch (e) {
             console.error('Erro ao criar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
@@ -94,6 +86,8 @@ class LeadController {
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
+            // Apagar cache
+            meuCache.del(["findAllLead", "findAllKanbanLead"]);
         }catch (e) {
             console.error('Erro ao atualizar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
@@ -110,6 +104,8 @@ class LeadController {
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE});
+            // Apagar cache
+            meuCache.del(["findAllLead", "findAllKanbanLead"]);
         }catch (e) {
             console.error('Erro ao deletar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
@@ -158,32 +154,13 @@ class LeadController {
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE_MANY });
+            // Apagar cache
+            meuCache.del(["findAllLead", "findAllKanbanLead"]);
         }catch (e) {
             console.error(e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e });
         }
     }
-
-    // async testeTempoToken(req, res){
-    //     try {
-    //         const token = req.header("Authorization");
-    //         const decoded = jwt.decode(token);
-    //
-    //         if (decoded) {
-    //             const currentTime = Math.floor(Date.now() / 1000);
-    //             const expiresIn = decoded.exp - currentTime;
-    //
-    //             console.log('Tempo restante do token (segundos):', expiresIn);
-    //             console.log('Tempo restante do token (minutos):', expiresIn / 60);
-    //             console.log('Tempo restante do token (horas):', expiresIn / 3600);
-    //             console.log('--------------------------------------------------------');
-    //         } else {
-    //             console.log('Token inválido.');
-    //         }
-    //     }catch (e) {
-    //         console.log(e);
-    //     }
-    // }
 
 }
 export default new LeadController();
