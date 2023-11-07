@@ -26,9 +26,6 @@ class PerfilController {
 
     async store(req, res){
         try {
-            // Apagar cache
-            meuCache.del("findAllPerfil");
-
             const perfil = req.body;
             if (Object.keys(perfil).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
@@ -40,7 +37,10 @@ class PerfilController {
             }
 
             await PerfilRepository.create(perfil);
+
             res.status(HTTP_STATUS.CREATED).json({response: RESPONSE.SUCCESS, message: MESSAGES.CREATED});
+            // Apagar cache
+            meuCache.del("findAllPerfil");
         }catch (e){
             console.error('Erro ao criar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -48,8 +48,8 @@ class PerfilController {
     }
 
     async findById(req, res){
-        const id = req.params.id;
         try {
+            const id = req.params.id;
             const result = await PerfilRepository.findByfilter({_id: id});
             if(result === null){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
@@ -76,6 +76,8 @@ class PerfilController {
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
+            // Apagar cache
+            meuCache.del("findAllPerfil");
         }catch (e) {
             console.error('Erro ao atualizar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -85,12 +87,16 @@ class PerfilController {
     async deleteById(req, res){
         try {
             const id = req.params.id;
+
+            /** @type {Object} */
             const result = await PerfilRepository.delete({_id: id});
             if (result.deletedCount === 0){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE});
+            // Apagar cache
+            meuCache.del("findAllPerfil");
         }catch (e) {
             console.error('Erro ao deletar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});

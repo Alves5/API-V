@@ -17,7 +17,10 @@ const campanhaSchema = new mongoose.Schema({
         campanhaPrincipal: String,
         descricao: String,
         criadoPor: String,
-        atualizadoPor: String,
+        atualizadoPor: {
+            type: String,
+            default: null
+        },
         camposAdicionais: mongoose.Schema.Types.Mixed
     },{
     timestamps: true,

@@ -26,16 +26,16 @@ class TarefaController {
 
     async store(req, res){
         try {
-            // Apagar cache
-            meuCache.del("findAllTarefa");
-
             const tarefa = req.body;
             if (Object.keys(tarefa).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
             await TarefaRepository.create(tarefa);
+
             res.status(HTTP_STATUS.CREATED).json({response: RESPONSE.SUCCESS, message: MESSAGES.CREATED});
+            // Apagar cache
+            meuCache.del("findAllTarefa");
         }catch (e) {
             console.error('Erro ao criar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -71,6 +71,8 @@ class TarefaController {
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
+            // Apagar cache
+            meuCache.del("findAllTarefa");
         }catch (e) {
             console.error('Erro ao atualizar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -80,12 +82,16 @@ class TarefaController {
     async deleteById(req, res){
         try {
             const id = req.params.id;
+
+            /** @type {Object} */
             const result = await TarefaRepository.delete(id);
             if (result.deletedCount === 0){
                 res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE});
+            // Apagar cache
+            meuCache.del("findAllTarefa");
         }catch (e) {
             console.error('Erro ao deletar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});

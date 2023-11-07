@@ -8,19 +8,19 @@ class BibliotecaRepository {
     }
 
     async findAll(){
-        return await BibliotecaModel.find();
+        return BibliotecaModel.find();
     }
 
-    async findByCodigo(filter){
-        return await BibliotecaModel.findOne(filter);
+    async findByFilter(filter){
+        return BibliotecaModel.findOne(filter);
     }
 
     async update(filter, biblioteca){
-        return await BibliotecaModel.updateOne(filter, biblioteca);
+        return BibliotecaModel.updateOne(filter, biblioteca);
     }
 
     async delete(filter){
-        return await BibliotecaModel.deleteOne(filter);
+        return BibliotecaModel.deleteOne(filter);
     }
 }
 export default new BibliotecaRepository();

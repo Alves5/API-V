@@ -39,15 +39,19 @@ const leadSchema = new mongoose.Schema({
         },
         status: String,
         companhia: String,
-        campanha_n:[{
-            codigo: String
+        campanha_n: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Campanha'
         }],
         processoQualificacao_n: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'ProcessoQualificacao'
         },
         criadoPor: String,
-        atualizadoPor: String,
+        atualizadoPor: {
+            type: String,
+            default: null
+        },
         camposAdicionais: mongoose.Schema.Types.Mixed
     },{
     timestamps: true,

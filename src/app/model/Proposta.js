@@ -43,7 +43,10 @@ const propostaSchema = new mongoose.Schema({
     valorParcela: Decimal128,
     tipoPagamentoParcela: String,
     criadoPor: String,
-    atualizadoPor: String,
+    atualizadoPor: {
+        type: String,
+        default: null
+    },
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, {
     timestamps: true,

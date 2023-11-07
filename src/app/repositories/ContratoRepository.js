@@ -1,4 +1,5 @@
 import ContratoModel from "../model/Contrato.js";
+import LeadModel from "../model/Lead.js";
 
 class ContratoRepository {
     findAll(){
@@ -6,11 +7,19 @@ class ContratoRepository {
     }
 
     create(cont){
-        const contrato = new ContratoModel(cont);
-        contrato.save();
+        return new Promise((resolve, reject) => {
+            const contrato = new ContratoModel(cont);
+            contrato.save()
+                .then((registroSalvo) => {
+                    resolve(registroSalvo);
+                })
+                .catch((erro) => {
+                    reject(erro);
+                });
+        });
     }
 
-    findByNumero(filter){
+    findByFilter(filter){
         return ContratoModel.findOne(filter);
     }
 

@@ -13,7 +13,10 @@ const bibliotecaSchema = new mongoose.Schema({
         },
         descricao: String,
         criadoPor: String,
-        atualizadoPor: String,
+        atualizadoPor: {
+            type: String,
+            default: null
+        },
         camposAdicionais: mongoose.Schema.Types.Mixed
     }, {
     timestamps: true,

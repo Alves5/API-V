@@ -14,6 +14,7 @@ import Perfil from "./routes/Perfil.js";
 import Tarefa from "./routes/Tarefa.js";
 import Proposta from "./routes/Proposta.js";
 import Processo from "./routes/ProcessoQualificacao.js";
+import Produto from "./routes/Produto.js";
 import LoginController from "./controllers/users/loginController.js";
 import {authenticateToken} from "./middleware/authMiddleware.js";
 
@@ -39,5 +40,6 @@ router.use(Perfil);
 router.use(Tarefa);
 router.use(Proposta);
 router.use(Processo);
+router.use(Produto);
 
 export default router;

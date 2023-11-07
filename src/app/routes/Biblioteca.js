@@ -10,9 +10,9 @@ import BibliotecaController from "../controllers/BibliotecaController.js";
 // Biblioteca
 router.post('/biblioteca', upload.single('modeloContrato') ,BibliotecaController.store);
 router.get('/biblioteca', BibliotecaController.findAll);
-router.get('/biblioteca/:id', BibliotecaController.findByCodigo);
-router.put('/biblioteca/:id', upload.single('modeloContrato'), BibliotecaController.updateByCodigo);
-router.delete('/biblioteca/:id', BibliotecaController.deleteByCodigo);
+router.get('/biblioteca/:id', BibliotecaController.findById);
+router.put('/biblioteca/:id', upload.single('modeloContrato'), BibliotecaController.updateById);
+router.delete('/biblioteca/:id', BibliotecaController.deleteById);
 
 export default router;
 

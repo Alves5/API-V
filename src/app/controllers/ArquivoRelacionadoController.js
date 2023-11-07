@@ -8,7 +8,7 @@ class ArquivoRelacionadoController {
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
-            const { id, nomeDocumento, objetoReferente, criadoPor, atualizadoPor, camposAdicionais } = req.body;
+            const { id, nomeDocumento, objetoReferente, criadoPor, atualizadoPor } = req.body;
 
             const novoArquivoRelacionado = new ArquivoRelacionado({
                 id,
@@ -16,8 +16,7 @@ class ArquivoRelacionadoController {
                 objetoReferente,
                 arquivo: req.file,
                 criadoPor,
-                atualizadoPor,
-                camposAdicionais,
+                atualizadoPor
             });
 
             await ArquivoRelacionadoRepository.create(novoArquivoRelacionado);
@@ -65,7 +64,7 @@ class ArquivoRelacionadoController {
             }
 
             const { id } = req.params;
-            const { nomeDocumento, objetoReferente, criadoPor, atualizadoPor, camposAdicionais } = req.body;
+            const { nomeDocumento, objetoReferente, criadoPor, atualizadoPor} = req.body;
 
             const arquivoRelacionado = await ArquivoRelacionadoRepository.findById(id);
 
@@ -78,8 +77,7 @@ class ArquivoRelacionadoController {
                 objetoReferente,
                 arquivo: req.file,
                 criadoPor,
-                atualizadoPor,
-                camposAdicionais,
+                atualizadoPor
             };
 
             await ArquivoRelacionadoRepository.update(id, arquivoRelacionadoAtualizado);

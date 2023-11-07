@@ -11,7 +11,10 @@ const perfilSchema = new mongoose.Schema({
         verTodos: Boolean
     },
     criadoPor: String,
-    atualizadoPor: String,
+    atualizadoPor: {
+        type: String,
+        default: null
+    },
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, {
     timestamps: true,

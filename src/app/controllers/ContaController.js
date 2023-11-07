@@ -26,9 +26,6 @@ class ContaController {
 
     async store(req, res) {
         try {
-            // Apagar cache
-            meuCache.del("findAllConta");
-
             const conta = req.body;
             if (Object.keys(conta).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
@@ -41,6 +38,8 @@ class ContaController {
 
             await ContaRepository.create(conta);
             res.status(HTTP_STATUS.CREATED).json({response: RESPONSE.SUCCESS, message: MESSAGES.CREATED});
+            // Apagar cache
+            meuCache.del("findAllConta");
         }catch (e) {
             console.error('Erro ao criar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -77,6 +76,8 @@ class ContaController {
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
+            // Apagar cache
+            meuCache.del("findAllConta");
         }catch (e) {
             console.error('Erro ao atualizar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -86,12 +87,16 @@ class ContaController {
     async deleteByNumero(req, res){
         try {
             const id = req.params.id;
+
+            /** @type {Object} */
             const result = await ContaRepository.delete({_id: id});
             if (result.deletedCount === 0){
                 return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
             }
 
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.DELETE});
+            // Apagar cache
+            meuCache.del("findAllConta");
         }catch (e) {
             console.error('Erro ao deletar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});

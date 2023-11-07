@@ -85,8 +85,10 @@ class ContatoController {
     }
 
     async deleteByCodigo(req, res){
-        const id = req.params.id;
         try {
+            const id = req.params.id;
+
+            /** @type {Object} */
             const result = await ContatoRepository.delete(id);
             if (result.deletedCount === 0){
                 return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_DELETE});
@@ -103,22 +105,22 @@ class ContatoController {
     }
 
     async relatedList(req, res){
-        const codigoContato = req.params.codigo;
         try {
+            const id = req.params.id;
+
             const value = meuCache.get("relatedListContato");
             if (value !== undefined){
                 return res.status(HTTP_STATUS.OK).json({response: JSON.parse(value), message: MESSAGES.FIND});
             }
 
-            const exists = await ContatoRepository.findByFilter({codigo: codigoContato});
-            if (!exists){
-                res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
-                return false;
+            const contato = await ContatoRepository.findByFilter({_id: id});
+            if (!contato){
+                return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }
 
-            const result = await ContatoRepository.searchRelatedList(codigoContato);
+            const result = await ContatoRepository.searchRelatedList(contato._id);
             if (Object.keys(result).length === 0){
-                res.status(HTTP_STATUS.NOT_FOUND).json({response: [], message: MESSAGES.FIND_NO_EXISTS});
+                return res.status(HTTP_STATUS.NOT_FOUND).json({response: [], message: MESSAGES.FIND_NO_EXISTS});
             }
 
             meuCache.set("relatedListContato", JSON.stringify(result), 60);
