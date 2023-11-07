@@ -5,7 +5,10 @@ const processoQualificacaoSchema = new mongoose.Schema({
     apiNome: String,
     nome: String,
     criadoPor: String,
-    atualizadoPor: String,
+    atualizadoPor: {
+        type: String,
+        default: null
+    },
     camposAdicionais: mongoose.Schema.Types.Mixed
 },{
     timestamps: true,

@@ -12,7 +12,10 @@ const documentoSchema = new mongoose.Schema({
     descricao: String,
     relacionadoA: String,
     criadoPor: String,
-    atualizado: String,
+    atualizadoPor: {
+        type: String,
+        default: null
+    },
     camposAdicionais: mongoose.Schema.Types.Mixed
 }, { collection: 'Documento' }, { timestamps: true }, { versionKey: false }, { _id: false }, { strict: false });
 const documento = mongoose.model('Documento', documentoSchema);

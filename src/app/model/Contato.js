@@ -30,14 +30,19 @@ const contatoSchema = new mongoose.Schema({
             pais: String
         },
         companhia: String,
-        campanha_n:[{
-            codigo: String
+        campanha_n: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Campanha'
         }],
         arquivoRelacionado_n: [{
-            codigo: String
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ArquivoRelacionado'
         }],
         criadoPor: String,
-        atualizadoPor: String,
+        atualizadoPor: {
+            type: String,
+            default: null
+        },
         camposAdicionais: mongoose.Schema.Types.Mixed,
     }, {
     timestamps: true,

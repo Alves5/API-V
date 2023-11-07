@@ -24,8 +24,8 @@ class ContatoRepository {
         return ContatoModel.deleteOne({_id: id}, {new: true});
     }
 
-    searchRelatedList(codigo){
-        return ContratoModel.find({codigoContato_n: codigo}).sort({createdAt: -1});
+    searchRelatedList(id){
+        return ContratoModel.find({codigoContato_n: id});
     }
 }
 export default new ContatoRepository();

@@ -4,7 +4,10 @@ const contratoSchema = new mongoose.Schema({
         id: Number,
         numeroContrato: String,
         status: String,
-        codigoContato_n: String, // adicionar referencia aqui
+        codigoContato_n: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Contato'
+        },
         numeroProposta: String,
         seguroViajem: String,
         visto: String,
@@ -12,7 +15,10 @@ const contratoSchema = new mongoose.Schema({
         translado: String,
         contratoPai: String,
         criadoPor: String,
-        atualizadoPor: String,
+        atualizadoPor: {
+            type: String,
+            default: null
+        },
         camposAdicionais: mongoose.Schema.Types.Mixed
     }, {
     timestamps: true,

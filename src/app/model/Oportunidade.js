@@ -21,21 +21,26 @@ const oportunidadeSchema = new mongoose.Schema({
         origemPrincipalCampanha: String,
         descricao: String,
         produto_n: [{
-            codigo: String,
+            codigo: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Produto'
+            },
             quantidade: {
-                type: Number,
-                default: null
+                type: Number
             },
             preco: {
-                type: Decimal128,
-                default: null
+                type: Decimal128
             },
         }],
         arquivoRelacionado_n: [{
-            codigo: String
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ArquivoRelacionado'
         }],
         criadoPor: String,
-        atualizadoPor: String,
+        atualizadoPor: {
+            type: String,
+            default: null
+        },
         camposAdicionais: mongoose.Schema.Types.Mixed
     }, {
     timestamps: true,

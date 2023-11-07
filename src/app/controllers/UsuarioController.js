@@ -29,9 +29,6 @@ class UsuarioController {
 
     async store(req, res) {
         try {
-            // Apagar cache
-            meuCache.del("findAllUsuario");
-
             const usuario = req.body;
             if (Object.keys(usuario).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
@@ -60,7 +57,10 @@ class UsuarioController {
                 '<h4>Sua conta de usuário foi criada</h4></br>' +
                 '<p>Agora só é preciso ativar e criar uma senha, vamos lá e clique no link abaixo</p></br>' +
                 `<a href="${link}">${link}</a>`);
+
             res.status(HTTP_STATUS.CREATED).json({response: 1, message: "Usuário criado com sucesso."});
+            // Apagar cache
+            meuCache.del(["findAllUsuario", "relatedListUsuario"]);
         }catch (e) {
             console.error('Erro ao criar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -68,9 +68,10 @@ class UsuarioController {
     }
 
     async findByUsername(req, res){
-        const username = req.params.username;
         try {
+            const username = req.params.username;
             const filter = {username: username};
+
             const result = await UsuarioRepository.findByArgs(filter);
             if(result === null){
                 return res.status(HTTP_STATUS.OK).json({response: 0, message: "Nenhum usuário encontrado."});
@@ -97,6 +98,8 @@ class UsuarioController {
             }
 
             res.status(HTTP_STATUS.OK).json({response: result.modifiedCount, message: 'Sucesso, usuário atualizado.'});
+            // Apagar cache
+            meuCache.del(["findAllUsuario", "relatedListUsuario"]);
         }catch (e) {
             console.error('Erro ao atualizar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -104,14 +107,18 @@ class UsuarioController {
     }
 
     async deleteByUsername(req, res){
-        const username = req.params.username;
         try {
+            const username = req.params.username;
+
+            /** @type {Object} */
             const result = await UsuarioRepository.delete(username);
             if (result.deletedCount === 0){
                 return res.status(HTTP_STATUS.NOT_FOUND).json({response: result.deletedCount, message: 'Usuário não existe ou não deletado.'});
             }
 
             res.status(HTTP_STATUS.OK).json({response: result.deletedCount, message: 'Usuário deletado com sucesso'});
+            // Apagar cache
+            meuCache.del(["findAllUsuario", "relatedListUsuario"]);
         }catch (e) {
             console.error('Erro ao deletar o registro:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, message: MESSAGES.ERROR_SERVIDOR, errors: e});
@@ -119,9 +126,15 @@ class UsuarioController {
     }
 
     async activateUserOrRecoverUser(req, res){
-        const token = req.params.token;
-        const {senha1, senha2} = req.body;
         try {
+            const token = req.params.token;
+
+
+            if (Object.keys(req.body).length === 0){
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
+            }
+
+            const {senha1, senha2} = req.body;
             if (senha1 !== senha2){
                 return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({response: RESPONSE.WARNING, message: 'As senhas não são compativeis, verifique novamente.'});
             }

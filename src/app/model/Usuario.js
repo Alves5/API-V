@@ -4,7 +4,10 @@ import GenerateToken from "../Utils/GenerateToken.js";
 const usuarioSchema = new mongoose.Schema({
         id: Number,
         nomeCompleto: String,
-        perfil_n: String,
+        perfil_n: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Perfil'
+        },
         apelido: String,
         email: String,
         senha: {
@@ -21,10 +24,12 @@ const usuarioSchema = new mongoose.Schema({
             }
         }],
         criadoPor: String,
-        atualizadoPor: String,
+        atualizadoPor: {
+            type: String,
+            default: null
+        },
         camposAdicionais: mongoose.Schema.Types.Mixed
-    },
-    {
+    }, {
     timestamps: true,
     versionKey: false,
     _id: true,

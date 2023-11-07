@@ -13,8 +13,28 @@ class LeadRepository {
                     }
                 },
                 {
+                    $unwind: '$processo_qualificacao'
+                },
+                {
+                    $addFields: {
+                        statusOrder: {
+                            $switch: {
+                                branches: [
+                                    { case: { $eq: ["$processo_qualificacao.nome", "Aberto"] }, then: 1 },
+                                    { case: { $eq: ["$processo_qualificacao.nome", "Contato"] }, then: 2 },
+                                    { case: { $eq: ["$processo_qualificacao.nome", "Qualificado"] }, then: 3 },
+                                    { case: { $eq: ["$processo_qualificacao.nome", "Fechado"] }, then: 4 }, // Valor maior para 'Fechado'
+                                    // Adicione outros casos se necessário
+                                ],
+                                default: 5 // Para quaisquer outros status
+                            }
+                        }
+                    }
+                },
+                {
                     $group: {
                         _id: '$processo_qualificacao.nome',
+                        statusOrder: { $first: '$statusOrder' },
                         leads: { $push: '$$ROOT' }
                     }
                 },
@@ -22,9 +42,13 @@ class LeadRepository {
                     $project: {
                         _id: 0,
                         nomeProcesso: '$_id',
+                        statusOrder: 1,
                         leads: 1
                     }
-                }
+                },
+                {
+                    $sort: {'statusOrder': 1 }
+                },
             ]);
         }
 

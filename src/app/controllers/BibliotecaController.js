@@ -8,7 +8,7 @@ class BibliotecaController {
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
-            const { codigo, nome, modeloTexto, tipo, descricao, criadoPor, atualizadoPor } = req.body;
+            const { codigo, nome, modeloTexto, tipo, descricao, criadoPor } = req.body;
             const novaBiblioteca = {
                 codigo,
                 nome,
@@ -16,8 +16,7 @@ class BibliotecaController {
                 modeloTexto,
                 modeloContrato : req.file,
                 descricao,
-                criadoPor,
-                atualizadoPor,
+                criadoPor
             };
 
             await BibliotecaRepository.create(novaBiblioteca);
@@ -44,7 +43,7 @@ class BibliotecaController {
         }
     }
 
-    async findByCodigo(req, res) {
+    async findById(req, res) {
         try {
             const { id } = req.params;
             const biblioteca = await BibliotecaRepository.findByCodigo({_id: id});
@@ -59,21 +58,22 @@ class BibliotecaController {
         }
     }
 
-    async updateByCodigo(req, res) {
+    async updateById(req, res) {
         try {
             if (Object.keys(req.body).length === 0){
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
             }
 
             const { id } = req.params;
-            const { nome, descricao, criadoPor, atualizadoPor } = req.body;
-            const biblioteca = await BibliotecaRepository.findByCodigo({_id: id});
+            const { codigo, nome, descricao, criadoPor, atualizadoPor } = req.body;
+            const biblioteca = await BibliotecaRepository.findByFilter({_id: id});
 
             if (!biblioteca) {
                 res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: 'Biblioteca não encontrada.' });
             }
 
             const bibliotecaAtualizada = {
+                codigo,
                 nome,
                 descricao,
                 criadoPor,
@@ -89,10 +89,10 @@ class BibliotecaController {
         }
     }
 
-    async deleteByCodigo(req, res) {
+    async deleteById(req, res) {
         try {
             const { id } = req.params;
-            const biblioteca = await BibliotecaRepository.findByCodigo({_id: id});
+            const biblioteca = await BibliotecaRepository.findByFilter({_id: id});
 
             if (!biblioteca) {
                 res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: 'Biblioteca não encontrada.' });
