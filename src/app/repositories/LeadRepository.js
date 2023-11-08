@@ -84,7 +84,7 @@ class LeadRepository {
         return LeadModel.deleteOne({_id: id}, {new: true});
     }
 
-    deletarVarios(ids){
+    deleteMultipleIds(ids){
         return LeadModel.deleteMany({ _id: { $in: ids } })
     }
 
