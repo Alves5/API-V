@@ -93,6 +93,31 @@ class LeadController {
         }
     }
 
+    async updateProcess(req, res){
+        try {
+            const {id, processoQualificacao} = req.body;
+            if (Object.keys(req.body).length === 0){
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: MESSAGES.ERROR_NO_BODY });
+            }
+
+            if(!id || !processoQualificacao){
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({ response: RESPONSE.WARNING, message: 'Campo(s) vazio(s), verifique antes de enviar novamente.'})
+            }
+
+            const result = await LeadRepository.update({_id: id}, {processoQualificacao_n: processoQualificacao});
+            if (result === null){
+                return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.UPDATED_NO_UPDATED});
+            }
+
+            res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: MESSAGES.UPDATED});
+            // Apagar cache
+            meuCache.del(["findAllLead", "findAllKanbanLead"]);
+        }catch (e) {
+            console.error('Erro ao atualizar o processo: ',e);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({response: RESPONSE.ERROR, errors: e});
+        }
+    }
+
     async deleteById(req, res){
         const id = req.params.id;
         try {
@@ -126,7 +151,7 @@ class LeadController {
             const contato = new Contato({
                 ...restoObjeto,
                 identidade: null,
-                arquivoRelacionado_n: []
+                arquivoRelacionado_n: null
             });
             await ContatoRepository.create(contato);
             res.status(HTTP_STATUS.OK).json({response: RESPONSE.SUCCESS, message: 'Lead convertida para Contato.'});
@@ -147,7 +172,7 @@ class LeadController {
             const existingIds = existingLeads.map(lead => lead._id);
 
             /** @type {Object} */
-            const result = await LeadRepository.deletarVarios(existingIds);
+            const result = await LeadRepository.deleteMultipleIds(existingIds);
             if (result.deletedCount === 0) {
                 return res.status(HTTP_STATUS.NOT_FOUND).json({response: RESPONSE.WARNING, message: MESSAGES.DELETE_NO_MANY });
             }

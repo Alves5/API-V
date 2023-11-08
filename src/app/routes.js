@@ -15,13 +15,14 @@ import Tarefa from "./routes/Tarefa.js";
 import Proposta from "./routes/Proposta.js";
 import Processo from "./routes/ProcessoQualificacao.js";
 import Produto from "./routes/Produto.js";
-import LoginController from "./controllers/users/loginController.js";
+import LoginController from "./controllers/login/loginController.js";
 import {authenticateToken} from "./middleware/authMiddleware.js";
 
 const router = Router();
 
 router.post("/login", LoginController.login);
 
+// middleware acionado para identificar o header de autorização e se o token é valido
 router.use(authenticateToken);
 
 // Rotas

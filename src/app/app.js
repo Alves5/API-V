@@ -1,5 +1,5 @@
 import express from "express";
-import connectDB from "../config/database/connectionMongoDb.js";
+import connectDB from "../config/database/connection.js";
 import routes from "./routes.js";
 import bodyParser from "body-parser";
 import cors from "cors";

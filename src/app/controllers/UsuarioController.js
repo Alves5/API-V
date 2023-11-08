@@ -3,6 +3,8 @@ import CryptoUtil from "../Utils/CryptoUtil.js";
 import GenerateToken from "../Utils/GenerateToken.js";
 import EmailService from "../Utils/EmailService.js";
 import {HTTP_STATUS, MESSAGES, RESPONSE} from "../Utils/ApiMessages.js";
+import dotenv from 'dotenv';
+dotenv.config();
 import NodeCache from "node-cache";
 const meuCache = new NodeCache();
 
@@ -51,7 +53,7 @@ class UsuarioController {
             await UsuarioRepository.create(usuario);
 
             // Enviar email para ativar e criar senha
-            let link = `http://localhost:3000/usuario/ativarUsuario/${usuario.token[0].text}`;
+            let link = `${process.env.BASE_URL_LOCALHOST}/usuario/ativarUsuario/${usuario.token[0].text}`;
             EmailService.enviarEmail(
                 'Sua conta foi criada com sucesso!',
                 '<h4>Sua conta de usuário foi criada</h4></br>' +
@@ -171,7 +173,7 @@ class UsuarioController {
             await UsuarioRepository.update({email: email}, usuario);
 
             // Enviar email para recuperar conta do usuário
-            let link = `http://localhost:3000/usuario/recuperarUsuario/${novoToken.text}`;
+            let link = `${process.env.BASE_URL_LOCALHOST}/usuario/recuperarUsuario/${novoToken.text}`;
             EmailService.enviarEmail(
                 'Recuperar conta',
                 '<h4>Foi feito um pedido para recuperar sua conta</h4></br>' +
