@@ -283,7 +283,7 @@
         }
       }
     },
-    "/lead": {
+    "/leads/{tipView}": {
       "get": {
         "tags": [
           "Lead"
@@ -294,8 +294,22 @@
           "200": {
             "description": "Success"
           }
-        }
-      },
+        },
+        "parameters": [
+          {
+            "name": "tipView",
+            "in": "path",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/lead": {
       "post": {
         "tags": ["Lead"],
         "description": "Cria um novo Lead",

@@ -1,8 +1,8 @@
 import EtapaModel from "../model/ProcessoQualificacao.js"
 
 class ProcessoQualificacaoRepository {
-    findAll(){
-        return EtapaModel.find();
+    findAll(filter1, filter2){
+        return EtapaModel.find(filter1, filter2);
     }
     create(proc){
         const processo = new EtapaModel(proc);

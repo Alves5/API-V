@@ -18,13 +18,34 @@ class LeadController {
                 return res.status(HTTP_STATUS.OK).json({ response: JSON.parse(cachedData), message: MESSAGES.FIND });
             }
 
-            const leads = await LeadRepository.findAll(tipView);
-            if (Object.keys(leads).length === 0) {
+            const result = await LeadRepository.findAll(tipView);
+            if (Object.keys(result).length === 0) {
                 return res.status(HTTP_STATUS.NOT_FOUND).json({ response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS });
             }
 
-            meuCache.set(cacheKey, JSON.stringify(leads), 60);
-            res.status(HTTP_STATUS.OK).json({ response: leads, message: MESSAGES.FIND });
+            if (tipView === 'kanban'){
+                    const allProcesses = await ProcessoQualificacaoRepository.findAll({}, {nome: 1});
+
+                    const leads = allProcesses.map(processo => {
+                        const found = result.find(item => item.nomeProcesso === processo.nome);
+                        if (found) {
+                            return found;
+                        } else {
+                            return {
+                                nomeProcesso: processo.nome,
+                                statusOrder: 5, // Defina o valor máximo para garantir que apareça no final
+                                leads: []
+                            };
+                        }
+                    });
+
+                    meuCache.set(cacheKey, JSON.stringify(leads), 60);
+                    res.status(HTTP_STATUS.OK).json({ response: leads, message: MESSAGES.FIND });
+                    return leads;
+            }
+
+            meuCache.set(cacheKey, JSON.stringify(result), 60);
+            res.status(HTTP_STATUS.OK).json({ response: result, message: MESSAGES.FIND });
         } catch (e) {
             console.error('Erro ao buscar os registros:', e);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ response: RESPONSE.ERROR, errors: e });
