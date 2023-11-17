@@ -1,4 +1,5 @@
 import LeadModel from "../model/Lead.js";
+import mongoose from "mongoose";
 
 class LeadRepository {
     findAll(type){
@@ -74,6 +75,32 @@ class LeadRepository {
 
     findByOne(filter){
         return LeadModel.findOne(filter);
+    }
+
+    findById(id){
+        const objectId = new mongoose.Types.ObjectId(id);
+        return LeadModel.aggregate([
+            {
+                $match: {
+                    _id: objectId
+                }
+            },
+            {
+                $lookup: {
+                    from: 'ProcessoQualificacao',
+                    localField: 'processoQualificacao_n',
+                    foreignField: '_id',
+                    as: 'processo_qualificacao'
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    lead: '$$ROOT',
+                    processo_qualificacao: 1
+                }
+            }
+        ]);
     }
 
     update(filter, leadData){

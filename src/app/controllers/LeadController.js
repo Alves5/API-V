@@ -80,7 +80,7 @@ class LeadController {
     async findById(req, res){
         try{
             const id = req.params.id;
-            const result = await LeadRepository.findByOne({_id: id});
+            const result = await LeadRepository.findById(id);
             if(result === null){
                 return res.status(HTTP_STATUS.OK).json({response: RESPONSE.WARNING, message: MESSAGES.FIND_NO_EXISTS});
             }
